@@ -19,7 +19,7 @@ function App() {
             element: <h1>Home</h1>,
           },
           {
-            path: 'test',
+            path: 'movies',
             element: <MovieGrid movies={mockMovies} />,
           },
           {
