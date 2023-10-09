@@ -1,0 +1,10 @@
+.pill-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 10000px;
+  border: 1px solid white;
+  padding: 0 0.4rem;
+  width: fit-content;
+  margin: 0 0.2rem;
+}
