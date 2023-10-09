@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Movie } from '../../models/movie';
 import { getYear } from '../../util/parseDate';
 import './MovieCard.css';
@@ -8,8 +9,14 @@ interface MovieCardProps {
 }
 
 export const MovieCard = ({ movie, scale = 1 }: MovieCardProps) => {
+  const navigate = useNavigate();
+
+  const onMovieClick = () => {
+    navigate(`/movies/${movie.id}`);
+  };
+
   return (
-    <div className='movie-card-border'>
+    <div className='movie-card-border' onClick={onMovieClick}>
       <div
         className='movie-card'
         style={{

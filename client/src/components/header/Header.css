@@ -23,6 +23,11 @@
   padding: 0.5rem 0;
   font-weight: 300;
   position: relative;
+  transition: all 0.1s ease-in-out;
+}
+
+.header > nav > ul > *:hover {
+  transform: scale(1.05);
 }
 
 .active {

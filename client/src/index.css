@@ -25,3 +25,8 @@ body {
 html {
   scrollbar-gutter: stable;
 }
+
+img {
+  height: auto;
+  max-width: 100%;
+}
