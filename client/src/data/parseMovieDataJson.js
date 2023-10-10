@@ -1,4 +1,3 @@
-import fs from 'fs';
 import data from './json.json' assert { type: 'json' };
 
 const movies = data;
@@ -15,8 +14,10 @@ const formattedMovies = movies.map((movie, i) => {
   };
 });
 
-fs.writeFile('movies.json', JSON.stringify(formattedMovies, null, 2), function (err) {
-  if (err) {
-    console.log(err);
-  }
-});
+console.log(formattedMovies);
+
+// fs.writeFile('movies.json', JSON.stringify(formattedMovies, null, 2), function (err) {
+//   if (err) {
+//     console.log(err);
+//   }
+// });
