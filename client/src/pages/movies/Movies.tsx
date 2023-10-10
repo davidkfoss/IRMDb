@@ -16,10 +16,10 @@ export const Movies = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (movies.length === 0) {
+    if (movies.length < pageSize) {
       loadMovies();
     }
-  }, [dispatch, movies.length, loadMovies]);
+  }, [dispatch, movies.length, loadMovies, pageSize]);
 
   if (movies.length === 0) {
     return <h1>Loading...</h1>;

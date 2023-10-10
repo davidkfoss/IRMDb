@@ -7,6 +7,7 @@ interface MoviesState {
   movies: Movie[];
   moviesFetched: number;
   pageSize: number;
+  currentMovie?: Movie;
 }
 
 const initialMoviesState: MoviesState = {
@@ -23,12 +24,13 @@ export const moviesSlice = createSlice({
     builder
       .addCase(getMovieById.fulfilled, (state, action) => {
         if (action.payload) {
-          state.movies.push(action.payload);
+          state.currentMovie = action.payload;
         }
       })
       .addCase(getMovies.fulfilled, (state, action) => {
         if (action.payload) {
-          state.movies = [...state.movies, ...action.payload];
+          const movies = [...state.movies, ...action.payload];
+          state.movies = movies;
           state.moviesFetched += action.payload.length;
         }
       });
@@ -38,6 +40,8 @@ export const moviesSlice = createSlice({
 export const moviesReducer = moviesSlice.reducer;
 
 export const selectMovies = (state: RootState) => state.movies.movies;
+
+export const selectCurrentMovie = (state: RootState) => state.movies.currentMovie;
 
 export const selectMovieById = (id: number) =>
   createSelector(selectMovies, (movies) => movies.find((movie) => movie.id === id));
