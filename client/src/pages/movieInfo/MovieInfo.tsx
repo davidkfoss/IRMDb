@@ -1,12 +1,24 @@
-import { useEffect, useState } from 'react';
+import StarIcon from '@mui/icons-material/Star';
+import { Button, Rating, TextareaAutosize } from '@mui/material';
+import _, { random } from 'lodash';
+import { useEffect, useMemo, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Pill } from '../../components/pill/Pill';
+import { Review } from '../../components/review/Review';
+import useDebounceDispatch from '../../hooks/useDebounceDispatch';
 import { getMovieById } from '../../store/features/movies/movieThunks';
-import { selectMovieById } from '../../store/features/movies/moviesSlice';
-import { useAppDispatch } from '../../store/store';
+import { selectCurrentMovie } from '../../store/features/movies/moviesSlice';
+import { addReviewOnMovie } from '../../store/features/reviews/reviewThunks';
+import { selectReviewInfoOnMovie } from '../../store/features/reviews/reviewsSlice';
 import { getYear } from '../../util/parseDate';
 import './MovieInfo.css';
+
+const initialReviewInfo = {
+  reviews: [],
+  ratingAverage: 5,
+};
 
 export const MovieInfo = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -14,14 +26,27 @@ export const MovieInfo = () => {
 
   const id = parseInt(idParam || '-1');
 
-  const dispatch = useAppDispatch();
-  const movie = useSelector(selectMovieById(id));
+  const dispatch = useDebounceDispatch(100);
+  const movie = useSelector(selectCurrentMovie);
+  const { reviews, ratingAverage } = useSelector(selectReviewInfoOnMovie(id)) || initialReviewInfo;
+
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(3);
+
+  const allReviews = useMemo(
+    () => _.toPairs(reviews).map(([authorId, review]) => ({ authorId: parseInt(authorId), ...review })),
+    [reviews]
+  );
 
   useEffect(() => {
-    if (!movie) {
-      dispatch(getMovieById(id));
-    }
-  }, [id, movie, dispatch]);
+    dispatch(getMovieById(id));
+  }, [id, dispatch]);
+
+  const onCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
+  };
+
+  const roundedRating = useMemo(() => Math.round(ratingAverage * 10) / 10, [ratingAverage]);
 
   if (!movie) {
     return <div>Loading...</div>;
@@ -41,6 +66,25 @@ export const MovieInfo = () => {
     e.stopPropagation();
   };
 
+  const onSubmit = () => {
+    if (comment === '') {
+      toast.error('Comment cannot be empty', { style: { background: '#333', color: '#fff' } });
+      return;
+    }
+
+    setComment('');
+    setRating(3);
+    dispatch(
+      addReviewOnMovie({
+        movieId: id,
+
+        // TODO: get authorId from auth
+        authorId: random(0, 1000),
+        review: { rating, comment },
+      })
+    );
+  };
+
   return (
     <>
       {showPopup && (
@@ -50,6 +94,10 @@ export const MovieInfo = () => {
       )}
       <div className='movie-info-container'>
         <div className='movie-info-info'>
+          <div className='movie-info-rating-container'>
+            <Rating name='half-rating-read' value={ratingAverage ?? 5} readOnly precision={0.5} />
+            <span className='movie-info-rating-average'>{roundedRating}/5</span>
+          </div>
           <h1>{movie.title}</h1>
           <div className='movie-info-genres'>
             {movie.genre.map((genre) => (
@@ -61,6 +109,37 @@ export const MovieInfo = () => {
         </div>
         <img src={movie.posterUrl} className='movie-info-image-container' onClick={onImageClick} />
       </div>
+      <div className='movie-info-reviews'>
+        <h2>Reviews:</h2>
+        {allReviews.map((review) => (
+          <Review key={review.authorId} {...review} />
+        ))}
+        <form className='movie-info-form'>
+          <Rating
+            name='rating'
+            value={rating}
+            onChange={(_, newValue) => {
+              setRating(newValue || 0);
+            }}
+            emptyIcon={<StarIcon color='info' style={{ opacity: 0.6 }} fontSize='inherit' />}
+          />
+          <TextareaAutosize
+            aria-label='minimum height'
+            minRows={3}
+            placeholder='Write your review ...'
+            className='movie-info-textarea'
+            name='comment'
+            value={comment}
+            onChange={onCommentChange}
+          />
+          <br />
+
+          <Button variant='contained' onClick={onSubmit} style={{ font: 'inherit' }}>
+            Add review
+          </Button>
+        </form>
+      </div>
+      <Toaster />
     </>
   );
 };

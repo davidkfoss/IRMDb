@@ -1,10 +1,18 @@
-.movie-info-container {
+.movie-info-container,
+.movie-info-reviews {
   display: flex;
   padding: 0 3rem;
   margin: 0rem 15%;
   box-shadow: 0 0 25px rgba(12, 200, 169, 0.098);
   clip-path: inset(10px -20px 10px -20px);
   border-radius: 10px;
+}
+
+.movie-info-reviews {
+  flex-direction: column;
+  padding: 3rem;
+  text-align: start;
+  align-items: center;
 }
 
 .movie-info-info {
@@ -57,4 +65,34 @@
   height: 80%;
   border-radius: 10px;
   cursor: default;
+}
+
+.movie-info-reviews > h2 {
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.199);
+  align-self: stretch;
+}
+
+.movie-info-form {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin-top: 1rem;
+}
+
+.movie-info-textarea {
+  font: inherit;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.movie-info-rating-average {
+  margin-left: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.movie-info-rating-container {
+  display: flex;
+  align-items: center;
+  align-content: center;
 }
