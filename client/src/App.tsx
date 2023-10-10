@@ -1,9 +1,8 @@
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
-import { MovieGrid } from './components/movieGrid/MovieGrid';
-import { mockMovies } from './data/mockMovies';
 import { MovieInfo } from './pages/movieInfo/MovieInfo';
+import { Movies } from './pages/movies/Movies';
 import { Root } from './pages/root/Root';
 import { store } from './store/store';
 
@@ -23,7 +22,7 @@ function App() {
           },
           {
             path: 'movies',
-            element: <MovieGrid movies={mockMovies} />,
+            element: <Movies />,
           },
           {
             path: 'movies/:id',

@@ -1,0 +1,25 @@
+.main-button {
+  all: unset;
+
+  background: linear-gradient(0, #045b5e, #0f4250, #343b42);
+  padding: 0.7rem 1.4rem;
+  border-radius: 10rem;
+  border: 1px solid rgba(255, 255, 255, 0.295);
+  box-shadow: 0 0 1rem rgba(12, 200, 169, 0.5);
+  font-size: 1.1rem;
+  transition: all 0.15s ease-in-out;
+  font-weight: 700;
+
+  margin-bottom: 2rem;
+  margin-top: 0.5rem;
+}
+
+.main-button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 1.3rem rgba(12, 200, 169, 0.8);
+}
+
+.main-button:active {
+  transform: scale(0.95);
+  background: linear-gradient(180deg, #045b5e, #0f4250, #343b42);
+}
