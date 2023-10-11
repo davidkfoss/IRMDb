@@ -73,3 +73,18 @@ export const getFilteredMovies = createAsyncThunk<
   console.log(movies);
   return mockPagination(movies, moviesFetchCount / pageSize + 1);
 });
+
+export const searchMovies = createAsyncThunk<Movie[] | undefined, string, { state: RootState }>(
+  'movies/searchMovies',
+  async (searchInput, { getState }) => {
+    console.log(`Fetching movies`);
+
+    const state = getState();
+    const moviesFetchCount = state.movies.moviesFetched;
+    const pageSize = state.movies.pageSize;
+    const filteredMovies = mockMovies.filter((movie) => movie.title.toLowerCase().includes(searchInput.toLowerCase()));
+
+    // TODO: Fetch movies from API
+    return mockPagination(filteredMovies, moviesFetchCount / pageSize + 1);
+  }
+);

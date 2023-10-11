@@ -13,6 +13,7 @@ export const Movies = () => {
   const dispatch = useDebounceDispatch(50);
   const movies = useSelector(selectMovies);
   const pageSize = useSelector(selectPageSize);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filters = useRef(initialFilters);
 

@@ -1,25 +1,31 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { Movie } from '../../../models/movie';
 import { RootState } from '../../store';
-import { getFilteredMovies, getMovieById, getMovies } from './movieThunks';
+import { getFilteredMovies, getMovieById, getMovies, searchMovies } from './movieThunks';
 
 interface MoviesState {
   movies: Movie[];
   moviesFetched: number;
   pageSize: number;
   currentMovie?: Movie;
+  newSearch: boolean;
 }
 
 const initialMoviesState: MoviesState = {
   movies: [],
   moviesFetched: 0,
   pageSize: 10,
+  newSearch: false,
 };
 
 export const moviesSlice = createSlice({
   name: 'movies',
   initialState: initialMoviesState,
-  reducers: {},
+  reducers: {
+    toggleNewSearch: (state) => {
+      state.newSearch = !state.newSearch;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getMovieById.fulfilled, (state, action) => {
@@ -45,9 +51,24 @@ export const moviesSlice = createSlice({
             state.moviesFetched += action.payload.length;
           }
         }
+      })
+      .addCase(searchMovies.fulfilled, (state, action) => {
+        if (action.payload) {
+          console.log(state.newSearch);
+          if (state.newSearch) {
+            state.movies = action.payload;
+            state.moviesFetched = action.payload.length;
+          } else {
+            const movies = [...state.movies, ...action.payload];
+            state.movies = movies;
+            state.moviesFetched += action.payload.length;
+          }
+        }
       });
   },
 });
+
+export const { toggleNewSearch } = moviesSlice.actions;
 
 export const moviesReducer = moviesSlice.reducer;
 
