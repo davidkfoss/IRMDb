@@ -8,12 +8,14 @@ interface MoviesState {
   moviesFetched: number;
   pageSize: number;
   currentMovie?: Movie;
+  allFetched: boolean;
 }
 
 const initialMoviesState: MoviesState = {
   movies: [],
   moviesFetched: 0,
   pageSize: 10,
+  allFetched: false,
 };
 
 export const moviesSlice = createSlice({
@@ -29,18 +31,24 @@ export const moviesSlice = createSlice({
       })
       .addCase(getMovies.fulfilled, (state, action) => {
         if (action.payload) {
-          const movies = [...state.movies, ...action.payload];
+          const fetchedMovies = action.payload;
+          state.allFetched = fetchedMovies.length < state.pageSize;
+
+          const movies = [...state.movies, ...fetchedMovies];
           state.movies = movies;
           state.moviesFetched += action.payload.length;
         }
       })
       .addCase(getFilteredMovies.fulfilled, (state, action) => {
         if (action.payload) {
+          const fetchedMovies = action.payload;
+          state.allFetched = fetchedMovies.length < state.pageSize;
+
           if (action.meta.arg.initial) {
-            state.movies = action.payload;
+            state.movies = fetchedMovies;
             state.moviesFetched = action.payload.length;
           } else {
-            const movies = [...state.movies, ...action.payload];
+            const movies = [...state.movies, ...fetchedMovies];
             state.movies = movies;
             state.moviesFetched += action.payload.length;
           }
@@ -59,3 +67,5 @@ export const selectMovieById = (id: number) =>
   createSelector(selectMovies, (movies) => movies.find((movie) => movie.id === id));
 
 export const selectPageSize = (state: RootState) => state.movies.pageSize;
+
+export const selectAllFetched = (state: RootState) => state.movies.allFetched;

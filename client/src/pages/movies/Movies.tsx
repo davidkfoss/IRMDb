@@ -6,13 +6,14 @@ import { Filters, initialFilters } from '../../components/filter/filterUtil';
 import { MovieGrid } from '../../components/movieGrid/MovieGrid';
 import useDebounceDispatch from '../../hooks/useDebounceDispatch';
 import { getFilteredMovies } from '../../store/features/movies/movieThunks';
-import { selectMovies, selectPageSize } from '../../store/features/movies/moviesSlice';
+import { selectAllFetched, selectMovies, selectPageSize } from '../../store/features/movies/moviesSlice';
 import './Movies.css';
 
 export const Movies = () => {
   const dispatch = useDebounceDispatch(50);
   const movies = useSelector(selectMovies);
   const pageSize = useSelector(selectPageSize);
+  const allFetched = useSelector(selectAllFetched);
 
   const filters = useRef(initialFilters);
 
@@ -34,9 +35,11 @@ export const Movies = () => {
       ) : (
         <>
           <MovieGrid movies={movies} />
-          <Button onClick={() => dispatch(getFilteredMovies({ filters: filters.current, initial: false }))}>
-            Load {pageSize} more movies
-          </Button>
+          {!allFetched && (
+            <Button onClick={() => dispatch(getFilteredMovies({ filters: filters.current, initial: false }))}>
+              Load {pageSize} more movies
+            </Button>
+          )}
         </>
       )}
     </>

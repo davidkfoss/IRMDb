@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import SearchBar from '../searchBar/SearchBar.tsx';
 import './MovieFilter.css';
 import { AscDesc } from './ascDesc/AscDesc';
 import { directions } from './ascDesc/direction';
@@ -38,16 +39,26 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
     }
   };
 
+  const handleSearch = (search: string) => {
+    setFilters((prev) => {
+      return { ...prev, search };
+    });
+  };
+
   useEffect(() => {
-    console.log('filters changed', filters);
     onChange(filters);
   }, [filters, onChange]);
 
   return (
     <div className='filter-container'>
-      <GenreSelect value={filters.genres} name='genres' onChange={handleChange} />
-      <SortBy value={filters.sortBy} name='sortBy' onChange={handleChange} />
-      <AscDesc value={filters.direction} name='direction' onChange={handleChange} />
+      <div className='search-bar-container'>
+        <SearchBar onSearch={handleSearch} />
+      </div>
+      <div className='filters-container'>
+        <GenreSelect value={filters.genres} name='genres' onChange={handleChange} />
+        <SortBy value={filters.sortBy} name='sortBy' onChange={handleChange} />
+        <AscDesc value={filters.direction} name='direction' onChange={handleChange} />
+      </div>
     </div>
   );
 };

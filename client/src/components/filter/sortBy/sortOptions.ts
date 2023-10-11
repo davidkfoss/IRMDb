@@ -1,3 +1,3 @@
-export const sortOptions = ['Rating', 'Name', 'Release Date', 'Popularity'] as const;
+export const sortOptions = ['Name', 'Release Date', 'Popularity', 'Rating'] as const;
 
 export type SortOption = (typeof sortOptions)[number];
