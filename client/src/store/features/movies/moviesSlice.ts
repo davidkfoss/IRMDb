@@ -1,31 +1,27 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { Movie } from '../../../models/movie';
 import { RootState } from '../../store';
-import { getFilteredMovies, getMovieById, getMovies, searchMovies } from './movieThunks';
+import { getFilteredMovies, getMovieById, getMovies } from './movieThunks';
 
 interface MoviesState {
   movies: Movie[];
   moviesFetched: number;
   pageSize: number;
   currentMovie?: Movie;
-  newSearch: boolean;
+  allFetched: boolean;
 }
 
 const initialMoviesState: MoviesState = {
   movies: [],
   moviesFetched: 0,
   pageSize: 10,
-  newSearch: false,
+  allFetched: false,
 };
 
 export const moviesSlice = createSlice({
   name: 'movies',
   initialState: initialMoviesState,
-  reducers: {
-    toggleNewSearch: (state) => {
-      state.newSearch = !state.newSearch;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getMovieById.fulfilled, (state, action) => {
@@ -35,31 +31,24 @@ export const moviesSlice = createSlice({
       })
       .addCase(getMovies.fulfilled, (state, action) => {
         if (action.payload) {
-          const movies = [...state.movies, ...action.payload];
+          const fetchedMovies = action.payload;
+          state.allFetched = fetchedMovies.length < state.pageSize;
+
+          const movies = [...state.movies, ...fetchedMovies];
           state.movies = movies;
           state.moviesFetched += action.payload.length;
         }
       })
       .addCase(getFilteredMovies.fulfilled, (state, action) => {
         if (action.payload) {
+          const fetchedMovies = action.payload;
+          state.allFetched = fetchedMovies.length < state.pageSize;
+
           if (action.meta.arg.initial) {
-            state.movies = action.payload;
+            state.movies = fetchedMovies;
             state.moviesFetched = action.payload.length;
           } else {
-            const movies = [...state.movies, ...action.payload];
-            state.movies = movies;
-            state.moviesFetched += action.payload.length;
-          }
-        }
-      })
-      .addCase(searchMovies.fulfilled, (state, action) => {
-        if (action.payload) {
-          console.log(state.newSearch);
-          if (state.newSearch) {
-            state.movies = action.payload;
-            state.moviesFetched = action.payload.length;
-          } else {
-            const movies = [...state.movies, ...action.payload];
+            const movies = [...state.movies, ...fetchedMovies];
             state.movies = movies;
             state.moviesFetched += action.payload.length;
           }
@@ -67,8 +56,6 @@ export const moviesSlice = createSlice({
       });
   },
 });
-
-export const { toggleNewSearch } = moviesSlice.actions;
 
 export const moviesReducer = moviesSlice.reducer;
 
@@ -80,3 +67,5 @@ export const selectMovieById = (id: number) =>
   createSelector(selectMovies, (movies) => movies.find((movie) => movie.id === id));
 
 export const selectPageSize = (state: RootState) => state.movies.pageSize;
+
+export const selectAllFetched = (state: RootState) => state.movies.allFetched;

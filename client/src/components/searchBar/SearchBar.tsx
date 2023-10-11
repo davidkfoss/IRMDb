@@ -1,10 +1,13 @@
+import SearchIcon from '@mui/icons-material/Search';
+import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import React, { useState } from 'react';
 
 interface SearchBarProps {
-  onSearch: (searchQuery: string) => void;
+  onSearch: (search: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [searchInput, setSearchInput] = useState('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,28 +15,57 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     setSearchInput(inputValue);
   };
 
-  const handleSearch = () => {
-    onSearch(searchInput);
-  };
-
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      handleSearch();
+      onSearch(searchInput);
     }
   };
 
+  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
   return (
-    <div className='search-bar'>
-      <input
+    <FormControl sx={{ m: 1, width: '350px', backgroundColor: '#333333', borderRadius: '20px' }} variant='filled'>
+      <InputLabel htmlFor='outlined-adornment-password' sx={{ color: 'grey' }}>
+        Search
+      </InputLabel>
+      <OutlinedInput
+        id='outlined-adornment-password'
         type='text'
-        placeholder='Search for movies...'
-        value={searchInput}
         onChange={handleInputChange}
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleKeyPress}
+        sx={{ color: 'white' }}
+        endAdornment={
+          <InputAdornment position='end'>
+            <IconButton
+              sx={{ color: grey[200] }}
+              aria-label='toggle password visibility'
+              onMouseDown={handleMouseDown}
+              onClick={() => onSearch(searchInput)}
+              size='large'
+              edge='end'>
+              <SearchIcon />
+            </IconButton>
+          </InputAdornment>
+        }
+        label='Password'
       />
-      <button onClick={handleSearch}>Search</button>
-    </div>
+    </FormControl>
   );
+
+  // return (
+  //   <div className='search-bar'>
+  //     <input
+  //       type='text'
+  //       placeholder='Search for movies...'
+  //       value={searchInput}
+  //       onChange={handleInputChange}
+  //       onKeyDown={handleKeyPress}
+  //     />
+  //     <button onClick={() => onSearch(searchInput)}>Search</button>
+  //   </div>
+  // );
 };
 
 export default SearchBar;

@@ -1,7 +1,7 @@
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { Checkbox } from '@mui/material';
-import { FilterChangeHandler } from '../filterUtil';
+import { FilterChangeHandler } from '../MovieFilter';
 import { Direction } from './direction';
 
 interface AscDescProps {

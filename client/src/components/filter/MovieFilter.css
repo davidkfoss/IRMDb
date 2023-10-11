@@ -1,6 +1,18 @@
 .filter-container {
   display: flex;
-  align-self: flex-end;
+  flex-wrap: wrap;
   margin-bottom: 0.7rem;
   margin-right: 2rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.search-bar-container {
+  margin-left: 1rem;
+}
+
+.filters-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

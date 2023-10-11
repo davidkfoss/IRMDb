@@ -25,7 +25,7 @@ export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: Ro
     const pageSize = state.movies.pageSize;
 
     // TODO: Fetch movies from API
-    return mockPagination(mockMovies, moviesFetchCount / pageSize + 1);
+    return mockPagination(mockMovies, moviesFetchCount, pageSize);
   }
 );
 
@@ -41,17 +41,19 @@ export const getFilteredMovies = createAsyncThunk<
   const pageSize = state.movies.pageSize;
 
   // TODO: Fetch movies from API
-  const movies = mockMovies.filter((movie) => {
-    if (filters.genres) {
-      for (const genre of filters.genres) {
-        if (!movie.genre) return true;
-        if (!movie.genre.includes(genre)) {
-          return false;
+  const movies = mockMovies
+    .filter((movie) => {
+      if (filters.genres) {
+        for (const genre of filters.genres) {
+          if (!movie.genre) return true;
+          if (!movie.genre.includes(genre)) {
+            return false;
+          }
         }
       }
-    }
-    return true;
-  });
+      return true;
+    })
+    .filter((movie) => movie.title.toLowerCase().includes(filters.search.toLowerCase()));
 
   movies.sort((a, b) => {
     // if (filters.sortBy === 'Rating') {
@@ -71,20 +73,5 @@ export const getFilteredMovies = createAsyncThunk<
   });
 
   console.log(movies);
-  return mockPagination(movies, moviesFetchCount / pageSize + 1);
+  return mockPagination(movies, moviesFetchCount, pageSize);
 });
-
-export const searchMovies = createAsyncThunk<Movie[] | undefined, string, { state: RootState }>(
-  'movies/searchMovies',
-  async (searchInput, { getState }) => {
-    console.log(`Fetching movies`);
-
-    const state = getState();
-    const moviesFetchCount = state.movies.moviesFetched;
-    const pageSize = state.movies.pageSize;
-    const filteredMovies = mockMovies.filter((movie) => movie.title.toLowerCase().includes(searchInput.toLowerCase()));
-
-    // TODO: Fetch movies from API
-    return mockPagination(filteredMovies, moviesFetchCount / pageSize + 1);
-  }
-);

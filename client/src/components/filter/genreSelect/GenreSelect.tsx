@@ -1,5 +1,5 @@
 import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from '@mui/material';
-import { FilterChangeHandler } from '../filterUtil';
+import { FilterChangeHandler } from '../MovieFilter';
 import { Genre, genres } from './genre';
 
 const ITEM_HEIGHT = 48;

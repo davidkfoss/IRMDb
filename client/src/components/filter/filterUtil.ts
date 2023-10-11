@@ -6,10 +6,12 @@ export interface Filters {
   genres: Genre[];
   sortBy: SortOption;
   direction: Direction;
+  search: string;
 }
 
 export const initialFilters: Filters = {
   genres: [],
   sortBy: sortOptions[0],
   direction: directions[0],
+  search: '',
 };

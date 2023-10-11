@@ -1,15 +1,11 @@
-export default function mockPagination<T>(data: T[], page: number): T[] { // Something wrong when searching
-  const pageSize = 10;
-  const start = (page - 1) * pageSize;
+export default function mockPagination<T>(data: T[], start: number, pageSize: number): T[] {
+  // Something wrong when searching
   const end = start + pageSize;
 
   if (start > data.length) {
-      console.log(page, start)
-    return data;
+    return [];
   } else if (end > data.length) {
-      console.log(page, end)
-    return data;
+    return data.slice(start);
   }
-  console.log(page, start, end)
   return data.slice(start, end);
 }
