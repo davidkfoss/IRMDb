@@ -1,7 +1,7 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { Movie } from '../../../models/movie';
 import { RootState } from '../../store';
-import { getMovieById, getMovies } from './movieThunks';
+import { getFilteredMovies, getMovieById, getMovies } from './movieThunks';
 
 interface MoviesState {
   movies: Movie[];
@@ -32,6 +32,18 @@ export const moviesSlice = createSlice({
           const movies = [...state.movies, ...action.payload];
           state.movies = movies;
           state.moviesFetched += action.payload.length;
+        }
+      })
+      .addCase(getFilteredMovies.fulfilled, (state, action) => {
+        if (action.payload) {
+          if (action.meta.arg.initial) {
+            state.movies = action.payload;
+            state.moviesFetched = action.payload.length;
+          } else {
+            const movies = [...state.movies, ...action.payload];
+            state.movies = movies;
+            state.moviesFetched += action.payload.length;
+          }
         }
       });
   },

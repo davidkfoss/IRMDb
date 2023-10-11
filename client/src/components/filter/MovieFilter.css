@@ -1,0 +1,6 @@
+.filter-container {
+  display: flex;
+  align-self: flex-end;
+  margin-bottom: 0.7rem;
+  margin-right: 2rem;
+}
