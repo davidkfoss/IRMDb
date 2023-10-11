@@ -11,15 +11,11 @@ export const Header = () => {
   const links: Link[] = [
     {
       path: '/',
-      name: 'Home',
+      name: 'Feed',
     },
     {
       path: '/movies',
       name: 'Movies',
-    },
-    {
-      path: '/search',
-      name: 'Search',
     },
   ];
 

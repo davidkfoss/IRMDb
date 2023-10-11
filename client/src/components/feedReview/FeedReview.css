@@ -1,0 +1,25 @@
+.review-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.199);
+  background-color: rgb(58, 94, 110);
+  width: 70%;
+}
+
+.review-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.author {
+  text-align: start;
+}
+
+.upvote {
+  display: flex;
+  justify-content: end;
+}

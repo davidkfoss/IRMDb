@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
 import { MovieInfo } from './pages/movieInfo/MovieInfo';
 import { Movies } from './pages/movies/Movies';
+import { Feed } from './pages/feed/Feed';
 import { Root } from './pages/root/Root';
 import { store } from './store/store';
 
@@ -18,7 +19,7 @@ function App() {
         children: [
           {
             index: true,
-            element: <h1>Home</h1>,
+            element: <Feed />,
           },
           {
             path: 'movies',
