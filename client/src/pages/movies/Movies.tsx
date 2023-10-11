@@ -1,34 +1,44 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Button } from '../../components/button/Button';
+import { MovieFilter } from '../../components/filter/MovieFilter';
+import { Filters, initialFilters } from '../../components/filter/filterUtil';
 import { MovieGrid } from '../../components/movieGrid/MovieGrid';
 import useDebounceDispatch from '../../hooks/useDebounceDispatch';
-import { getMovies } from '../../store/features/movies/movieThunks';
+import { getFilteredMovies } from '../../store/features/movies/movieThunks';
 import { selectMovies, selectPageSize } from '../../store/features/movies/moviesSlice';
+import './Movies.css';
 
 export const Movies = () => {
-  const dispatch = useDebounceDispatch(100);
+  const dispatch = useDebounceDispatch(50);
   const movies = useSelector(selectMovies);
   const pageSize = useSelector(selectPageSize);
 
-  const loadMovies = useCallback(() => {
-    dispatch(getMovies());
-  }, [dispatch]);
+  const filters = useRef(initialFilters);
 
-  useEffect(() => {
-    if (movies.length < pageSize) {
-      loadMovies();
-    }
-  }, [dispatch, movies.length, loadMovies, pageSize]);
-
-  if (movies.length === 0) {
-    return <h1>Loading...</h1>;
-  }
+  const onFilterChange = useCallback(
+    (filter: Filters) => {
+      filters.current = filter;
+      dispatch(getFilteredMovies({ filters: filter ?? filters.current, initial: true }));
+    },
+    [dispatch]
+  );
 
   return (
     <>
-      <MovieGrid movies={movies} />
-      <Button onClick={loadMovies}>Load {pageSize} more movies</Button>
+      <div className='movie-filter-container'>
+        <MovieFilter onChange={onFilterChange} />
+      </div>
+      {movies.length === 0 ? (
+        <p>No movies found</p>
+      ) : (
+        <>
+          <MovieGrid movies={movies} />
+          <Button onClick={() => dispatch(getFilteredMovies({ filters: filters.current, initial: false }))}>
+            Load {pageSize} more movies
+          </Button>
+        </>
+      )}
     </>
   );
 };
