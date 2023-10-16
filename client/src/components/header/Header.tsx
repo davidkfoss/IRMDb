@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import './Header.css';
+import { GoogleLogin } from '@react-oauth/google';
 
 interface Link {
   name: string;
@@ -31,6 +32,9 @@ export const Header = () => {
               {link.name.toUpperCase()}
             </NavLink>
           ))}
+          <li className='login'>
+            <GoogleLogin onSuccess={console.log} onError={console.log}></GoogleLogin>
+          </li>
         </ul>
       </nav>
     </header>
