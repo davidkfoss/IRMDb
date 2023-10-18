@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { Filters } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
 import { RootState } from '../../store';
 import { getFilteredMovies, getMovieById, getMovies } from './movieThunks';
@@ -9,6 +10,7 @@ interface MoviesState {
   pageSize: number;
   currentMovie?: Movie;
   allFetched: boolean;
+  filters: Filters;
 }
 
 const initialMoviesState: MoviesState = {
@@ -16,6 +18,7 @@ const initialMoviesState: MoviesState = {
   moviesFetched: 0,
   pageSize: 10,
   allFetched: false,
+  filters: {} as Filters,
 };
 
 export const moviesSlice = createSlice({
@@ -41,6 +44,8 @@ export const moviesSlice = createSlice({
       })
       .addCase(getFilteredMovies.fulfilled, (state, action) => {
         if (action.payload) {
+          state.filters = action.meta.arg.filters;
+
           const fetchedMovies = action.payload;
           state.allFetched = fetchedMovies.length < state.pageSize;
 
@@ -69,3 +74,5 @@ export const selectMovieById = (id: number) =>
 export const selectPageSize = (state: RootState) => state.movies.pageSize;
 
 export const selectAllFetched = (state: RootState) => state.movies.allFetched;
+
+export const selectFilters = (state: RootState) => state.movies.filters;

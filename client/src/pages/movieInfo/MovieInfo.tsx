@@ -1,10 +1,11 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StarIcon from '@mui/icons-material/Star';
-import { Button, Rating, TextareaAutosize } from '@mui/material';
+import { Button, IconButton, Rating, TextareaAutosize } from '@mui/material';
 import _, { random } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { MoviePopup } from '../../components/moviePopup/MoviePopup';
 import { Pill } from '../../components/pill/Pill';
 import { Review } from '../../components/review/Review';
@@ -24,6 +25,8 @@ const initialReviewInfo = {
 export const MovieInfo = () => {
   const [showPopup, setShowPopup] = useState(false);
   const { id: idParam } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const id = parseInt(idParam || '-1');
 
@@ -72,10 +75,26 @@ export const MovieInfo = () => {
     );
   };
 
+  const onBackClick = () => {
+    // If there exists a history we want to go back to the previous site,
+    // else we want to go back to the movies page
+    const historyExists = location.key !== 'default';
+    if (historyExists) {
+      navigate(-1);
+    } else {
+      navigate('/movies');
+    }
+  };
+
   return (
     <>
       {showPopup && <MoviePopup movie={movie} onClose={() => setShowPopup(false)} />}
+
       <div className='movie-info-container' aria-disabled={showPopup}>
+        <IconButton color='info' sx={{ position: 'absolute', top: '0.5rem', left: '0.5rem' }} onClick={onBackClick}>
+          <ArrowBackIcon fontSize='large' />
+          Go back
+        </IconButton>
         <div className='movie-info-info'>
           <div className='movie-info-rating-container'>
             <Rating

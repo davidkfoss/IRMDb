@@ -5,10 +5,11 @@ import React, { useState } from 'react';
 
 interface SearchBarProps {
   onSearch: (search: string) => void;
+  initialValue?: string;
 }
 
-const SearchBar = ({ onSearch }: SearchBarProps) => {
-  const [searchInput, setSearchInput] = useState('');
+const SearchBar = ({ onSearch, initialValue }: SearchBarProps) => {
+  const [searchInput, setSearchInput] = useState(initialValue || '');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
@@ -27,20 +28,22 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
 
   return (
     <FormControl sx={{ m: 1, width: '350px', backgroundColor: '#333333', borderRadius: '20px' }} variant='filled'>
-      <InputLabel htmlFor='outlined-adornment-password' sx={{ color: 'grey' }}>
+      <InputLabel htmlFor='outlined-adornment-search' sx={{ color: 'grey' }}>
         Search
       </InputLabel>
       <OutlinedInput
-        id='outlined-adornment-password'
+        id='outlined-adornment-search'
         type='text'
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
+        value={searchInput}
+        defaultValue={initialValue}
         sx={{ color: 'white' }}
         endAdornment={
           <InputAdornment position='end'>
             <IconButton
               sx={{ color: grey[200] }}
-              aria-label='toggle password visibility'
+              aria-label='search for movie'
               onMouseDown={handleMouseDown}
               onClick={() => onSearch(searchInput)}
               size='large'
@@ -49,7 +52,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
             </IconButton>
           </InputAdornment>
         }
-        label='Password'
+        label='Search'
       />
     </FormControl>
   );

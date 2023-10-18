@@ -27,10 +27,18 @@ export const Movies = () => {
 
   const onLoadButtonClicked = () => {
     dispatch(getFilteredMovies({ filters: filters.current, initial: false }));
+  };
+
+  const onLoadButtonKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key !== 'Enter') return;
+
+    event.preventDefault();
+    onLoadButtonClicked();
 
     // Focus on the last movie in the grid after loading more movies
     // This is a workaround for the fact that the focus is lost when more movies are loaded
     const isFocused = document.activeElement?.id === 'load-more';
+    console.log(document.activeElement);
     if (isFocused) {
       const movieGrid = document.getElementById('movie-grid');
       const children = movieGrid?.children;
@@ -52,7 +60,7 @@ export const Movies = () => {
         <>
           <MovieGrid movies={movies} id='movie-grid' />
           {!allFetched && (
-            <Button id='load-more' onClick={onLoadButtonClicked}>
+            <Button id='load-more' onClick={onLoadButtonClicked} onKeyDown={onLoadButtonKeyDown}>
               Load {pageSize} more movies
             </Button>
           )}

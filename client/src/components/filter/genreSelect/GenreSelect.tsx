@@ -23,7 +23,7 @@ export const GenreSelect = ({ value, onChange, name }: GenreSelectProps) => {
   return (
     <FormControl sx={{ m: 1, width: 250, backgroundColor: '#333333', borderRadius: '10px' }} variant='filled'>
       <InputLabel id='genre-checkbox-label' sx={{ color: '#aaaaaa' }}>
-        Genre
+        Genres
       </InputLabel>
       <Select
         sx={{ color: 'white' }}
