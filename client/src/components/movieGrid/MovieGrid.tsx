@@ -4,11 +4,12 @@ import './MovieGrid.css';
 
 interface MovieGridProps {
   movies: Movie[];
+  id: string;
 }
 
-export const MovieGrid = ({ movies }: MovieGridProps) => {
+export const MovieGrid = ({ movies, id }: MovieGridProps) => {
   return (
-    <div className='movie-grid'>
+    <div className='movie-grid' id={id}>
       {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} scale={1.15} />
       ))}

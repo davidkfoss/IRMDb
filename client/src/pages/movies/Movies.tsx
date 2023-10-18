@@ -25,6 +25,22 @@ export const Movies = () => {
     [dispatch]
   );
 
+  const onLoadButtonClicked = () => {
+    dispatch(getFilteredMovies({ filters: filters.current, initial: false }));
+
+    // Focus on the last movie in the grid after loading more movies
+    // This is a workaround for the fact that the focus is lost when more movies are loaded
+    const isFocused = document.activeElement?.id === 'load-more';
+    if (isFocused) {
+      const movieGrid = document.getElementById('movie-grid');
+      const children = movieGrid?.children;
+      const lastChild = children?.item(children.length - 1)?.children?.item(0);
+      if (lastChild) {
+        (lastChild as HTMLElement).focus();
+      }
+    }
+  };
+
   return (
     <>
       <div className='movie-filter-container'>
@@ -34,9 +50,9 @@ export const Movies = () => {
         <p>No movies found</p>
       ) : (
         <>
-          <MovieGrid movies={movies} />
+          <MovieGrid movies={movies} id='movie-grid' />
           {!allFetched && (
-            <Button onClick={() => dispatch(getFilteredMovies({ filters: filters.current, initial: false }))}>
+            <Button id='load-more' onClick={onLoadButtonClicked}>
               Load {pageSize} more movies
             </Button>
           )}

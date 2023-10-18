@@ -46,27 +46,6 @@
   transform: scale(0.89);
 }
 
-.movie-popup {
-  position: absolute;
-  top: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: 1;
-  background-color: rgba(0, 0, 0, 0.644);
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.movie-info-image-popup {
-  object-fit: contain;
-  height: 80%;
-  border-radius: 10px;
-  cursor: default;
-}
-
 .movie-info-reviews > h2 {
   margin-bottom: 0.6rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.199);
