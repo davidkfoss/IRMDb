@@ -23,7 +23,7 @@ export const GenreSelect = ({ value, onChange, name }: GenreSelectProps) => {
   return (
     <FormControl sx={{ m: 1, width: 250, backgroundColor: '#333333', borderRadius: '10px' }} variant='filled'>
       <InputLabel id='genre-checkbox-label' sx={{ color: '#aaaaaa' }}>
-        Genre
+        Genres
       </InputLabel>
       <Select
         sx={{ color: 'white' }}
@@ -34,7 +34,8 @@ export const GenreSelect = ({ value, onChange, name }: GenreSelectProps) => {
         value={value}
         onChange={onChange}
         renderValue={(selected) => selected.join(', ')}
-        MenuProps={MenuProps}>
+        MenuProps={MenuProps}
+      >
         {...genres.map((genre) => (
           <MenuItem key={genre} value={genre}>
             <Checkbox checked={value.indexOf(genre) > -1} />

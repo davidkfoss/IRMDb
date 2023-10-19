@@ -1,10 +1,12 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StarIcon from '@mui/icons-material/Star';
-import { Button, Rating, TextareaAutosize } from '@mui/material';
+import { Button, IconButton, Rating, TextareaAutosize } from '@mui/material';
 import _, { random } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { MoviePopup } from '../../components/moviePopup/MoviePopup';
 import { Pill } from '../../components/pill/Pill';
 import { Review } from '../../components/review/Review';
 import useDebounceDispatch from '../../hooks/useDebounceDispatch';
@@ -23,6 +25,8 @@ const initialReviewInfo = {
 export const MovieInfo = () => {
   const [showPopup, setShowPopup] = useState(false);
   const { id: idParam } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const id = parseInt(idParam || '-1');
 
@@ -52,20 +56,6 @@ export const MovieInfo = () => {
     return <div>Loading...</div>;
   }
 
-  const onImageClick = () => {
-    setShowPopup(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const onClickAway = () => {
-    setShowPopup(false);
-    document.body.style.overflow = 'auto';
-  };
-
-  const consumeEvent = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation();
-  };
-
   const onSubmit = () => {
     if (comment === '') {
       toast.error('Comment cannot be empty', { style: { background: '#333', color: '#fff' } });
@@ -85,18 +75,38 @@ export const MovieInfo = () => {
     );
   };
 
+  const onBackClick = () => {
+    // If there exists a history we want to go back to the previous site,
+    // else we want to go back to the movies page
+    const historyExists = location.key !== 'default';
+    if (historyExists) {
+      navigate(-1);
+    } else {
+      navigate('/movies');
+    }
+  };
+
   return (
     <>
-      {showPopup && (
-        <div className='movie-popup' onClick={onClickAway}>
-          <img src={movie.posterUrl} className='movie-info-image-popup' onClick={consumeEvent} />
-        </div>
-      )}
-      <div className='movie-info-container'>
+      {showPopup && <MoviePopup movie={movie} onClose={() => setShowPopup(false)} />}
+
+      <div className='movie-info-container' aria-disabled={showPopup}>
+        <IconButton color='info' sx={{ position: 'absolute', top: '0.5rem', left: '0.5rem' }} onClick={onBackClick}>
+          <ArrowBackIcon fontSize='large' />
+          Go back
+        </IconButton>
         <div className='movie-info-info'>
           <div className='movie-info-rating-container'>
-            <Rating name='half-rating-read' value={ratingAverage ?? 5} readOnly precision={0.5} />
-            <span className='movie-info-rating-average'>{roundedRating}/5</span>
+            <Rating
+              name='half-rating-read'
+              value={ratingAverage ?? 5}
+              readOnly
+              precision={0.5}
+              aria-labelledby='movie-rating'
+            />
+            <span className='movie-info-rating-average' id='movie-rating'>
+              {roundedRating}/5
+            </span>
           </div>
           <h1>{movie.title}</h1>
           <div className='movie-info-genres'>
@@ -107,7 +117,12 @@ export const MovieInfo = () => {
           <span>{movie.overview}</span>
           <h3>{getYear(movie.releaseDate)}</h3>
         </div>
-        <img src={movie.posterUrl} className='movie-info-image-container' onClick={onImageClick} />
+        <img
+          src={movie.posterUrl}
+          className='movie-info-image-container'
+          onClick={() => setShowPopup(true)}
+          alt={`${movie.title} poster`}
+        />
       </div>
       <div className='movie-info-reviews'>
         <h2>Reviews:</h2>
@@ -134,7 +149,7 @@ export const MovieInfo = () => {
           />
           <br />
 
-          <Button variant='contained' onClick={onSubmit} style={{ font: 'inherit' }}>
+          <Button variant='contained' onClick={onSubmit} style={{ font: 'inherit' }} aria-label='Add review'>
             Add review
           </Button>
         </form>

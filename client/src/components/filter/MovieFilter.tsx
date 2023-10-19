@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectFilters } from '../../store/features/movies/moviesSlice.ts';
 import SearchBar from '../searchBar/SearchBar.tsx';
 import './MovieFilter.css';
 import { AscDesc } from './ascDesc/AscDesc';
 import { directions } from './ascDesc/direction';
-import { Filters, initialFilters } from './filterUtil.ts';
+import { Filters, getFiltersFromSessionStorage, hasFiltersChanged, setFiltersInSessionStorage } from './filterUtil.ts';
 import { GenreSelect } from './genreSelect/GenreSelect';
 import { SortBy } from './sortBy/SortBy';
 
@@ -22,7 +24,8 @@ interface FilterProps {
 }
 
 export const MovieFilter = ({ onChange }: FilterProps) => {
-  const [filters, setFilters] = useState(initialFilters);
+  const [filters, setFilters] = useState(getFiltersFromSessionStorage);
+  const storeFilters = useSelector(selectFilters);
 
   const handleChange: FilterChangeHandler = (event) => {
     const { target } = event;
@@ -46,13 +49,19 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
   };
 
   useEffect(() => {
-    onChange(filters);
-  }, [filters, onChange]);
+    if (hasFiltersChanged(filters, storeFilters)) {
+      onChange(filters);
+    }
+
+    return () => {
+      setFiltersInSessionStorage(filters);
+    };
+  }, [filters, onChange, storeFilters]);
 
   return (
     <div className='filter-container'>
       <div className='search-bar-container'>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} initialValue={filters.search} />
       </div>
       <div className='filters-container'>
         <GenreSelect value={filters.genres} name='genres' onChange={handleChange} />
