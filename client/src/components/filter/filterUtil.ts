@@ -26,11 +26,11 @@ export const hasFiltersChanged = (filters: Filters, prevFilters: Filters) => {
   );
 };
 
-export const saveFiltersToLocalStorage = (filters: Filters) => {
-  localStorage.setItem('filters', JSON.stringify(filters));
+export const setFiltersInSessionStorage = (filters: Filters) => {
+  sessionStorage.setItem('filters', JSON.stringify(filters));
 };
 
-export const getFiltersFromLocalStorage = (): Filters => {
-  const filters = localStorage.getItem('filters');
+export const getFiltersFromSessionStorage = (): Filters => {
+  const filters = sessionStorage.getItem('filters');
   return filters ? JSON.parse(filters) : initialFilters;
 };

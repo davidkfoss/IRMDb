@@ -36,7 +36,6 @@ const SearchBar = ({ onSearch, initialValue }: SearchBarProps) => {
         type='text'
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
-        value={searchInput}
         defaultValue={initialValue}
         sx={{ color: 'white' }}
         endAdornment={
@@ -57,19 +56,6 @@ const SearchBar = ({ onSearch, initialValue }: SearchBarProps) => {
       />
     </FormControl>
   );
-
-  // return (
-  //   <div className='search-bar'>
-  //     <input
-  //       type='text'
-  //       placeholder='Search for movies...'
-  //       value={searchInput}
-  //       onChange={handleInputChange}
-  //       onKeyDown={handleKeyPress}
-  //     />
-  //     <button onClick={() => onSearch(searchInput)}>Search</button>
-  //   </div>
-  // );
 };
 
 export default SearchBar;

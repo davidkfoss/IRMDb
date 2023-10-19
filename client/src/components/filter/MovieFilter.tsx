@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectFilters } from '../../store/features/movies/moviesSlice.ts';
 import SearchBar from '../searchBar/SearchBar.tsx';
 import './MovieFilter.css';
 import { AscDesc } from './ascDesc/AscDesc';
 import { directions } from './ascDesc/direction';
-import { Filters, getFiltersFromLocalStorage, saveFiltersToLocalStorage } from './filterUtil.ts';
+import { Filters, getFiltersFromSessionStorage, hasFiltersChanged, setFiltersInSessionStorage } from './filterUtil.ts';
 import { GenreSelect } from './genreSelect/GenreSelect';
 import { SortBy } from './sortBy/SortBy';
 
@@ -22,7 +24,8 @@ interface FilterProps {
 }
 
 export const MovieFilter = ({ onChange }: FilterProps) => {
-  const [filters, setFilters] = useState(getFiltersFromLocalStorage);
+  const [filters, setFilters] = useState(getFiltersFromSessionStorage);
+  const storeFilters = useSelector(selectFilters);
 
   const handleChange: FilterChangeHandler = (event) => {
     const { target } = event;
@@ -46,12 +49,14 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
   };
 
   useEffect(() => {
-    onChange(filters);
+    if (hasFiltersChanged(filters, storeFilters)) {
+      onChange(filters);
+    }
 
     return () => {
-      saveFiltersToLocalStorage(filters);
+      setFiltersInSessionStorage(filters);
     };
-  }, [filters, onChange]);
+  }, [filters, onChange, storeFilters]);
 
   return (
     <div className='filter-container'>
