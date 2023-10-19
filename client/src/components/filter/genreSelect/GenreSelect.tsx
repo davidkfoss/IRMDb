@@ -34,7 +34,8 @@ export const GenreSelect = ({ value, onChange, name }: GenreSelectProps) => {
         value={value}
         onChange={onChange}
         renderValue={(selected) => selected.join(', ')}
-        MenuProps={MenuProps}>
+        MenuProps={MenuProps}
+      >
         {...genres.map((genre) => (
           <MenuItem key={genre} value={genre}>
             <Checkbox checked={value.indexOf(genre) > -1} />

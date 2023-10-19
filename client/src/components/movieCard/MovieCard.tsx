@@ -33,7 +33,8 @@ export const MovieCard = ({ movie, scale = 1 }: MovieCardProps) => {
         style={{
           width: `${15 * scale}rem`,
           height: `${22.22 * scale}rem`,
-        }}>
+        }}
+      >
         <img
           src={movie.posterUrl}
           alt={`Poster for ${movie.title}`}

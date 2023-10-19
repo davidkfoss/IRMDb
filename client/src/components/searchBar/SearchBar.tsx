@@ -47,7 +47,8 @@ const SearchBar = ({ onSearch, initialValue }: SearchBarProps) => {
               onMouseDown={handleMouseDown}
               onClick={() => onSearch(searchInput)}
               size='large'
-              edge='end'>
+              edge='end'
+            >
               <SearchIcon />
             </IconButton>
           </InputAdornment>

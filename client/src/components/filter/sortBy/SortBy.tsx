@@ -21,7 +21,8 @@ export const SortBy = ({ value, onChange, name }: SortByProps) => {
         name={name}
         value={value}
         label='Sort by'
-        onChange={onChange}>
+        onChange={onChange}
+      >
         {...sortOptions.map((sortOption) => (
           <MenuItem key={sortOption} value={sortOption}>
             {sortOption}
