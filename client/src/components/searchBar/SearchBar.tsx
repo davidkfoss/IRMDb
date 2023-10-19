@@ -6,9 +6,10 @@ import React, { useState } from 'react';
 interface SearchBarProps {
   onSearch: (search: string) => void;
   initialValue?: string;
+  width?: number | string;
 }
 
-const SearchBar = ({ onSearch, initialValue }: SearchBarProps) => {
+const SearchBar = ({ onSearch, initialValue, width = 350 }: SearchBarProps) => {
   const [searchInput, setSearchInput] = useState(initialValue || '');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +28,7 @@ const SearchBar = ({ onSearch, initialValue }: SearchBarProps) => {
   };
 
   return (
-    <FormControl sx={{ m: 1, width: '350px', backgroundColor: '#333333', borderRadius: '20px' }} variant='filled'>
+    <FormControl sx={{ m: 1, width: width, backgroundColor: '#333333', borderRadius: '20px' }} variant='filled'>
       <InputLabel htmlFor='outlined-adornment-search' sx={{ color: 'grey' }}>
         Search
       </InputLabel>

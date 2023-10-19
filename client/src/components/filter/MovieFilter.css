@@ -7,12 +7,23 @@
   width: 100%;
 }
 
+.filter-container-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .search-bar-container {
   margin-left: 1rem;
 }
 
-.filters-container {
+.filters-container,
+.filters-container-mobile {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.filters-container-mobile {
+  width: 100%;
 }

@@ -17,11 +17,12 @@ interface GenreSelectProps {
   value: Genre[];
   onChange: FilterChangeHandler;
   name: string;
+  width?: number | string;
 }
 
-export const GenreSelect = ({ value, onChange, name }: GenreSelectProps) => {
+export const GenreSelect = ({ value, onChange, name, width = 250 }: GenreSelectProps) => {
   return (
-    <FormControl sx={{ m: 1, width: 250, backgroundColor: '#333333', borderRadius: '10px' }} variant='filled'>
+    <FormControl sx={{ m: 1, width: width, backgroundColor: '#333333', borderRadius: '10px' }} variant='filled'>
       <InputLabel id='genre-checkbox-label' sx={{ color: '#aaaaaa' }}>
         Genres
       </InputLabel>
