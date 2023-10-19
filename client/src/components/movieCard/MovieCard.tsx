@@ -13,11 +13,12 @@ export const MovieCard = ({ movie, scale = 1 }: MovieCardProps) => {
 
   const onMovieClick = () => {
     navigate(`/movies/${movie.id}`);
+    window.scrollTo(0, 0);
   };
 
   const onMovieKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
-      navigate(`/movies/${movie.id}`);
+      onMovieClick();
     }
   };
 

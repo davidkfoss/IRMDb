@@ -23,3 +23,15 @@
   border-radius: 10px;
   cursor: default;
 }
+
+@media screen and (max-width: 1256px) {
+  .movie-popup-image-container {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .movie-popup-image-container {
+    height: auto;
+  }
+}

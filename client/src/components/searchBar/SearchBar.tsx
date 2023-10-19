@@ -38,7 +38,7 @@ const SearchBar = ({ onSearch, initialValue, width = 350 }: SearchBarProps) => {
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
         defaultValue={initialValue}
-        sx={{ color: 'white' }}
+        sx={{ color: 'white', borderRadius: '20px', lineHeight: 1 }}
         endAdornment={
           <InputAdornment position='end'>
             <IconButton

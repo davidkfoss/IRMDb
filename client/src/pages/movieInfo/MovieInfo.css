@@ -10,11 +10,17 @@
   border-radius: 10px;
 }
 
+.movie-info-container {
+  margin-top: -2.5rem;
+  padding-top: 5rem;
+}
+
 .movie-info-reviews {
   flex-direction: column;
   padding: 3rem;
   text-align: start;
   align-items: center;
+  margin-top: -1.2rem;
 }
 
 .movie-info-info {
@@ -27,6 +33,10 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 1rem;
+}
+
+.genre-pill {
+  margin-bottom: 0.6rem;
 }
 
 .movie-info-info > h1 {
@@ -48,7 +58,13 @@
   transform: scale(0.89);
 }
 
+#movie-info-poster {
+  display: none;
+}
+
+#movie-info-poster,
 .movie-info-reviews > h2 {
+  text-align: start;
   margin-bottom: 0.6rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.199);
   align-self: stretch;
@@ -76,4 +92,41 @@
   display: flex;
   align-items: center;
   align-content: center;
+}
+
+@media screen and (max-width: 1000px) {
+  .movie-info-container,
+  .movie-info-reviews {
+    flex-direction: column;
+    padding: 4rem 1rem 0 1rem;
+    margin: 0rem 5%;
+  }
+
+  .movie-info-container {
+    margin-top: -2.5rem;
+  }
+
+  .movie-info-reviews {
+    margin-top: -1.2rem;
+    padding-bottom: 3rem;
+  }
+
+  .movie-info-info {
+    width: 90%;
+  }
+
+  .movie-info-image-container {
+    object-fit: contain;
+    align-self: center;
+  }
+
+  #movie-info-poster {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .movie-info-image-container {
+    height: min-content;
+  }
 }

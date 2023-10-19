@@ -91,7 +91,7 @@ export const MovieInfo = () => {
       {showPopup && <MoviePopup movie={movie} onClose={() => setShowPopup(false)} />}
 
       <div className='movie-info-container' aria-disabled={showPopup}>
-        <IconButton color='info' sx={{ position: 'absolute', top: '0.5rem', left: '0.5rem' }} onClick={onBackClick}>
+        <IconButton color='info' sx={{ position: 'absolute', top: '2rem', left: '0.5rem' }} onClick={onBackClick}>
           <ArrowBackIcon fontSize='large' />
           Go back
         </IconButton>
@@ -111,12 +111,15 @@ export const MovieInfo = () => {
           <h1>{movie.title}</h1>
           <div className='movie-info-genres'>
             {movie.genre.map((genre) => (
-              <Pill key={genre}>{genre}</Pill>
+              <Pill key={genre} className='genre-pill'>
+                {genre}
+              </Pill>
             ))}
           </div>
           <span>{movie.overview}</span>
           <h3>{getYear(movie.releaseDate)}</h3>
         </div>
+        <h2 id='movie-info-poster'>Poster</h2>
         <img
           src={movie.posterUrl}
           className='movie-info-image-container'
@@ -125,7 +128,7 @@ export const MovieInfo = () => {
         />
       </div>
       <div className='movie-info-reviews'>
-        <h2>Reviews:</h2>
+        <h2>Reviews</h2>
         {allReviews.map((review) => (
           <Review key={review.authorId} {...review} />
         ))}
