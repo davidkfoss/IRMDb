@@ -1,16 +1,17 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { FilterChangeHandler } from '../filterUtil';
+import { FilterChangeHandler } from '../MovieFilter';
 import { SortOption, sortOptions } from './sortOptions';
 
 interface SortByProps {
   value: SortOption;
   onChange: FilterChangeHandler;
   name: string;
+  width?: number | string;
 }
 
-export const SortBy = ({ value, onChange, name }: SortByProps) => {
+export const SortBy = ({ value, onChange, name, width = 150 }: SortByProps) => {
   return (
-    <FormControl sx={{ m: 1, width: 150, backgroundColor: '#333333', borderRadius: '10px' }} variant='filled'>
+    <FormControl sx={{ m: 1, width: width, backgroundColor: '#333333', borderRadius: '10px' }} variant='filled'>
       <InputLabel id='sort-by-select-label' sx={{ color: '#aaaaaa' }}>
         Sort by
       </InputLabel>
