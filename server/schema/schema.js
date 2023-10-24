@@ -1,126 +1,144 @@
 const graphql = require('graphql');
 
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLFloat, GraphQLList, GraphQLNonNull, GraphQLInt } = graphql;
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLID,
+  GraphQLFloat,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLInt,
+  GraphQLBoolean,
+} = graphql;
+const { v4: uuidv4 } = require('uuid');
 
-const mockMovies = [
-  {
-    id: 1,
-    title: 'Spider-Man: No Way Home',
-    genre: ['Action', 'Adventure', 'Science Fiction'],
-    releaseDate: '2021-12-15',
-    posterUrl: 'https://image.tmdb.org/t/p/original/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
-    overview:
-      'Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.',
-    popularity: 5083.954,
-  },
-  {
-    id: 2,
-    title: 'The Batman',
-    genre: ['Crime', 'Mystery', 'Thriller'],
-    releaseDate: '2022-03-01',
-    posterUrl: 'https://image.tmdb.org/t/p/original/74xTEgt7R36Fpooo50r9T25onhq.jpg',
-    overview:
-      'In his second year of fighting crime, Batman uncovers corruption in Gotham City that connects to his own family while facing a serial killer known as the Riddler.',
-    popularity: 3827.658,
-  },
-  {
-    id: 3,
-    title: 'No Exit',
-    genre: ['Thriller'],
-    releaseDate: '2022-02-25',
-    posterUrl: 'https://image.tmdb.org/t/p/original/vDHsLnOWKlPGmWs0kGfuhNF4w5l.jpg',
-    overview:
-      'Stranded at a rest stop in the mountains during a blizzard, a recovering addict discovers a kidnapped child hidden in a car belonging to one of the people inside the building which sets her on a terrifying struggle to identify who among them is the kidnapper.',
-    popularity: 2618.087,
-  }];
+const { db } = require('../mock_db/db');
 
 const MovieType = new GraphQLObjectType({
-    name: 'Movie',
-    fields: () => ({
-        id: { type: GraphQLID },
-        title: { type: GraphQLString },
-        genre: { type: GraphQLList(GraphQLString) },
-        releaseDate: { type: GraphQLString },
-        posterUrl: { type: GraphQLString },
-        overview: { type: GraphQLString },
-        popularity: { type: GraphQLFloat }
-    })
+  name: 'Movie',
+  fields: () => ({
+    id: { type: GraphQLID },
+    title: { type: GraphQLString },
+    genre: { type: GraphQLList(GraphQLString) },
+    releaseDate: { type: GraphQLString },
+    posterUrl: { type: GraphQLString },
+    overview: { type: GraphQLString },
+    popularity: { type: GraphQLFloat },
+    reviews: {
+      type: new GraphQLList(ReviewType),
+      resolve(parent) {
+        return db.reviews.filter((review) => review.movieId === parent.id);
+      },
+    },
+    rating: { type: GraphQLFloat },
+  }),
 });
 
 const ReviewType = new GraphQLObjectType({
-    name: 'Review',
-    fields: () => ({
-        rating: { type: GraphQLInt },
-        comment: { type: GraphQLString },
-        author: {
-            type: UserType,
-            resolve(parent, args) {
-                return "User.findById(parent.authorId)";
-            }
-         },
-    })
-});
-
-const ReviewInfoType = new GraphQLObjectType({
-    name: 'ReviewInfo',
-    fields: () => ({
-        reviews: { type: new GraphQLList(ReviewType) },
-        count: { type: GraphQLInt },
-        average: { type: GraphQLFloat },
-        movie: {
-            type: MovieType,
-            resolve(parent, args) {
-                return "Movie.findById(parent.movieId)";
-            }
-        }
-    })
+  name: 'Review',
+  fields: () => ({
+    id: { type: GraphQLID },
+    rating: { type: GraphQLInt },
+    comment: { type: GraphQLString },
+    author: {
+        type: UserType,
+        resolve(parent) {
+            return db.users.find((user) => user.id == parent.authorId);
+        },    
+    },
+    }),
 });
 
 const UserType = new GraphQLObjectType({
-    name: 'User',
-    fields: () => ({
-        id: { type: GraphQLID },
-        email: { type: GraphQLString },
-        profilePictureUrl: { type: GraphQLString },
-        reviews: { type: new GraphQLList(ReviewType) }
-    })
+  name: 'User',
+  fields: () => ({
+    id: { type: GraphQLID },
+    email: { type: GraphQLString },
+    profilePictureUrl: { type: GraphQLString },
+  }),
 });
 
 const RootQuery = new GraphQLObjectType({
-    name: 'RootQueryType',
-    fields: {
-        movie: {
-            type: MovieType,
-            args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return mockMovies.find(movie => movie.id == args.id);
+  name: 'RootQueryType',
+  fields: {
+    movie: {
+      type: MovieType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return db.movies.find((movie) => movie.id == args.id);
+      },
+    },
+    movies: {
+      type: new GraphQLList(MovieType),
+      resolve() {
+        return db.movies;
+      },
+    },
+    moviesWithFilter: {
+        type: new GraphQLList(MovieType),
+        args: { genre: { type: new GraphQLList(GraphQLString) }, sortBy: { type: GraphQLString }, direction: { type: GraphQLString }, search: { type: GraphQLString } },
+        resolve(parent, args) {
+            let movies = db.movies;
+            if (args.genre) {
+                movies = movies.filter((movie) => args.genre.every((genre) => movie.genre.includes(genre)));
             }
+            if (args.search) {
+                movies = movies.filter((movie) => movie.title.toLowerCase().includes(args.search.toLowerCase()));
+            }
+            if (args.sortBy) {
+                if (args.sortBy == 'popularity') {
+                    movies.sort((a, b) => {
+                        if (args.direction == 'asc') {
+                            return a.popularity - b.popularity;
+                        } else {
+                            return b.popularity - a.popularity;
+                        }
+                    });
+                } else if (args.sortBy == 'releaseDate') {
+                    movies.sort((a, b) => {
+                        if (args.direction == 'asc') {
+                            return a.releaseDate.localeCompare(b.releaseDate);
+                        } else {
+                            return b.releaseDate.localeCompare(a.releaseDate);
+                        }
+                    });
+                } else if (args.sortBy == 'name') {
+                    movies.sort((a, b) => {
+                        if (args.direction == 'asc') {
+                            return a.title.localeCompare(b.title);
+                        } else {
+                            return b.title.localeCompare(a.title);
+                        }
+                    });
+                } else if (args.sortBy == 'rating') {
+                    movies.sort((a, b) => {
+                        if (args.direction == 'asc') {
+                            return (a?.rating ?? -1) - (b?.rating ?? -1);
+                        } else {
+                            return (b?.rating ?? -1) - (a?.rating ?? -1);
+                        }
+                    });
+                }
+            }
+            return movies;
         },
-        movies: {
-            type: new GraphQLList(MovieType),
-            resolve(parent, args) {
-                return mockMovies;
-            }
-        },
-        reviewInfo: {
-            type: ReviewInfoType,
-            args: { movieId: { type: GraphQLID } },
-            resolve(parent, args) {
-                return Review.find({ movieId: args.movieId }).then(reviews => {
-                    const count = reviews.length;
-                    const average = reviews.reduce((acc, review) => acc + review.rating, 0) / count;
-                    return "{ reviews, count, average, movieId: args.movieId }";
-                });
-            }
-        },
-        user: {
-            type: UserType,
-            args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return "User.findById(args.id)";
-            }
-        }
-    }
+    },
+    reviews: {
+      type: new GraphQLList(ReviewType),
+      args: { movieId: { type: GraphQLID } },
+      resolve(parent, args) {
+        return db.reviews.filter((review) => review.movieId == args.movieId);
+      },
+    },
+    user: {
+      type: UserType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return db.users.find((user) => user.id == args.id);
+      },
+    },
+  },
 });
 
 const Mutation = new GraphQLObjectType({
@@ -129,32 +147,73 @@ const Mutation = new GraphQLObjectType({
         addUser: {
             type: UserType,
             args: {
+                id: { type: new GraphQLNonNull(GraphQLID) },
                 email: { type: new GraphQLNonNull(GraphQLString) },
                 profilePictureUrl: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve(parent, args) {
-                return "";
+                const newUser = {
+                    id: args.id,
+                    email: args.email,
+                    profilePictureUrl: args.profilePictureUrl,
+                };
+                db.users.push(newUser);
+                console.log(db.users);
+                return newUser;
             }
         },
-        addReview: {
-            type: ReviewType,
+        deleteReviewOnMovie: {
+            type: GraphQLBoolean, // Indicate success or failure
             args: {
-                rating: { type: new GraphQLNonNull(GraphQLInt) },
-                comment: { type: new GraphQLNonNull(GraphQLString) },
-                authorId: { type: new GraphQLNonNull(GraphQLID) },
-                movieId: { type: new GraphQLNonNull(GraphQLID) }
+                reviewId: { type: new GraphQLNonNull(GraphQLID) },
             },
             resolve(parent, args) {
-                let review = new Review({
+                const reviewIndex = db.reviews.findIndex((review) => review.id == args.reviewId);
+                const review = db.reviews.find((review) => review.id == args.reviewId);
+                if (reviewIndex !== -1) {
+                    db.reviews.splice(reviewIndex, 1);
+                    const removeReview = db.movies.find((movie) => movie.id == review.movieId)?.reviews.filter((reviewId) => reviewId != args.reviewId);
+                    db.movies.find((movie) => movie.id == review.movieId).reviews = removeReview;
+                    console.log(db.movies.find((movie) => movie.id == review.movieId));
+                    console.log(db.reviews);
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+        },
+        addReviewOnMovie: {
+            type: ReviewType,
+            args: {
+                movieId: { type: new GraphQLNonNull(GraphQLID) },
+                authorId: { type: new GraphQLNonNull(GraphQLID) },
+                rating: { type: GraphQLInt },
+                comment: { type: GraphQLString },
+            },
+            resolve(parent, args) {
+                const id = uuidv4();
+                const newReview = {
+                    id: id,
+                    movieId: args.movieId,
+                    authorId: args.authorId,
                     rating: args.rating,
                     comment: args.comment,
-                    authorId: args.authorId,
-                    movieId: args.movieId
-                });
-                return "";
-            }
+                };
+                db.reviews.push(newReview);
+                const movie = db.movies.find((movie) => movie.id == args.movieId);
+                if (!movie.reviews) {
+                    movie.reviews = [];
+                    movie.rating = args.rating;
+                } else {
+                    movie.rating = (movie.rating * movie.reviews.length + args.rating) / (movie.reviews.length + 1);
+                }
+                movie.reviews.push(newReview.id);
+                console.log(db.movies);
+                return newReview;
+
+            },
         },
     }
 });
 
-exports.schema = new GraphQLSchema({ query: RootQuery });
+exports.schema = new GraphQLSchema({ query: RootQuery, mutation: Mutation });
