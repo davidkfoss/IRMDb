@@ -1,7 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { FilterChangeHandler } from '../MovieFilter';
 import { SortOption, sortOptions } from './sortOptions';
-import { FilterChangeHandler } from '../MovieFilter';
 
 interface SortByProps {
   value: SortOption;
