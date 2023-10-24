@@ -28,7 +28,7 @@ const MovieType = new GraphQLObjectType({
     reviews: {
       type: new GraphQLList(ReviewType),
       resolve(parent) {
-        return db.reviews.filter((review) => review.movieId === parent.id);
+        return db.reviews.filter((review) => review.movieId == parent.id);
       },
     },
     rating: { type: GraphQLFloat },
@@ -64,7 +64,7 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     movie: {
       type: MovieType,
-      args: { id: { type: GraphQLID } },
+      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parent, args) {
         return db.movies.find((movie) => movie.id == args.id);
       },
@@ -87,7 +87,7 @@ const RootQuery = new GraphQLObjectType({
                 movies = movies.filter((movie) => movie.title.toLowerCase().includes(args.search.toLowerCase()));
             }
             if (args.sortBy) {
-                if (args.sortBy == 'popularity') {
+                if (args.sortBy == 'Popularity') {
                     movies.sort((a, b) => {
                         if (args.direction == 'asc') {
                             return a.popularity - b.popularity;
@@ -95,7 +95,7 @@ const RootQuery = new GraphQLObjectType({
                             return b.popularity - a.popularity;
                         }
                     });
-                } else if (args.sortBy == 'releaseDate') {
+                } else if (args.sortBy == 'Release Date') {
                     movies.sort((a, b) => {
                         if (args.direction == 'asc') {
                             return a.releaseDate.localeCompare(b.releaseDate);
@@ -103,7 +103,7 @@ const RootQuery = new GraphQLObjectType({
                             return b.releaseDate.localeCompare(a.releaseDate);
                         }
                     });
-                } else if (args.sortBy == 'name') {
+                } else if (args.sortBy == 'Name') {
                     movies.sort((a, b) => {
                         if (args.direction == 'asc') {
                             return a.title.localeCompare(b.title);
@@ -126,14 +126,14 @@ const RootQuery = new GraphQLObjectType({
     },
     reviews: {
       type: new GraphQLList(ReviewType),
-      args: { movieId: { type: GraphQLID } },
+      args: { movieId: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parent, args) {
         return db.reviews.filter((review) => review.movieId == args.movieId);
       },
     },
     user: {
       type: UserType,
-      args: { id: { type: GraphQLID } },
+      args: { id: { type: GraphQLNonNull(GraphQLID) } },
       resolve(parent, args) {
         return db.users.find((user) => user.id == args.id);
       },
@@ -187,8 +187,8 @@ const Mutation = new GraphQLObjectType({
             args: {
                 movieId: { type: new GraphQLNonNull(GraphQLID) },
                 authorId: { type: new GraphQLNonNull(GraphQLID) },
-                rating: { type: GraphQLInt },
-                comment: { type: GraphQLString },
+                rating: { type: new GraphQLNonNull(GraphQLInt) },
+                comment: { type: new GraphQLNonNull(GraphQLString) },
             },
             resolve(parent, args) {
                 const id = uuidv4();
