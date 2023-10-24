@@ -13,22 +13,48 @@ export const MovieCard = ({ movie, scale = 1 }: MovieCardProps) => {
 
   const onMovieClick = () => {
     navigate(`/movies/${movie.id}`);
+    window.scrollTo(0, 0);
+  };
+
+  const onMovieKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      onMovieClick();
+    }
   };
 
   return (
-    <div className='movie-card-border' onClick={onMovieClick}>
+    <div className='movie-card-border'>
       <div
+        onClick={onMovieClick}
+        onKeyDown={onMovieKeyDown}
+        role='button'
+        aria-pressed='false'
+        tabIndex={0}
         className='movie-card'
         style={{
-          backgroundImage: `url(${movie.posterUrl})`,
           width: `${15 * scale}rem`,
           height: `${22.22 * scale}rem`,
-        }}>
-        <div className='movie-card-image-overlay'>
+        }}
+      >
+        <img
+          src={movie.posterUrl}
+          alt={`Poster for ${movie.title}`}
+          style={{
+            width: `${15 * scale}rem`,
+            height: `${22.22 * scale}rem`,
+          }}
+        />
+        <div className='movie-card-image-overlay' role='presentation'>
           <div className='movie-info'>
-            <h3>{movie.title}</h3>
+            <h3 id={`movie-title-${movie.id}`}>{movie.title}</h3>
             <span>{getYear(movie.releaseDate)}</span>
           </div>
+        </div>
+      </div>
+      <div className='sr-only' aria-hidden='true'>
+        <div id={`movie-description-${movie.id}`}>
+          <h3>{movie.title}</h3>
+          <p>{movie.overview}</p>
         </div>
       </div>
     </div>

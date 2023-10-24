@@ -1,5 +1,11 @@
 import './Pill.css';
 
-export const Pill = ({ children }: { children: React.ReactNode }) => {
-  return <div className='pill-container'>{children}</div>;
+interface PillProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const Pill = ({ children, className, ...restProps }: PillProps) => {
+  return (
+    <div className={`pill-container ${className}`} {...restProps}>
+      {children}
+    </div>
+  );
 };
