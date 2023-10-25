@@ -6,6 +6,7 @@ import { Movies } from './pages/movies/Movies';
 import { Feed } from './pages/feed/Feed';
 import { Root } from './pages/root/Root';
 import { store } from './store/store';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
   const basename = import.meta.env.PROD ? '/project2' : undefined;
@@ -40,9 +41,11 @@ function App() {
   );
 
   return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <GoogleOAuthProvider clientId='279259714095-qs93f4ssl6lssejv5j7ri5n2eq0j307i.apps.googleusercontent.com'>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </GoogleOAuthProvider>
   );
 }
 
