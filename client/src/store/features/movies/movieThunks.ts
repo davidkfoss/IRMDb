@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { directions } from '../../../components/filter/ascDesc/direction';
-import { Filters } from '../../../components/filter/filterUtil';
+import { Filters, hasFiltersChanged } from '../../../components/filter/filterUtil';
 import { mockMovies } from '../../../data/mockMovies';
 import { Movie } from '../../../models/movie';
 import mockPagination from '../../../util/mockPagination';
@@ -36,9 +36,14 @@ export const getFilteredMovies = createAsyncThunk<
   { filters: Filters; initial: boolean },
   { state: RootState }
 >('movies/getFilteredMovies', async ({ filters, initial }, { getState }) => {
+  const state = getState();
+  const prevFilters = state.movies.filters;
+  if (initial && !hasFiltersChanged(filters, prevFilters)) {
+    console.log('Filters have not changed, returning cached movies');
+    return;
+  }
   console.log(`Fetching filtered movies`);
 
-  const state = getState();
   const moviesFetchCount = initial ? 0 : state.movies.moviesFetched;
   const pageSize = state.movies.pageSize;
 
@@ -53,6 +58,5 @@ export const getFilteredMovies = createAsyncThunk<
     },
   }).then((result) => {return result.data.moviesWithFilter})
 
-  console.log(movies);
   return mockPagination(movies, moviesFetchCount, pageSize);
 });

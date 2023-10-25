@@ -1,8 +1,10 @@
 .movie-card {
+  position: relative;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 25px;
+  cursor: pointer;
 }
 
 .movie-info > h3 {
@@ -10,16 +12,14 @@
   position: relative;
 }
 
-.movie-card-image-overlay:hover .movie-info {
-  transform: scale(1.05) translateY(-0.5rem);
-}
-
 .movie-info {
   transition: all 0.5s ease-in-out;
 }
 
 .movie-card-image-overlay {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(0, rgba(26, 31, 30, 1) 0%, rgba(26, 31, 30, 0.95) 10%, rgba(20, 81, 66, 0.1) 50%);
@@ -28,15 +28,6 @@
   flex-direction: column;
   justify-content: flex-end;
   transition: all 0.3s ease-in-out;
-}
-
-.movie-card-image-overlay:hover {
-  cursor: pointer;
-  background-color: rgba(226, 247, 255, 0.1);
-}
-
-.movie-card-border:hover {
-  box-shadow: 0 5px 30px rgba(94, 218, 198, 0.35);
 }
 
 .movie-card-border {
@@ -48,4 +39,26 @@
   box-shadow: 0 5px 20px rgba(12, 200, 169, 0.244);
   transition: all 0.2s ease-in-out;
   width: fit-content;
+}
+
+.movie-card:focus .movie-info,
+.movie-card:hover .movie-info {
+  transform: scale(1.05) translateY(-0.5rem);
+}
+
+.movie-card:focus .movie-card-image-overlay {
+  background-color: rgba(226, 247, 255, 0.4);
+}
+
+.movie-card:hover .movie-card-image-overlay {
+  background-color: rgba(226, 247, 255, 0.2);
+}
+
+.movie-card:focus .movie-card-border,
+.movie-card:hover .movie-card-border {
+  box-shadow: 0 5px 30px rgba(94, 218, 198, 0.35);
+}
+
+.movie-card:focus .movie-card-border {
+  border: 2px solid transparent;
 }

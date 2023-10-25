@@ -4,7 +4,6 @@ import './App.css';
 import { MovieInfo } from './pages/movieInfo/MovieInfo';
 import { Movies } from './pages/movies/Movies';
 import { Feed } from './pages/feed/Feed';
-import { Auth } from './pages/auth/Auth';
 import { Root } from './pages/root/Root';
 import { store } from './store/store';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -28,10 +27,6 @@ function App() {
           {
             index: true,
             element: <Feed />,
-          },
-          {
-            path: 'auth',
-            element: <Auth />,
           },
           {
             path: 'movies',
