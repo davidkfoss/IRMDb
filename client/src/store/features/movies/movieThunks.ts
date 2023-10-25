@@ -5,13 +5,15 @@ import { mockMovies } from '../../../data/mockMovies';
 import { Movie } from '../../../models/movie';
 import mockPagination from '../../../util/mockPagination';
 import { RootState } from '../../store';
+import { getFilteredMoviesQuery, getMovieQuery, getMoviesQuery } from '../../../queries/queries';
+import { client } from '../../../App';
 
 export const getMovieById = createAsyncThunk<Movie | undefined, number, { state: RootState }>(
   'movies/getMovieById',
   async (id) => {
     console.log(`Fetching movie with id ${id}`);
-    // TODO: Fetch movie from API
-    return mockMovies.find((movie) => movie.id === id);
+    const movie = await client.query({query: getMovieQuery, variables: {id: id}}).then((result) => {return result.data.movie})
+    return movie;
   }
 );
 
@@ -23,9 +25,9 @@ export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: Ro
     const state = getState();
     const moviesFetchCount = state.movies.moviesFetched;
     const pageSize = state.movies.pageSize;
-
-    // TODO: Fetch movies from API
-    return mockPagination(mockMovies, moviesFetchCount, pageSize);
+    
+    const movies = await client.query({query: getMoviesQuery}).then((result) => {return result.data.movies})
+    return mockPagination(movies, moviesFetchCount, pageSize);
   }
 );
 
@@ -46,36 +48,15 @@ export const getFilteredMovies = createAsyncThunk<
   const pageSize = state.movies.pageSize;
 
   // TODO: Fetch movies from API
-  const movies = mockMovies
-    .filter((movie) => {
-      if (filters.genres) {
-        for (const genre of filters.genres) {
-          if (!movie.genre) return true;
-          if (!movie.genre.includes(genre)) {
-            return false;
-          }
-        }
-      }
-      return true;
-    })
-    .filter((movie) => movie.title.toLowerCase().includes(filters.search.toLowerCase()));
-
-  movies.sort((a, b) => {
-    // if (filters.sortBy === 'Rating') {
-    //   return a.rating - b.rating;
-
-    const { direction } = filters;
-    const sign = direction === directions[0] ? 1 : -1;
-
-    if (filters.sortBy === 'Name') {
-      return a.title.localeCompare(b.title) * sign;
-    } else if (filters.sortBy === 'Release Date') {
-      return (new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime()) * sign;
-    } else if (filters.sortBy === 'Popularity') {
-      return (a.popularity - b.popularity) * sign;
-    }
-    return 0;
-  });
+  const movies = await client.query({
+    query: getFilteredMoviesQuery,
+    variables: {
+      genre: filters.genres,
+      sortBy: filters.sortBy,
+      direction: filters.direction,
+      search: filters.search,
+    },
+  }).then((result) => {return result.data.moviesWithFilter})
 
   return mockPagination(movies, moviesFetchCount, pageSize);
 });
