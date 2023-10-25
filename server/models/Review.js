@@ -4,7 +4,7 @@ const ReviewSchema = new mongoose.Schema({
   movieId: String,
   rating: Number,
   comment: String,
-  author: { id: String, name: String, email: String },
+  author: { id: String, name: String },
   date: { type: Date, default: Date.now },
   meta: {
     upvotes: Number,

@@ -1,3 +1,4 @@
+const { merge } = require('lodash');
 const graphql = require('graphql');
 
 const {
@@ -11,11 +12,10 @@ const {
   GraphQLInt,
   GraphQLBoolean,
 } = graphql;
-const { v4: uuidv4 } = require('uuid');
-
-const { db } = require('../mock_db/db');
 
 const { MovieService } = require('../services/MovieService');
+const { ReviewService } = require('../services/ReviewService');
+const { UserService } = require('../services/UserService');
 
 const MovieType = new GraphQLObjectType({
   name: 'Movie',
@@ -31,9 +31,19 @@ const MovieType = new GraphQLObjectType({
     reviews: {
       type: new GraphQLList(ReviewType),
       resolve(parent) {
-        return db.reviews.filter((review) => review.movieId == parent.id);
+        return ReviewService.getReviewsByMovieId(parent.movieId);
       },
     },
+  }),
+});
+
+const UserType = new GraphQLObjectType({
+  name: 'User',
+  fields: () => ({
+    id: { type: GraphQLID },
+    email: { type: GraphQLString },
+    name: { type: GraphQLString },
+    profilePictureUrl: { type: GraphQLString },
   }),
 });
 
@@ -55,23 +65,13 @@ const ReviewType = new GraphQLObjectType({
     author: {
       type: UserType,
       resolve(parent) {
-        return db.users.find((user) => user.id == parent.authorId);
+        return UserService.getUserById(parent.authorId);
       },
     },
     date: { type: GraphQLString },
     meta: {
       type: ReviewMetaType,
     },
-  }),
-});
-
-const UserType = new GraphQLObjectType({
-  name: 'User',
-  fields: () => ({
-    id: { type: GraphQLID },
-    email: { type: GraphQLString },
-    name: { type: GraphQLString },
-    profilePictureUrl: { type: GraphQLString },
   }),
 });
 
@@ -100,7 +100,7 @@ const RootQuery = new GraphQLObjectType({
         search: { type: GraphQLString },
       },
       async resolve(parent, args) {
-        let movies = await db.movies;
+        let movies = await MovieService.getAllMovies();
         if (args.genre) {
           movies = movies.filter((movie) => args.genre.every((genre) => movie.genre.includes(genre)));
         }
@@ -149,14 +149,14 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(ReviewType),
       args: { movieId: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parent, args) {
-        return db.reviews.filter((review) => review.movieId == args.movieId);
+        return ReviewService.getReviewsByMovieId(args.id);
       },
     },
     user: {
       type: UserType,
       args: { id: { type: GraphQLNonNull(GraphQLID) } },
       resolve(parent, args) {
-        return db.users.find((user) => user.id == args.id);
+        return UserService.getUserById(args.id);
       },
     },
   },
@@ -168,18 +168,11 @@ const Mutation = new GraphQLObjectType({
     addUser: {
       type: UserType,
       args: {
-        id: { type: new GraphQLNonNull(GraphQLID) },
         email: { type: new GraphQLNonNull(GraphQLString) },
         profilePictureUrl: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve(parent, args) {
-        const newUser = {
-          id: args.id,
-          email: args.email,
-          profilePictureUrl: args.profilePictureUrl,
-        };
-        db.users.push(newUser);
-        return newUser;
+        return UserService.createUser({ email: args.email, profilePictureUrl: args.profilePictureUrl });
       },
     },
     deleteReviewOnMovie: {
@@ -189,8 +182,8 @@ const Mutation = new GraphQLObjectType({
         authorId: { type: new GraphQLNonNull(GraphQLID) },
       },
       async resolve(parent, args) {
-        const movie = await db.movies.find((movie) => movie.id == args.movieId);
-        const review = db.reviews.find((review) => review.movieId == args.movieId && review.authorId == args.authorId);
+        const movie = await MovieService.getMovieById(args.movieId);
+        const review = ReviewService.getReviewByAuthorAndMovieId(args.movieId, args.authorId);
         if (review) {
           console.log(movie.reviews);
           movie.reviews = movie.reviews.filter((id) => id != review.id);
@@ -198,10 +191,10 @@ const Mutation = new GraphQLObjectType({
             movie.rating = 0;
           } else {
             movie.rating =
-              movie.reviews.reduce((acc, id) => acc + db.reviews.find((review) => review.id == id).rating, 0) /
+              movie.reviews.reduce((acc, id) => acc + ReviewService.getReviewsByMovieId(id).rating, 0) /
               movie.reviews.length;
           }
-          db.reviews = db.reviews.filter((e) => e.id != review.id);
+          ReviewService.deleteReview(review.id);
           return true;
         } else {
           return false;
@@ -217,16 +210,14 @@ const Mutation = new GraphQLObjectType({
         comment: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve(parent, args) {
-        const id = uuidv4();
         const newReview = {
-          id: id,
           movieId: args.movieId,
           authorId: args.authorId,
           rating: args.rating,
           comment: args.comment,
         };
-        db.reviews.push(newReview);
-        const movie = db.movies.find((movie) => movie.id == args.movieId);
+        ReviewService.createReview(newReview);
+        const movie = MovieService.getMovieById(args.movieId);
         if (!movie.reviews) {
           movie.reviews = [];
           movie.rating = args.rating;
@@ -239,5 +230,5 @@ const Mutation = new GraphQLObjectType({
     },
   },
 });
-
-exports.schema = new GraphQLSchema({ query: RootQuery, mutation: Mutation });
+const { MovieQueries } = require('./MovieSchema');
+exports.schema = new GraphQLSchema({ mutation: merge(Mutation), query: merge(RootQuery, MovieQueries) });

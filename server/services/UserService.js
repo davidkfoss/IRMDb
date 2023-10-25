@@ -10,7 +10,7 @@ class UserService {
   }
 
   async createUser(userData) {
-    return await UserModel.save(userData);
+    return await UserModel.create(userData);
   }
 
   async updateUser(id, userData) {
@@ -22,4 +22,4 @@ class UserService {
   }
 }
 
-module.exports = UserService;
+module.exports.UserService = new UserService();

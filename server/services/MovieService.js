@@ -11,7 +11,7 @@ class MovieService {
   }
 
   async createMovie(movieData) {
-    return await MovieModel.save(movieData);
+    return await MovieModel.create(movieData);
   }
 
   async updateMovie(id, movieData) {
