@@ -46,5 +46,36 @@ const getFilteredMoviesQuery = gql`
     }
 `;
 
+const getReviewsOnMovieQuery = gql`
+    query($movieId:ID!){
+        reviews(movieId: $movieId) {
+            rating
+            comment
+            author {
+                email
+                profilePictureUrl
+            }
+        }
+    }
+`;
 
-export {getMoviesQuery, getMovieQuery, getFilteredMoviesQuery};
+const addReviewOnMovieQuery = gql`
+    mutation($movieId:ID!, $rating:Int!, $comment:String!, $authorId:ID!){
+        addReviewOnMovie(movieId:$movieId, rating:$rating, comment:$comment, authorId:$authorId){
+            rating
+            comment
+            author{
+                email
+                profilePictureUrl
+            }
+        }
+    }
+`;
+
+const deleteReviewOnMovieQuery = gql`
+    mutation($movieId:ID!, $authorId:ID!){
+        deleteReviewOnMovie(movieId:$movieId, authorId:$authorId)
+    }
+`;
+
+export {getMoviesQuery, getMovieQuery, getFilteredMoviesQuery, getReviewsOnMovieQuery, addReviewOnMovieQuery, deleteReviewOnMovieQuery};

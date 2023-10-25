@@ -1,13 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Review } from './reviewsSlice';
+import { client } from '../../../App';
+import { addReviewOnMovieQuery, deleteReviewOnMovieQuery, getReviewsOnMovieQuery } from '../../../queries/queries';
 
 export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, number, object>(
   'reviews/getReviewsOnMovie',
   async (id) => {
     console.log(`Fetching reviews on movie with id ${id}`);
 
-    // TODO: Fetch reviews from API
-    return undefined;
+    const reviews = await client.query({
+      query: getReviewsOnMovieQuery,
+      variables: {movieId: id},
+    }).then((result) => {return result.data.reviews})
+    return reviews;
   }
 );
 
@@ -19,11 +24,17 @@ type ReviewInput = {
 
 export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput, object>(
   'reviews/addReviewOnMovie',
-  async ({ review, movieId }) => {
+  async ({ review, movieId, authorId}) => {
     console.log(`Adding review on movie with id ${movieId}`);
-
-    // TODO: Add review and return it
-    return review;
+    const addedReview = await client.mutate({
+      mutation: addReviewOnMovieQuery,
+      variables: {
+        movieId: movieId,
+        rating: review.rating,
+        comment: review.comment,
+        authorId: authorId,
+      }}).then((result) => {return result.data.addReviewOnMovie})
+    return addedReview;
   }
 );
 
@@ -32,7 +43,13 @@ export const deleteReviewOnMovie = createAsyncThunk<boolean, { authorId: number;
   async ({ authorId, movieId }) => {
     console.log(`Deleting review on movie with id ${movieId} by author with id ${authorId}`);
 
-    // TODO: Fetch reviews from API
-    return true;
+    const deleted = await client.mutate({
+      mutation: deleteReviewOnMovieQuery,
+      variables: {
+        movieId: movieId,
+        authorId: authorId,
+      }}).then((result) => {return result.data.deleteReviewOnMovie});
+      
+    return deleted;
   }
 );

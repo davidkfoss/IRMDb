@@ -65,21 +65,21 @@ const RootQuery = new GraphQLObjectType({
     movie: {
       type: MovieType,
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      resolve(parent, args) {
-        return db.movies.find((movie) => movie.id == args.id);
+      async resolve(parent, args) {
+        return await db.movies.find((movie) => movie.id == args.id);
       },
     },
     movies: {
       type: new GraphQLList(MovieType),
-      resolve() {
-        return db.movies;
+      async resolve() {
+        return await db.movies;
       },
     },
     moviesWithFilter: {
         type: new GraphQLList(MovieType),
         args: { genre: { type: new GraphQLList(GraphQLString) }, sortBy: { type: GraphQLString }, direction: { type: GraphQLString }, search: { type: GraphQLString } },
-        resolve(parent, args) {
-            let movies = db.movies;
+        async resolve(parent, args) {
+            let movies = await db.movies;
             if (args.genre) {
                 movies = movies.filter((movie) => args.genre.every((genre) => movie.genre.includes(genre)));
             }
@@ -158,24 +158,27 @@ const Mutation = new GraphQLObjectType({
                     profilePictureUrl: args.profilePictureUrl,
                 };
                 db.users.push(newUser);
-                console.log(db.users);
                 return newUser;
             }
         },
         deleteReviewOnMovie: {
             type: GraphQLBoolean, // Indicate success or failure
             args: {
-                reviewId: { type: new GraphQLNonNull(GraphQLID) },
+                movieId: { type: new GraphQLNonNull(GraphQLID) },
+                authorId: { type: new GraphQLNonNull(GraphQLID) },
             },
-            resolve(parent, args) {
-                const reviewIndex = db.reviews.findIndex((review) => review.id == args.reviewId);
-                const review = db.reviews.find((review) => review.id == args.reviewId);
-                if (reviewIndex !== -1) {
-                    db.reviews.splice(reviewIndex, 1);
-                    const removeReview = db.movies.find((movie) => movie.id == review.movieId)?.reviews.filter((reviewId) => reviewId != args.reviewId);
-                    db.movies.find((movie) => movie.id == review.movieId).reviews = removeReview;
-                    console.log(db.movies.find((movie) => movie.id == review.movieId));
-                    console.log(db.reviews);
+            async resolve(parent, args) {
+                const movie = await db.movies.find((movie) => movie.id == args.movieId)
+                const review = db.reviews.find((review) => review.movieId == args.movieId && review.authorId == args.authorId);
+                if (review) {
+                    console.log(movie.reviews);
+                    movie.reviews = movie.reviews.filter((id) => id != review.id);
+                    if (movie.reviews.length == 0) {
+                        movie.rating = 0;
+                    } else {
+                        movie.rating = movie.reviews.reduce((acc, id) => acc + db.reviews.find((review) => review.id == id).rating, 0) / movie.reviews.length;
+                    }
+                    db.reviews = db.reviews.filter((e) => e.id != review.id);
                     return true;
                 } else {
                     return false;
@@ -208,7 +211,6 @@ const Mutation = new GraphQLObjectType({
                     movie.rating = (movie.rating * movie.reviews.length + args.rating) / (movie.reviews.length + 1);
                 }
                 movie.reviews.push(newReview.id);
-                console.log(db.movies);
                 return newReview;
 
             },
