@@ -6,4 +6,6 @@ export interface Movie {
   posterUrl: string;
   overview: string;
   popularity: number;
+  rating: number;
+  reviews: string[];
 }
