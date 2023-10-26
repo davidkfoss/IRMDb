@@ -11,7 +11,7 @@ export const getMovieById = createAsyncThunk<Movie | undefined, number, { state:
   async (id) => {
     console.log(`Fetching movie with id ${id}`);
     const movie = await client.query({ query: getMovieByIdQuery, variables: { id: id } }).then((result) => {
-      return result.data.movie;
+      return result.data.GetMovieById;
     });
     return movie;
   }
@@ -27,7 +27,7 @@ export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: Ro
     const pageSize = state.movies.pageSize;
 
     const movies = await client.query({ query: getAllMoviesQuery }).then((result) => {
-      return result.data.movies;
+      return result.data.GetAllMovies;
     });
     return mockPagination(movies, moviesFetchCount, pageSize);
   }
@@ -61,7 +61,7 @@ export const getFilteredMovies = createAsyncThunk<
       },
     })
     .then((result) => {
-      return result.data.moviesWithFilter;
+      return result.data.GetMoviesByFilter;
     });
 
   return mockPagination(movies, moviesFetchCount, pageSize);

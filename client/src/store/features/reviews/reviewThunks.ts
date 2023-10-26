@@ -14,7 +14,7 @@ export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, number, 
         variables: { movieId: id },
       })
       .then((result) => {
-        return result.data.reviews;
+        return result.data.GetReviewsByMovieId;
       });
     return reviews;
   }
@@ -41,7 +41,7 @@ export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput
         },
       })
       .then((result) => {
-        return result.data.addReviewOnMovie;
+        return result.data.CreateReview;
       });
     return addedReview;
   }
@@ -61,7 +61,7 @@ export const deleteReviewOnMovie = createAsyncThunk<boolean, { authorId: number;
         },
       })
       .then((result) => {
-        return result.data.deleteReviewOnMovie;
+        return result.data.DeleteReview;
       });
 
     return deleted;
