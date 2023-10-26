@@ -120,26 +120,6 @@ const voteReviewMutation = gql`
   }
 `;
 
-const updateReviewMutation = gql`
-  mutation ($id: ID!, $review: ReviewData!) {
-    UpdateReview(id: $id, review: $review) {
-      id
-      rating
-      comment
-      votes {
-        vote
-        user
-      }
-      date
-      meta {
-        authorId
-        authorName
-        movieId
-      }
-    }
-  }
-`;
-
 const deleteReviewMutation = gql`
   mutation ($id: ID!) {
     DeleteReview(id: $id) {
@@ -167,6 +147,5 @@ export {
   getReviewByAuthorAndMovieIdQuery,
   createReviewMutation,
   voteReviewMutation,
-  updateReviewMutation,
   deleteReviewMutation,
 };

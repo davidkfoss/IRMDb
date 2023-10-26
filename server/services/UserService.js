@@ -11,7 +11,7 @@ class UserService {
   }
 
   async getUserByEmail(email) {
-    return await UserModel.find({ email: email });
+    return await UserModel.findOne({ email: email });
   }
 
   async createUser(userData) {

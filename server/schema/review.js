@@ -8,22 +8,9 @@ const {
   GraphQLString,
 } = require('graphql');
 const { ReviewService } = require('../services/ReviewService');
+const { MovieService } = require('../services/MovieService');
 
 //TypeDefs
-const ReviewType = new GraphQLObjectType({
-  name: 'Review',
-  fields: () => ({
-    id: { type: GraphQLID },
-    rating: { type: GraphQLInt },
-    comment: { type: GraphQLString },
-    votes: { type: new GraphQLList({ type: Vote }) },
-    date: { type: GraphQLString },
-    meta: {
-      type: ReviewMetaType,
-    },
-  }),
-});
-
 const Vote = new GraphQLObjectType({
   name: 'Vote',
   fields: () => ({
@@ -41,26 +28,40 @@ const ReviewMetaType = new GraphQLObjectType({
   }),
 });
 
+const ReviewType = new GraphQLObjectType({
+  name: 'Review',
+  fields: () => ({
+    id: { type: GraphQLID },
+    rating: { type: GraphQLInt },
+    comment: { type: GraphQLString },
+    votes: { type: new GraphQLList(Vote) },
+    date: { type: GraphQLString },
+    meta: {
+      type: ReviewMetaType,
+    },
+  }),
+});
+
 //Queries
 const ReviewQuery = {
   GetAllReviews: {
     type: new GraphQLList(ReviewType),
-    resolve(parent, args) {
-      return ReviewService.getAllReviews();
+    async resolve(parent, args) {
+      return await ReviewService.getAllReviews();
     },
   },
   GetReviewById: {
     type: ReviewType,
     args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-    resolve(parent, args) {
-      return ReviewService.getReviewById(args.id);
+    async resolve(parent, args) {
+      return await ReviewService.getReviewById(args.id);
     },
   },
   GetReviewsByMovieId: {
     type: new GraphQLList(ReviewType),
     args: { movieId: { type: new GraphQLNonNull(GraphQLID) } },
-    resolve(parent, args) {
-      return ReviewService.getReviewsByMovieId(args.id);
+    async resolve(parent, args) {
+      return await ReviewService.getReviewsByMovieId(args.movieId);
     },
   },
   GetReviewByAuthorAndMovieId: {
@@ -75,6 +76,11 @@ const ReviewQuery = {
   },
 };
 
+const UpdateMovieRating = async (movieId) => {
+  const reviews = await ReviewService.getReviewsByMovieId(movieId);
+  await MovieService.updateMovieRating(movieId, reviews);
+};
+
 //Mutations
 const ReviewMutation = {
   CreateReview: {
@@ -86,7 +92,7 @@ const ReviewMutation = {
       authorName: { type: new GraphQLNonNull(GraphQLString) },
       movieId: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve(parent, args) {
+    async resolve(parent, args) {
       const reviewData = {
         rating: args.rating,
         comment: args.comment,
@@ -97,7 +103,9 @@ const ReviewMutation = {
           movieId: args.movieId,
         },
       };
-      return ReviewService.createReview(reviewData);
+      const newReview = await ReviewService.createReview(reviewData);
+      await UpdateMovieRating(args.movieId);
+      return newReview;
     },
   },
   VoteReview: {
@@ -107,28 +115,20 @@ const ReviewMutation = {
       reviewId: { type: new GraphQLNonNull(GraphQLID) },
       vote: { type: new GraphQLNonNull(GraphQLBoolean) },
     },
-    resolve(parent, args) {
-      return ReviewService.voteReview(args.authorId, args.reviewId, args.vote);
-    },
-  },
-  UpdateReview: {
-    type: ReviewType,
-    args: {
-      id: { type: new GraphQLNonNull(GraphQLID) },
-      review: { type: ReviewType },
-    },
-    resolve(parent, args) {
-      return ReviewService.updateReview(args.id, review);
+    async resolve(parent, args) {
+      return await ReviewService.voteReview(args.authorId, args.reviewId, args.vote);
     },
   },
   DeleteReview: {
     type: ReviewType,
     args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-    resolve(parent, args) {
-      return ReviewService.deleteReview(args.id);
+    async resolve(parent, args) {
+      const deletedReview = await ReviewService.deleteReview(args.id);
+      await UpdateMovieRating(deletedReview.meta.movieId);
+      return deletedReview;
     },
   },
 };
-exports.typeDefs = ReviewType;
+exports.typeDefs = { ReviewType: ReviewType, Vote: Vote, ReviewMetaType: ReviewMetaType };
 exports.query = ReviewQuery;
 exports.mutation = ReviewMutation;

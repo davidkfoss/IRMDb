@@ -21,7 +21,13 @@ const RootMutation = new GraphQLObjectType({
   },
 });
 
-const Types = [MovieSchema.typeDefs, ReviewSchema.typeDefs, UserSchema.typeDefs];
+const Types = [
+  MovieSchema.typeDefs,
+  ReviewSchema.typeDefs.Vote,
+  ReviewSchema.typeDefs.ReviewMetaType,
+  ReviewSchema.typeDefs.ReviewType,
+  UserSchema.typeDefs,
+];
 
 const schema = new GraphQLSchema({
   types: Types,

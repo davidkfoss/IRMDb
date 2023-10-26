@@ -16,13 +16,20 @@ exports.validateUserData = validateUserData;
 
 //Review validation
 const validateReviewData = (reviewData) => {
-  if (!reviewData.movieId || !reviewData.rating || !reviewData.comment || !reviewData.author) {
+  if (
+    !reviewData.rating ||
+    !reviewData.comment ||
+    !reviewData.meta.authorId ||
+    !reviewData.meta.authorName ||
+    !reviewData.meta.movieId
+  ) {
     return false;
   } else if (
-    typeof reviewData.movieId != 'string' ||
     typeof reviewData.rating != 'number' ||
     typeof reviewData.comment != 'string' ||
-    typeof reviewData.author != 'object'
+    typeof reviewData.meta.authorId != 'string' ||
+    typeof reviewData.meta.authorName != 'string' ||
+    typeof reviewData.meta.movieId != 'string'
   ) {
     return false;
   }
@@ -34,9 +41,10 @@ const validateVote = (review, authorId, vote) => {
     return false;
   } else if (typeof review != 'object' || typeof authorId != 'string' || typeof vote != 'boolean') {
     return false;
-  } else if (review.votes.includes({ user: authorId })) {
-    return true;
+  } else if (review.votes.filter((v) => v.user === authorId).length > 0) {
+    return false;
   }
+  return true;
 };
 
 exports.validateReviewData = validateReviewData;

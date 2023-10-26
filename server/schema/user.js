@@ -14,22 +14,22 @@ const UserType = new GraphQLObjectType({
 const UserQuery = {
   GetAllUsers: {
     type: new GraphQLList(UserType),
-    resolve() {
-      return UserService.getAllUsers();
+    async resolve() {
+      return await UserService.getAllUsers();
     },
   },
   GetUserById: {
     type: UserType,
     args: { id: { type: GraphQLNonNull(GraphQLID) } },
-    resolve(parent, args) {
-      return UserService.getUserById(args.id);
+    async resolve(parent, args) {
+      return await UserService.getUserById(args.id);
     },
   },
   GetUserByEmail: {
     type: UserType,
     args: { email: { type: GraphQLNonNull(GraphQLString) } },
-    resolve(parent, args) {
-      return UserService.getUserByEmail(args.email);
+    async resolve(parent, args) {
+      return await UserService.getUserByEmail(args.email);
     },
   },
 };
@@ -42,8 +42,12 @@ const UserMutation = {
       email: { type: new GraphQLNonNull(GraphQLString) },
       profilePictureUrl: { type: new GraphQLNonNull(GraphQLString) },
     },
-    resolve(parent, args) {
-      return UserService.createUser({ name: args.name, email: args.email, profilePictureUrl: args.profilePictureUrl });
+    async resolve(parent, args) {
+      return await UserService.createUser({
+        name: args.name,
+        email: args.email,
+        profilePictureUrl: args.profilePictureUrl,
+      });
     },
   },
   UpdateUser: {
@@ -54,8 +58,8 @@ const UserMutation = {
       email: { type: GraphQLString },
       profilePictureUrl: { type: GraphQLString },
     },
-    resolve(parent, args) {
-      return UserService.updateUser(args.id, {
+    async resolve(parent, args) {
+      return await UserService.updateUser(args.id, {
         name: args.name,
         email: args.email,
         profilePictureUrl: args.profilePictureUrl,

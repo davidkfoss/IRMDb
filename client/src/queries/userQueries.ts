@@ -44,15 +44,4 @@ const createUserMutation = gql`
   }
 `;
 
-const updateUserMutation = gql`
-  mutation ($id: ID!, $name: String, $email: String, $profilePictureUrl: String) {
-    UpdateUser(id: $id, name: $name, email: $email, profilePictureUrl: $profilePictureUrl) {
-      id
-      name
-      email
-      profilePictureUrl
-    }
-  }
-`;
-
-export { getAllUsersQuery, getUserByIdQuery, getUserByEmailQuery, createUserMutation, updateUserMutation };
+export { getAllUsersQuery, getUserByIdQuery, getUserByEmailQuery, createUserMutation };

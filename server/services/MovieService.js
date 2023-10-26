@@ -1,4 +1,5 @@
 const { MovieModel } = require('../models/Movie');
+const { ReviewService } = require('./ReviewService');
 
 class MovieService {
   async getAllMovies() {
@@ -9,15 +10,14 @@ class MovieService {
     return await MovieModel.findById(id);
   }
 
-  async updateMovieRating(id) {
-    const movie = MovieModel.findById(id);
-    if (!movie.reviews) {
-      movie.reviews = [];
-      movie.rating = args.rating;
-    } else {
-      movie.rating = (movie.rating * movie.reviews.length + args.rating) / (movie.reviews.length + 1);
-    }
-    return await movie.findByIdAndUpdate(movie.id, movie, { new: true });
+  async updateMovieRating(id, reviews) {
+    const movie = await MovieModel.findById(id);
+    let totalRating = 0;
+    reviews.forEach((review) => {
+      totalRating += review.rating;
+    });
+    movie.rating = totalRating / reviews.length;
+    return await MovieModel.updateOne(movie);
   }
 }
 
