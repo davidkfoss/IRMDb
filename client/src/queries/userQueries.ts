@@ -44,4 +44,4 @@ const createUserMutation = gql`
   }
 `;
 
-export { getAllUsersQuery, getUserByIdQuery, getUserByEmailQuery, createUserMutation };
+export { createUserMutation, getAllUsersQuery, getUserByEmailQuery, getUserByIdQuery };

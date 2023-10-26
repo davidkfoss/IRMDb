@@ -141,11 +141,11 @@ const deleteReviewMutation = gql`
 `;
 
 export {
+  createReviewMutation,
+  deleteReviewMutation,
   getAllReviewsQuery,
+  getReviewByAuthorAndMovieIdQuery,
   getReviewByIdQuery,
   getReviewsByMovieIdQuery,
-  getReviewByAuthorAndMovieIdQuery,
-  createReviewMutation,
   voteReviewMutation,
-  deleteReviewMutation,
 };

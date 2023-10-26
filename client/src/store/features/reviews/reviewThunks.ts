@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Review } from './reviewsSlice';
 import { client } from '../../../App';
 import { createReviewMutation, deleteReviewMutation, getReviewsByMovieIdQuery } from '../../../queries/reviewQueries';
+import { Review } from './reviewsSlice';
 
 export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, number, object>(
   'reviews/getReviewsOnMovie',
