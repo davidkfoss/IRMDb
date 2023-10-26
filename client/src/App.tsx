@@ -1,13 +1,14 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
+import { Feed } from './pages/feed/Feed';
 import { MovieInfo } from './pages/movieInfo/MovieInfo';
 import { Movies } from './pages/movies/Movies';
-import { Feed } from './pages/feed/Feed';
 import { Root } from './pages/root/Root';
 import { store } from './store/store';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 export const client = new ApolloClient({
   uri: 'http://localhost:3001/graphql',
@@ -50,6 +51,7 @@ function App() {
     <ApolloProvider client={client}>
       <GoogleOAuthProvider clientId='279259714095-qs93f4ssl6lssejv5j7ri5n2eq0j307i.apps.googleusercontent.com'>
         <Provider store={store}>
+          <Toaster />
           <RouterProvider router={router} />
         </Provider>
       </GoogleOAuthProvider>

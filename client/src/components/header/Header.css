@@ -9,13 +9,22 @@
 .header > nav > ul {
   padding: 0;
   margin: 0;
+  width: 100%;
   list-style: none;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.header > nav > ul > * {
+.header > nav {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  justify-content: center;
+  align-items: center;
+}
+
+.header > nav > ul > *,
+.header > nav > .header-auth {
   margin: 0 1.8rem;
   text-decoration: none;
   color: white;
@@ -29,12 +38,44 @@
 .header > nav > ul > *:hover {
   transform: scale(1.05);
 }
+.header > nav > .header-auth span {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  font-size: 1.6rem;
+}
+
+.header > nav > .header-auth {
+  justify-self: flex-end;
+}
+
+.header > nav > .header-auth span:hover {
+  transform: scale(1.1);
+}
 
 .active {
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: rgb(255, 255, 255);
 }
 
-.header > nav > ul > .login {
-  margin-left: auto;
+@media screen and (max-width: 680px) {
+  .header > nav {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 455px) {
+  .header > nav {
+    grid-template-columns: 3fr 1fr;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .header > nav > ul > *,
+  .header > nav > .header-auth {
+    margin: 0 1rem;
+  }
+
+  .header > nav {
+    grid-template-columns: 2fr 1fr;
+  }
 }

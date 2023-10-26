@@ -1,6 +1,9 @@
+import { useWindowSize } from '@uidotdev/usehooks';
 import { NavLink } from 'react-router-dom';
+import { useUser } from '../../hooks/useUser';
 import './Header.css';
-import { GoogleLogin } from '@react-oauth/google';
+import { HeaderAuth } from './headerAuth/HeaderAuth';
+import { MobileMenu } from './mobileMenu/MobileMenu';
 
 interface Link {
   name: string;
@@ -9,6 +12,9 @@ interface Link {
 }
 
 export const Header = () => {
+  const { width } = useWindowSize();
+  const user = useUser();
+
   const links: Link[] = [
     {
       path: '/',
@@ -26,16 +32,21 @@ export const Header = () => {
   return (
     <header className='header'>
       <nav>
+        {width && width >= 680 && <div></div>}
         <ul>
           {links.map((link) => (
             <NavLink to={link.path} className={link.className || className} key={link.name}>
               {link.name.toUpperCase()}
             </NavLink>
           ))}
-          <li className='login'>
-            <GoogleLogin onSuccess={console.log} onError={console.log}></GoogleLogin>
-          </li>
         </ul>
+        {width && width < 455 ? (
+          <MobileMenu user={user} />
+        ) : (
+          <div className='header-auth'>
+            <HeaderAuth />
+          </div>
+        )}
       </nav>
     </header>
   );
