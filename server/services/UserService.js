@@ -1,3 +1,4 @@
+const { validateUserData } = require('../util/validators');
 const { UserModel } = require('../models/User');
 
 class UserService {
@@ -9,16 +10,22 @@ class UserService {
     return await UserModel.findById(id);
   }
 
+  async getUserByEmail(email) {
+    return await UserModel.find({ email: email });
+  }
+
   async createUser(userData) {
+    if (!validateUserData(userData)) {
+      return null;
+    }
     return await UserModel.create(userData);
   }
 
   async updateUser(id, userData) {
+    if (!validateUserData(userData)) {
+      return null;
+    }
     return await UserModel.findByIdAndUpdate(id, userData, { new: true });
-  }
-
-  async deleteUser(id) {
-    return await UserModel.findByIdAndDelete(id);
   }
 }
 

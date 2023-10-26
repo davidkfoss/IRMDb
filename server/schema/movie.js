@@ -1,6 +1,5 @@
 const { GraphQLFloat, GraphQLID, GraphQLString, GraphQLList, GraphQLObjectType, GraphQLNonNull } = require('graphql');
 const { MovieService } = require('../services/MovieService');
-const { ReviewService } = require('../services/ReviewService');
 
 const MovieType = new GraphQLObjectType({
   name: 'Movie',
@@ -17,21 +16,21 @@ const MovieType = new GraphQLObjectType({
   }),
 });
 
-const MovieQuer = {
-  movie: {
+const MovieQuery = {
+  GetMovieById: {
     type: MovieType,
     args: { id: { type: new GraphQLNonNull(GraphQLID) } },
     resolve(parent, args) {
       return MovieService.getMovieById(args.id);
     },
   },
-  movies: {
+  GetAllMovies: {
     type: new GraphQLList(MovieType),
     resolve() {
       return MovieService.getAllMovies();
     },
   },
-  moviesWithFilter: {
+  GetMoviesByFilter: {
     type: new GraphQLList(MovieType),
     args: {
       genre: { type: new GraphQLList(GraphQLString) },
@@ -87,4 +86,4 @@ const MovieQuer = {
   },
 };
 exports.typeDefs = MovieType;
-exports.query = MovieQuer;
+exports.query = MovieQuery;

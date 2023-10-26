@@ -9,16 +9,15 @@ class MovieService {
     return await MovieModel.findById(id);
   }
 
-  async createMovie(movieData) {
-    return await MovieModel.create(movieData);
-  }
-
-  async updateMovie(movieData) {
-    return await MovieModel.findByIdAndUpdate(movieData.id, movieData, { new: true });
-  }
-
-  async deleteMovie(id) {
-    return await MovieModel.findByIdAndDelete(id);
+  async updateMovieRating(id) {
+    const movie = MovieModel.findById(id);
+    if (!movie.reviews) {
+      movie.reviews = [];
+      movie.rating = args.rating;
+    } else {
+      movie.rating = (movie.rating * movie.reviews.length + args.rating) / (movie.reviews.length + 1);
+    }
+    return await movie.findByIdAndUpdate(movie.id, movie, { new: true });
   }
 }
 

@@ -1,14 +1,36 @@
 const mongoose = require('mongoose');
 
+const MovieGenres = [
+  'Action',
+  'Adventure',
+  'Romance',
+  'Documentary',
+  'Fantasy',
+  'Family',
+  'Animation',
+  'Comedy',
+  'Drama',
+  'Science Fiction',
+  'History',
+  'War',
+  'Music',
+  'Horror',
+  'Thriller',
+  'Mystery',
+  'Crime',
+  'Tv Movie',
+  'Western',
+];
+
 const MovieSchema = new mongoose.Schema({
-  title: String,
-  genre: [String],
-  releaseDate: String,
-  posterUrl: String,
-  overview: String,
+  title: { type: String, unique: true, required: true },
+  genre: [{ type: String, enum: MovieGenres, unique: true }],
+  releaseDate: { type: String, required: true },
+  posterUrl: { type: String, required: true },
+  overview: { type: String, required: true },
   popularity: Number,
   rating: Number,
-  reviews: [String], //MovieIds
+  reviewIds: [{ type: String, unique: true }],
 });
 
 exports.MovieModel = mongoose.model('Movie', MovieSchema, 'movies');

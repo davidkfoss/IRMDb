@@ -7,17 +7,16 @@ const {
   GraphQLID,
   GraphQLString,
 } = require('graphql');
+const { ReviewService } = require('../services/ReviewService');
 
+//TypeDefs
 const ReviewType = new GraphQLObjectType({
   name: 'Review',
   fields: () => ({
     id: { type: GraphQLID },
-    movieId: { type: GraphQLString },
     rating: { type: GraphQLInt },
     comment: { type: GraphQLString },
-    author: {
-      type: AuthorType,
-    },
+    votes: { type: new GraphQLList({ type: Vote }) },
     date: { type: GraphQLString },
     meta: {
       type: ReviewMetaType,
@@ -25,83 +24,108 @@ const ReviewType = new GraphQLObjectType({
   }),
 });
 
-const AuthorType = new GraphQLObjectType({
-  name: 'Author',
+const Vote = new GraphQLObjectType({
+  name: 'Vote',
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
+    vote: { type: GraphQLBoolean },
+    user: { type: GraphQLString },
   }),
 });
 
 const ReviewMetaType = new GraphQLObjectType({
   name: 'ReviewMeta',
   fields: () => ({
-    upvotes: { type: GraphQLInt },
-    downvotes: { type: GraphQLInt },
+    authorId: { type: GraphQLString },
+    authorName: { type: GraphQLString },
+    movieId: { type: GraphQLString },
   }),
 });
 
+//Queries
 const ReviewQuery = {
-  reviews: {
+  GetAllReviews: {
+    type: new GraphQLList(ReviewType),
+    resolve(parent, args) {
+      return ReviewService.getAllReviews();
+    },
+  },
+  GetReviewById: {
+    type: ReviewType,
+    args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+    resolve(parent, args) {
+      return ReviewService.getReviewById(args.id);
+    },
+  },
+  GetReviewsByMovieId: {
     type: new GraphQLList(ReviewType),
     args: { movieId: { type: new GraphQLNonNull(GraphQLID) } },
     resolve(parent, args) {
       return ReviewService.getReviewsByMovieId(args.id);
     },
   },
-};
-
-const ReviewMutation = {
-  deleteReviewOnMovie: {
-    type: GraphQLBoolean, // Indicate success or failure
-    args: {
-      movieId: { type: new GraphQLNonNull(GraphQLID) },
-      authorId: { type: new GraphQLNonNull(GraphQLID) },
-    },
-    async resolve(parent, args) {
-      const movie = await MovieService.getMovieById(args.movieId);
-      const review = ReviewService.getReviewByAuthorAndMovieId(args.movieId, args.authorId);
-      if (review) {
-        console.log(movie.reviews);
-        movie.reviews = movie.reviews.filter((id) => id != review.id);
-        if (movie.reviews.length == 0) {
-          movie.rating = 0;
-        } else {
-          movie.rating =
-            movie.reviews.reduce((acc, id) => acc + ReviewService.getReviewsByMovieId(id).rating, 0) /
-            movie.reviews.length;
-        }
-        ReviewService.deleteReview(review.id);
-        return true;
-      } else {
-        return false;
-      }
-    },
-  },
-  addReviewOnMovie: {
+  GetReviewByAuthorAndMovieId: {
     type: ReviewType,
     args: {
       movieId: { type: new GraphQLNonNull(GraphQLID) },
       authorId: { type: new GraphQLNonNull(GraphQLID) },
-      rating: { type: new GraphQLNonNull(GraphQLInt) },
-      comment: { type: new GraphQLNonNull(GraphQLString) },
     },
     resolve(parent, args) {
-      const newReview = ReviewService.createReview({
-        movieId: args.movieId,
-        authorId: args.authorId,
+      return ReviewService.getReviewByAuthorAndMovieId(args.movieId, args.authorId);
+    },
+  },
+};
+
+//Mutations
+const ReviewMutation = {
+  CreateReview: {
+    type: ReviewType,
+    args: {
+      rating: { type: new GraphQLNonNull(GraphQLInt) },
+      comment: { type: new GraphQLNonNull(GraphQLString) },
+      authorId: { type: new GraphQLNonNull(GraphQLID) },
+      authorName: { type: new GraphQLNonNull(GraphQLString) },
+      movieId: { type: new GraphQLNonNull(GraphQLID) },
+    },
+    resolve(parent, args) {
+      const reviewData = {
         rating: args.rating,
         comment: args.comment,
-      });
-      const movie = MovieService.getMovieById(args.movieId);
-      if (!movie.reviews) {
-        movie.reviews = [];
-        movie.rating = args.rating;
-      } else {
-        movie.rating = (movie.rating * movie.reviews.length + args.rating) / (movie.reviews.length + 1);
-      }
-      movie.reviews.push(newReview.id);
-      return newReview;
+        votes: [],
+        meta: {
+          authorId: args.authorId,
+          authorName: args.authorName,
+          movieId: args.movieId,
+        },
+      };
+      return ReviewService.createReview(reviewData);
+    },
+  },
+  VoteReview: {
+    type: ReviewType,
+    args: {
+      authorId: { type: new GraphQLNonNull(GraphQLID) },
+      reviewId: { type: new GraphQLNonNull(GraphQLID) },
+      vote: { type: new GraphQLNonNull(GraphQLBoolean) },
+    },
+    resolve(parent, args) {
+      return ReviewService.voteReview(args.authorId, args.reviewId, args.vote);
+    },
+  },
+  UpdateReview: {
+    type: ReviewType,
+    args: {
+      id: { type: new GraphQLNonNull(GraphQLID) },
+      review: { type: ReviewType },
+    },
+    resolve(parent, args) {
+      return ReviewService.updateReview(args.id, review);
+    },
+  },
+  DeleteReview: {
+    type: ReviewType,
+    args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+    resolve(parent, args) {
+      return ReviewService.deleteReview(args.id);
     },
   },
 };
