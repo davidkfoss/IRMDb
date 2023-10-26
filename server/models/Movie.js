@@ -8,12 +8,7 @@ const MovieSchema = new mongoose.Schema({
   overview: String,
   popularity: Number,
   rating: Number,
-  reviews: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Review',
-    },
-  ],
+  reviews: [String], //MovieIds
 });
 
 exports.MovieModel = mongoose.model('Movie', MovieSchema, 'movies');

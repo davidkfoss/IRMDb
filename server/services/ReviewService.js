@@ -21,8 +21,20 @@ class ReviewService {
     return await ReviewModel.create(reviewData);
   }
 
-  async updateReview(id, reviewData) {
-    return await ReviewModel.findByIdAndUpdate(id, reviewData, { new: true });
+  async upvoteReview(id) {
+    const review = await ReviewModel.findById(id);
+    review.meta.upvotes += 1;
+    return await review.save({ new: true });
+  }
+
+  async downvoteReview(id) {
+    const review = await ReviewModel.findById(id);
+    review.meta.downvotes += 1;
+    return await review.save({ new: true });
+  }
+
+  async updateReview(reviewData) {
+    return await ReviewModel.findByIdAndUpdate(reviewData.id, reviewData, { new: true });
   }
 
   async deleteReview(id) {

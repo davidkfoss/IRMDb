@@ -1,4 +1,3 @@
-const { mongoose } = require('mongoose');
 const { MovieModel } = require('../models/Movie');
 
 class MovieService {
@@ -14,8 +13,8 @@ class MovieService {
     return await MovieModel.create(movieData);
   }
 
-  async updateMovie(id, movieData) {
-    return await MovieModel.findByIdAndUpdate(id, movieData, { new: true });
+  async updateMovie(movieData) {
+    return await MovieModel.findByIdAndUpdate(movieData.id, movieData, { new: true });
   }
 
   async deleteMovie(id) {
