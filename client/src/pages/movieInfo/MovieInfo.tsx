@@ -10,6 +10,7 @@ import { MoviePopup } from '../../components/moviePopup/MoviePopup';
 import { Pill } from '../../components/pill/Pill';
 import { Review } from '../../components/review/Review';
 import useDebounceDispatch from '../../hooks/useDebounceDispatch';
+import { useUser } from '../../hooks/useUser';
 import { getMovieById } from '../../store/features/movies/movieThunks';
 import { selectCurrentMovie } from '../../store/features/movies/moviesSlice';
 import { addReviewOnMovie } from '../../store/features/reviews/reviewThunks';
@@ -27,6 +28,7 @@ export const MovieInfo = () => {
   const { id: idParam } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useUser();
 
   const id = parseInt(idParam || '-1');
 
@@ -57,6 +59,11 @@ export const MovieInfo = () => {
   }
 
   const onSubmit = () => {
+    if (!user) {
+      toast.error('You must be logged in to add a review', { style: { background: '#333', color: '#fff' } });
+      return;
+    }
+
     if (comment === '') {
       toast.error('Comment cannot be empty', { style: { background: '#333', color: '#fff' } });
       return;

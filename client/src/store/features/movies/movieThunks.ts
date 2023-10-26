@@ -1,18 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { directions } from '../../../components/filter/ascDesc/direction';
+import { client } from '../../../App';
 import { Filters, hasFiltersChanged } from '../../../components/filter/filterUtil';
-import { mockMovies } from '../../../data/mockMovies';
 import { Movie } from '../../../models/movie';
+import { getFilteredMoviesQuery, getMovieQuery, getMoviesQuery } from '../../../queries/queries';
 import mockPagination from '../../../util/mockPagination';
 import { RootState } from '../../store';
-import { getFilteredMoviesQuery, getMovieQuery, getMoviesQuery } from '../../../queries/queries';
-import { client } from '../../../App';
 
 export const getMovieById = createAsyncThunk<Movie | undefined, number, { state: RootState }>(
   'movies/getMovieById',
   async (id) => {
     console.log(`Fetching movie with id ${id}`);
-    const movie = await client.query({query: getMovieQuery, variables: {id: id}}).then((result) => {return result.data.movie})
+    const movie = await client.query({ query: getMovieQuery, variables: { id: id } }).then((result) => {
+      return result.data.movie;
+    });
     return movie;
   }
 );
@@ -25,8 +25,10 @@ export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: Ro
     const state = getState();
     const moviesFetchCount = state.movies.moviesFetched;
     const pageSize = state.movies.pageSize;
-    
-    const movies = await client.query({query: getMoviesQuery}).then((result) => {return result.data.movies})
+
+    const movies = await client.query({ query: getMoviesQuery }).then((result) => {
+      return result.data.movies;
+    });
     return mockPagination(movies, moviesFetchCount, pageSize);
   }
 );
@@ -48,15 +50,19 @@ export const getFilteredMovies = createAsyncThunk<
   const pageSize = state.movies.pageSize;
 
   // TODO: Fetch movies from API
-  const movies = await client.query({
-    query: getFilteredMoviesQuery,
-    variables: {
-      genre: filters.genres,
-      sortBy: filters.sortBy,
-      direction: filters.direction,
-      search: filters.search,
-    },
-  }).then((result) => {return result.data.moviesWithFilter})
+  const movies = await client
+    .query({
+      query: getFilteredMoviesQuery,
+      variables: {
+        genre: filters.genres,
+        sortBy: filters.sortBy,
+        direction: filters.direction,
+        search: filters.search,
+      },
+    })
+    .then((result) => {
+      return result.data.moviesWithFilter;
+    });
 
   return mockPagination(movies, moviesFetchCount, pageSize);
 });

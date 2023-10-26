@@ -8,3 +8,9 @@
   padding: 0 2rem;
   margin-bottom: 2rem;
 }
+
+@media screen and (max-width: 370px) {
+  .movie-grid {
+    padding: 0;
+  }
+}
