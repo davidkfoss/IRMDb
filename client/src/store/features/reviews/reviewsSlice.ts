@@ -1,30 +1,14 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { Review } from '../../../models/review';
 import { RootState } from '../../store';
-import { addReviewOnMovie, deleteReviewOnMovie } from './reviewThunks';
-
-export interface Review {
-  rating: number;
-  comment: string;
-}
-
-export interface ReviewInfo {
-  reviews: {
-    [authorEmail: string]: Review;
-  };
-  reviewsCount: number;
-  ratingAverage: number;
-}
-
-export interface Reviews {
-  [movieId: string]: ReviewInfo;
-}
+import { addReviewOnMovie, deleteReviewOnMovie, getReviewsOnMovie } from './reviewThunks';
 
 interface ReviewsState {
-  reviews: Reviews;
+  [movieId: string]: Review[];
 }
 
 const initialReviewsState: ReviewsState = {
-  reviews: {},
+  reviews: [],
 };
 
 export const moviesSlice = createSlice({
@@ -35,42 +19,34 @@ export const moviesSlice = createSlice({
     builder
       .addCase(addReviewOnMovie.fulfilled, (state, action) => {
         if (action.payload) {
-          const { authorEmail, movieId, review } = action.meta.arg;
-
-          const reviewCount = state.reviews[movieId]?.reviewsCount ?? 0;
-          const averageRating = state.reviews[movieId]?.ratingAverage ?? review.rating;
-
-          state.reviews[movieId] = {
-            reviews: {
-              ...state.reviews[movieId]?.reviews,
-              [authorEmail]: review,
-            },
-            reviewsCount: reviewCount + 1,
-            ratingAverage: (averageRating * reviewCount + review.rating) / (reviewCount + 1),
-          };
+          const review = action.payload;
+          const { movieId } = action.meta.arg;
+          if (state[movieId]) {
+            state[movieId].push(review);
+          } else {
+            state[movieId] = [review];
+          }
         }
       })
       .addCase(deleteReviewOnMovie.fulfilled, (state, action) => {
         if (action.payload) {
-          const { authorEmail, movieId } = action.meta.arg;
-
-          if (!state.reviews[movieId] || !state.reviews[movieId].reviews) return;
-
-          const reviewCount = state.reviews[movieId].reviewsCount;
-          const averageRating = state.reviews[movieId].ratingAverage;
-
-          const review = state.reviews[movieId].reviews[authorEmail];
-          delete state.reviews[movieId].reviews[authorEmail];
-
-          state.reviews[movieId].reviewsCount = reviewCount - 1;
-          state.reviews[movieId].ratingAverage = (averageRating * reviewCount - review.rating) / (reviewCount - 1);
+          const { movieId, authorEmail } = action.meta.arg;
+          const reviews = state[movieId];
+          const reviewIndex = reviews.findIndex((review) => review.meta.authorEmail === authorEmail);
+          if (reviewIndex !== -1) {
+            reviews.splice(reviewIndex, 1);
+          }
         }
+      })
+      .addCase(getReviewsOnMovie.fulfilled, (state, action) => {
+        const movieId = action.meta.arg;
+        state[movieId] = action.payload || [];
       }),
 });
 
 export const reviewsReducer = moviesSlice.reducer;
 
-export const selectReviews = (state: RootState) => state.reviews.reviews;
+export const selectReviews = (state: RootState) => state.reviews;
 
 export const selectReviewInfoOnMovie = (movieId: string) =>
   createSelector(selectReviews, (reviews) => reviews[movieId]);

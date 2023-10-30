@@ -33,7 +33,8 @@ class MovieService {
       totalRating += review.rating;
     });
     movie.rating = totalRating / reviews.length;
-    return await MovieModel.updateOne(movie);
+
+    await movie.save();
   }
 }
 

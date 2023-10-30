@@ -1,10 +1,10 @@
 import StarIcon from '@mui/icons-material/Star';
 import { Button, Rating, TextareaAutosize } from '@mui/material';
-import _, { random } from 'lodash';
+import _ from 'lodash';
 import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
-import { Review } from '../../../components/review/Review';
+import { ReviewCard } from '../../../components/reviewCard/ReviewCard';
 import useDebounceDispatch from '../../../hooks/useDebounceDispatch';
 import { useUser } from '../../../hooks/useUser';
 import { addReviewOnMovie } from '../../../store/features/reviews/reviewThunks';
@@ -21,7 +21,7 @@ interface MovieInfoReviewSectionProps {
 
 export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps) => {
   const dispatch = useDebounceDispatch(100);
-  const { reviews } = useSelector(selectReviewInfoOnMovie(movieId)) || initialReviewInfo;
+  const reviews = useSelector(selectReviewInfoOnMovie(movieId)) || initialReviewInfo;
   const user = useUser();
 
   const [comment, setComment] = useState('');
@@ -52,10 +52,9 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
     dispatch(
       addReviewOnMovie({
         movieId,
-
-        // TODO: get authorEmail from auth
-        authorEmail: 'hei' + random(0, 1000),
-        review: { rating, comment },
+        authorEmail: user.email,
+        rating,
+        comment,
       })
     );
   };
@@ -64,7 +63,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
     <div className='movie-info-reviews'>
       <h2>Reviews</h2>
       {allReviews.map((review) => (
-        <Review key={review.authorEmail} {...review} />
+        <ReviewCard key={review.authorEmail} review={review} />
       ))}
       <form className='movie-info-form'>
         <Rating

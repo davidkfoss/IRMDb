@@ -6,16 +6,19 @@ import { getAllMoviesQuery, getMovieByIdQuery, getMoviesByFilterQuery } from '..
 import mockPagination from '../../../util/mockPagination';
 import { RootState } from '../../store';
 
-export const getMovieById = createAsyncThunk<Movie | undefined, string, { state: RootState }>(
-  'movies/getMovieById',
-  async (id) => {
-    console.log(`Fetching movie with id ${id}`);
-    const movie = await client.query({ query: getMovieByIdQuery, variables: { id: id } }).then((result) => {
+export const getMovieById = createAsyncThunk<
+  Movie | undefined,
+  { id: string; refetch?: boolean },
+  { state: RootState }
+>('movies/getMovieById', async ({ id, refetch = false }) => {
+  console.log(`Fetching movie with id ${id}`);
+  const movie = await client
+    .query({ query: getMovieByIdQuery, variables: { id: id }, fetchPolicy: refetch ? 'no-cache' : undefined })
+    .then((result) => {
       return result.data.GetMovieById;
     });
-    return movie;
-  }
-);
+  return movie;
+});
 
 export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: RootState }>(
   'movies/getMovies',

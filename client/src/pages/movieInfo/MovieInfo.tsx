@@ -6,9 +6,10 @@ import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { MoviePopup } from '../../components/moviePopup/MoviePopup';
-import useDebounceDispatch from '../../hooks/useDebounceDispatch';
 import { getMovieById } from '../../store/features/movies/movieThunks';
 import { selectCurrentMovie, selectDetailsLoadingState } from '../../store/features/movies/moviesSlice';
+import { getReviewsOnMovie } from '../../store/features/reviews/reviewThunks';
+import { useAppDispatch } from '../../store/store';
 import './MovieInfo.css';
 import { MovieInfoDetailsSection } from './detailsSection/MovieInfoDetailsSection';
 import { MovieInfoReviewSection } from './reviewSection/MovieInfoReviewSection';
@@ -21,12 +22,13 @@ export const MovieInfo = () => {
 
   const id = idParam || 'NULL-1';
 
-  const dispatch = useDebounceDispatch(100);
+  const dispatch = useAppDispatch();
   const movie = useSelector(selectCurrentMovie);
   const { resolved, rejected, pending } = useSelector(selectDetailsLoadingState);
 
   useEffect(() => {
-    dispatch(getMovieById(id));
+    dispatch(getMovieById({ id }));
+    dispatch(getReviewsOnMovie(id));
   }, [id, dispatch]);
 
   if (rejected || (resolved && !movie)) {

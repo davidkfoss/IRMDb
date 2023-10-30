@@ -1,15 +1,64 @@
 import { CredentialResponse, TokenResponse } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
 import toast from 'react-hot-toast';
+import { client } from '../../App';
 import { JwtUser } from '../../hooks/useUser';
+import { createUserMutation, getUserByEmailQuery } from '../../queries/userQueries';
 
-export const onLoginSuccess = (response: CredentialResponse) => {
+type CreateUserResult = 'ERROR' | 'SUCCESS' | 'ALREADY_EXISTING';
+
+const createUser: (user: JwtUser) => Promise<CreateUserResult> = async (user) => {
+  let status: CreateUserResult = 'ERROR';
+
+  const existingUser = await client
+    .query({
+      query: getUserByEmailQuery,
+      variables: {
+        email: user.email,
+      },
+    })
+    .then((result) => {
+      return result.data.GetUserByEmail;
+    });
+
+  if (existingUser && existingUser.id) {
+    status = 'ALREADY_EXISTING';
+  }
+
+  console.log('existingUser', existingUser);
+  if (!existingUser) {
+    await client
+      .mutate({
+        mutation: createUserMutation,
+        variables: {
+          name: user.name,
+          email: user.email,
+          profilePictureUrl: user.picture,
+        },
+      })
+      .then((result) => {
+        status = 'SUCCESS';
+        return result.data.CreateUser;
+      });
+  }
+
+  return status;
+};
+
+const loginMessageGeneratorMap: Record<CreateUserResult, (user?: JwtUser) => string> = {
+  ALREADY_EXISTING: (user) => `Welcome back, ${user?.name}!`,
+  SUCCESS: (user) => `Welcome to IRMDB, ${user?.name}!`,
+  ERROR: () => `Something went wrong! Please try again ...`,
+};
+
+export const onLoginSuccess = async (response: CredentialResponse) => {
   if (!response.credential) return;
 
   const user: JwtUser = jwt_decode(response.credential);
+  const status = await createUser(user);
   localStorage.setItem('currUser', JSON.stringify({ ...user, token: response.credential }));
   window.dispatchEvent(new Event('login'));
-  toast.success(`Welcome, ${user.name}!`);
+  toast.success(loginMessageGeneratorMap[status](user));
 };
 
 export const onLoginSuccessToken = async (
@@ -22,8 +71,8 @@ export const onLoginSuccessToken = async (
     headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
   }).then((res) => res.json());
 
-  console.log(user);
   localStorage.setItem('currUser', JSON.stringify({ ...user, token: tokenResponse.access_token }));
+  const status = await createUser(user);
   window.dispatchEvent(new Event('login'));
-  toast.success(`Welcome, ${user.name}!`);
+  toast.success(loginMessageGeneratorMap[status](user));
 };
