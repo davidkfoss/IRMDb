@@ -6,7 +6,7 @@ import { RootState } from '../../store';
 import { getMovieByIdQuery, getAllMoviesQuery, getMoviesByFilterQuery } from '../../../queries/movieQueries';
 import { client } from '../../../App';
 
-export const getMovieById = createAsyncThunk<Movie | undefined, number, { state: RootState }>(
+export const getMovieById = createAsyncThunk<Movie | undefined, string, { state: RootState }>(
   'movies/getMovieById',
   async (id) => {
     console.log(`Fetching movie with id ${id}`);
