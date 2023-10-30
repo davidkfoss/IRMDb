@@ -16,7 +16,7 @@ interface MoviesState {
 const initialMoviesState: MoviesState = {
   movies: [],
   moviesFetched: 0,
-  pageSize: 10,
+  pageSize: 12,
   allFetched: false,
   filters: {} as Filters,
 };

@@ -33,8 +33,15 @@ const getAllMoviesQuery = gql`
 `;
 
 const getMoviesByFilterQuery = gql`
-  query ($genre: [String], $sortBy: String, $direction: String, $search: String) {
-    GetMoviesByFilter(genre: $genre, sortBy: $sortBy, direction: $direction, search: $search) {
+  query ($genre: [String], $sortBy: String, $direction: String, $search: String, $offset: Int, $limit: Int) {
+    GetMoviesByFilter(
+      genre: $genre
+      sortBy: $sortBy
+      direction: $direction
+      search: $search
+      offset: $offset
+      limit: $limit
+    ) {
       id
       title
       genre
@@ -48,4 +55,4 @@ const getMoviesByFilterQuery = gql`
   }
 `;
 
-export { getMovieByIdQuery, getAllMoviesQuery, getMoviesByFilterQuery };
+export { getAllMoviesQuery, getMovieByIdQuery, getMoviesByFilterQuery };

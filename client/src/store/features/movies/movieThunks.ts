@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { client } from '../../../App';
 import { Filters, hasFiltersChanged } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
+import { getAllMoviesQuery, getMovieByIdQuery, getMoviesByFilterQuery } from '../../../queries/movieQueries';
 import mockPagination from '../../../util/mockPagination';
 import { RootState } from '../../store';
-import { getMovieByIdQuery, getAllMoviesQuery, getMoviesByFilterQuery } from '../../../queries/movieQueries';
-import { client } from '../../../App';
 
 export const getMovieById = createAsyncThunk<Movie | undefined, string, { state: RootState }>(
   'movies/getMovieById',
@@ -58,11 +58,13 @@ export const getFilteredMovies = createAsyncThunk<
         sortBy: filters.sortBy,
         direction: filters.direction,
         search: filters.search,
+        offset: moviesFetchCount,
+        limit: pageSize,
       },
     })
     .then((result) => {
       return result.data.GetMoviesByFilter;
     });
 
-  return mockPagination(movies, moviesFetchCount, pageSize);
+  return movies;
 });
