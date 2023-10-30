@@ -30,7 +30,7 @@ export const MovieInfo = () => {
   const location = useLocation();
   const user = useUser();
 
-  const id = parseInt(idParam || '-1');
+  const id = idParam || 'NULL-1';
 
   const dispatch = useDebounceDispatch(100);
   const movie = useSelector(selectCurrentMovie);
@@ -40,7 +40,7 @@ export const MovieInfo = () => {
   const [rating, setRating] = useState(3);
 
   const allReviews = useMemo(
-    () => _.toPairs(reviews).map(([authorId, review]) => ({ authorId: parseInt(authorId), ...review })),
+    () => _.toPairs(reviews).map(([authorEmail, review]) => ({ authorEmail: authorEmail, ...review })),
     [reviews]
   );
 
@@ -75,8 +75,8 @@ export const MovieInfo = () => {
       addReviewOnMovie({
         movieId: id,
 
-        // TODO: get authorId from auth
-        authorId: random(0, 1000),
+        // TODO: get authorEmail from auth
+        authorEmail: 'hei' + random(0, 1000),
         review: { rating, comment },
       })
     );
@@ -137,7 +137,7 @@ export const MovieInfo = () => {
       <div className='movie-info-reviews'>
         <h2>Reviews</h2>
         {allReviews.map((review) => (
-          <Review key={review.authorId} {...review} />
+          <Review key={review.authorEmail} {...review} />
         ))}
         <form className='movie-info-form'>
           <Rating

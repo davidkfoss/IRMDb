@@ -6,7 +6,7 @@ const Vote = {
 };
 
 const ReviewMeta = {
-  authorId: { type: String, required: true },
+  authorEmail: { type: String, required: true },
   authorName: { type: String, required: true },
   movieId: { type: String, required: true },
 };
@@ -14,7 +14,7 @@ const ReviewMeta = {
 const ReviewSchema = new mongoose.Schema({
   rating: Number,
   comment: { type: String, required: true },
-  votes: [{ type: Vote, unique: true }],
+  votes: [{ type: Vote }],
   date: { type: Date, default: Date.now },
   meta: { type: ReviewMeta, unique: true },
 });

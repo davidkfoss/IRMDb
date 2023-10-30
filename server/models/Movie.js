@@ -24,13 +24,13 @@ const MovieGenres = [
 
 const MovieSchema = new mongoose.Schema({
   title: { type: String, unique: true, required: true },
-  genre: [{ type: String, enum: MovieGenres, unique: true }],
+  genre: [{ type: String, enum: MovieGenres }],
   releaseDate: { type: String, required: true },
   posterUrl: { type: String, required: true },
   overview: { type: String, required: true },
   popularity: Number,
   rating: Number,
-  reviewIds: [{ type: String, unique: true }],
+  reviewIds: [{ type: String }],
 });
 
 exports.MovieModel = mongoose.model('Movie', MovieSchema, 'movies');

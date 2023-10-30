@@ -6,7 +6,7 @@ import './FeedReview.css';
 interface ReviewProps {
   rating: number;
   comment: string;
-  authorId: number;
+  authorEmail: string;
   authorName: string;
   upvotes: number;
 }

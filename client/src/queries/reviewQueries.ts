@@ -12,7 +12,7 @@ const getAllReviewsQuery = gql`
       }
       date
       meta {
-        authorId
+        authorEmail
         authorName
         movieId
       }
@@ -32,7 +32,7 @@ const getReviewByIdQuery = gql`
       }
       date
       meta {
-        authorId
+        authorEmail
         authorName
         movieId
       }
@@ -52,7 +52,7 @@ const getReviewsByMovieIdQuery = gql`
       }
       date
       meta {
-        authorId
+        authorEmail
         authorName
         movieId
       }
@@ -61,8 +61,8 @@ const getReviewsByMovieIdQuery = gql`
 `;
 
 const getReviewByAuthorAndMovieIdQuery = gql`
-  query ($movieId: ID!, $authorId: ID!) {
-    GetReviewByAuthorAndMovieId(movieId: $movieId, authorId: $authorId) {
+  query ($movieId: ID!, $authorEmail: String!) {
+    GetReviewByAuthorAndMovieId(movieId: $movieId, authorEmail: $authorEmail) {
       id
       rating
       comment
@@ -72,7 +72,7 @@ const getReviewByAuthorAndMovieIdQuery = gql`
       }
       date
       meta {
-        authorId
+        authorEmail
         authorName
         movieId
       }
@@ -81,8 +81,8 @@ const getReviewByAuthorAndMovieIdQuery = gql`
 `;
 
 const createReviewMutation = gql`
-  mutation ($rating: Int!, $comment: String!, $authorId: ID!, $authorName: String!, $movieId: ID!) {
-    CreateReview(rating: $rating, comment: $comment, authorId: $authorId, authorName: $authorName, movieId: $movieId) {
+  mutation ($rating: Int!, $comment: String!, $authorEmail: String!, $movieId: ID!) {
+    CreateReview(rating: $rating, comment: $comment, authorEmail: $authorEmail, movieId: $movieId) {
       id
       rating
       comment
@@ -92,7 +92,7 @@ const createReviewMutation = gql`
       }
       date
       meta {
-        authorId
+        authorEmail
         authorName
         movieId
       }
@@ -101,8 +101,8 @@ const createReviewMutation = gql`
 `;
 
 const voteReviewMutation = gql`
-  mutation ($authorId: ID!, $reviewId: ID!, $vote: Boolean!) {
-    VoteReview(authorId: $authorId, reviewId: $reviewId, vote: $vote) {
+  mutation ($authorEmail: String!, $reviewId: ID!, $vote: Boolean!) {
+    VoteReview(authorEmail: $authorEmail, reviewId: $reviewId, vote: $vote) {
       id
       rating
       comment
@@ -112,7 +112,7 @@ const voteReviewMutation = gql`
       }
       date
       meta {
-        authorId
+        authorEmail
         authorName
         movieId
       }
@@ -132,7 +132,7 @@ const deleteReviewMutation = gql`
       }
       date
       meta {
-        authorId
+        authorEmail
         authorName
         movieId
       }

@@ -8,7 +8,7 @@ export interface Review {
 }
 
 export interface ReviewMeta {
-  authorId: string;
+  authorEmail: string;
   authorName: string;
   movieId: string;
 }

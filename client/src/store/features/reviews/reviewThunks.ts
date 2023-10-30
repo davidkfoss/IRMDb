@@ -21,14 +21,14 @@ export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, number, 
 );
 
 type ReviewInput = {
-  authorId: number;
-  movieId: number;
+  authorEmail: string;
+  movieId: string;
   review: Review;
 };
 
 export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput, object>(
   'reviews/addReviewOnMovie',
-  async ({ review, movieId, authorId }) => {
+  async ({ review, movieId, authorEmail }) => {
     console.log(`Adding review on movie with id ${movieId}`);
     const addedReview = await client
       .mutate({
@@ -37,7 +37,7 @@ export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput
           movieId: movieId,
           rating: review.rating,
           comment: review.comment,
-          authorId: authorId,
+          authorEmail: authorEmail,
         },
       })
       .then((result) => {
@@ -47,17 +47,17 @@ export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput
   }
 );
 
-export const deleteReviewOnMovie = createAsyncThunk<boolean, { authorId: number; movieId: number }, object>(
+export const deleteReviewOnMovie = createAsyncThunk<boolean, { authorEmail: number; movieId: number }, object>(
   'reviews/deleteReviewOnMovie',
-  async ({ authorId, movieId }) => {
-    console.log(`Deleting review on movie with id ${movieId} by author with id ${authorId}`);
+  async ({ authorEmail, movieId }) => {
+    console.log(`Deleting review on movie with id ${movieId} by author with id ${authorEmail}`);
 
     const deleted = await client
       .mutate({
         mutation: deleteReviewMutation,
         variables: {
           movieId: movieId,
-          authorId: authorId,
+          authorEmail: authorEmail,
         },
       })
       .then((result) => {

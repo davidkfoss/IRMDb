@@ -22,7 +22,7 @@ const Vote = new GraphQLObjectType({
 const ReviewMetaType = new GraphQLObjectType({
   name: 'ReviewMeta',
   fields: () => ({
-    authorId: { type: GraphQLString },
+    authorEmail: { type: GraphQLString },
     authorName: { type: GraphQLString },
     movieId: { type: GraphQLString },
   }),
@@ -68,10 +68,10 @@ const ReviewQuery = {
     type: ReviewType,
     args: {
       movieId: { type: new GraphQLNonNull(GraphQLID) },
-      authorId: { type: new GraphQLNonNull(GraphQLID) },
+      authorEmail: { type: new GraphQLNonNull(GraphQLString) },
     },
     resolve(parent, args) {
-      return ReviewService.getReviewByAuthorAndMovieId(args.movieId, args.authorId);
+      return ReviewService.getReviewByAuthorAndMovieId(args.movieId, args.authorEmail);
     },
   },
 };
@@ -88,8 +88,7 @@ const ReviewMutation = {
     args: {
       rating: { type: new GraphQLNonNull(GraphQLInt) },
       comment: { type: new GraphQLNonNull(GraphQLString) },
-      authorId: { type: new GraphQLNonNull(GraphQLID) },
-      authorName: { type: new GraphQLNonNull(GraphQLString) },
+      authorEmail: { type: new GraphQLNonNull(GraphQLString) },
       movieId: { type: new GraphQLNonNull(GraphQLID) },
     },
     async resolve(parent, args) {
@@ -98,8 +97,7 @@ const ReviewMutation = {
         comment: args.comment,
         votes: [],
         meta: {
-          authorId: args.authorId,
-          authorName: args.authorName,
+          authorEmail: args.authorEmail,
           movieId: args.movieId,
         },
       };
@@ -111,12 +109,12 @@ const ReviewMutation = {
   VoteReview: {
     type: ReviewType,
     args: {
-      authorId: { type: new GraphQLNonNull(GraphQLID) },
+      authorEmail: { type: new GraphQLNonNull(GraphQLString) },
       reviewId: { type: new GraphQLNonNull(GraphQLID) },
       vote: { type: new GraphQLNonNull(GraphQLBoolean) },
     },
     async resolve(parent, args) {
-      return await ReviewService.voteReview(args.authorId, args.reviewId, args.vote);
+      return await ReviewService.voteReview(args.authorEmail, args.reviewId, args.vote);
     },
   },
   DeleteReview: {

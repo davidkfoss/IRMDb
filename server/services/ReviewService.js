@@ -20,12 +20,20 @@ class ReviewService {
     }
   }
 
-  async getReviewByAuthorAndMovieId(movieId, authorId) {
-    return await ReviewModel.findOne({ 'meta.movieId': movieId, 'meta.authorId': authorId });
+  async getReviewByAuthorAndMovieId(movieId, authorEmail) {
+    return await ReviewModel.findOne({ 'meta.movieId': movieId, 'meta.authorEmail': authorEmail });
   }
 
   async createReview(reviewData) {
+    console.log('reviewData', reviewData);
+    const user = await UserModel.findOne({ email: reviewData.meta.authorEmail });
+    if (!user) {
+      return null;
+    }
+    reviewData.meta.authorName = user.name;
+    console.log('reviewData', reviewData);
     if (!validateReviewData(reviewData)) {
+      console.log('validateReviewData');
       return null;
     }
     const newReview = await ReviewModel.create(reviewData);
@@ -33,14 +41,14 @@ class ReviewService {
     return newReview;
   }
 
-  async voteReview(authourId, reviewId, vote) {
+  async voteReview(authorEmail, reviewId, vote) {
     const review = await ReviewModel.findById(reviewId);
     if (!validateReviewData(review)) {
       return null;
-    } else if (!validateVote(review, authourId, vote)) {
+    } else if (!validateVote(review, authorEmail, vote)) {
       return null;
     }
-    review.votes.push({ vote, user: authourId });
+    review.votes.push({ vote, user: authorEmail });
     return await ReviewModel.findByIdAndUpdate(reviewId, review, { new: true });
   }
 
