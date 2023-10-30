@@ -56,7 +56,6 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
     if (hasFiltersChanged(filters, storeFilters)) {
       onChange(filters);
     }
-
     return () => {
       setFiltersInSessionStorage(filters);
     };

@@ -58,11 +58,13 @@ export const getFilteredMovies = createAsyncThunk<
         sortBy: filters.sortBy,
         direction: filters.direction,
         search: filters.search,
+        offset: moviesFetchCount,
+        limit: pageSize,
       },
     })
     .then((result) => {
       return result.data.GetMoviesByFilter;
     });
 
-  return mockPagination(movies, moviesFetchCount, pageSize);
+  return movies;
 });
