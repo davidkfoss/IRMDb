@@ -6,7 +6,12 @@ import { Filters, initialFilters } from '../../components/filter/filterUtil';
 import { MovieGrid } from '../../components/movieGrid/MovieGrid';
 import useDebounceDispatch from '../../hooks/useDebounceDispatch';
 import { getFilteredMovies } from '../../store/features/movies/movieThunks';
-import { selectAllFetched, selectMovies, selectPageSize } from '../../store/features/movies/moviesSlice';
+import {
+  selectAllFetched,
+  selectGridLoadingState,
+  selectMovies,
+  selectPageSize,
+} from '../../store/features/movies/moviesSlice';
 import './Movies.css';
 
 export const Movies = () => {
@@ -14,6 +19,7 @@ export const Movies = () => {
   const movies = useSelector(selectMovies);
   const pageSize = useSelector(selectPageSize);
   const allFetched = useSelector(selectAllFetched);
+  const loadingState = useSelector(selectGridLoadingState);
 
   const filters = useRef(initialFilters);
 
@@ -49,22 +55,25 @@ export const Movies = () => {
     }
   };
 
+  const showLoadMoreButton =
+    !allFetched && !loadingState.rejected && (!loadingState.pending || loadingState.fetchMorePending);
+
   return (
     <>
       <div className='movie-filter-container'>
         <MovieFilter onChange={onFilterChange} />
       </div>
-      {movies.length === 0 ? (
-        <p>No movies found</p>
-      ) : (
-        <>
-          <MovieGrid movies={movies} id='movie-grid' />
-          {!allFetched && (
-            <Button id='load-more' onClick={onLoadButtonClicked} onKeyDown={onLoadButtonKeyDown}>
-              Load {pageSize} more movies
-            </Button>
-          )}
-        </>
+      <MovieGrid movies={movies} id='movie-grid' {...loadingState} />
+      {showLoadMoreButton && (
+        <Button
+          id='load-more'
+          onClick={onLoadButtonClicked}
+          onKeyDown={onLoadButtonKeyDown}
+          loading={loadingState.pending}
+          style={{ width: '12rem', height: '2rem' }}
+        >
+          Load {pageSize} more movies
+        </Button>
       )}
     </>
   );
