@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -6,8 +6,8 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  name: String,
-  profilePicUrl: String,
+  name: { type: String, required: true },
+  profilePictureUrl: String,
   role: {
     type: String,
     enum: ['admin', 'moderator', 'user'],
@@ -17,4 +17,4 @@ const UserSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-export const User = mongoose.model<typeof UserSchema & mongoose.Document>('User', UserSchema);
+exports.UserModel = mongoose.model('User', UserSchema);

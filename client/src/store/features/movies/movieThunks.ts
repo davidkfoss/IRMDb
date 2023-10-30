@@ -1,17 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { client } from '../../../App';
 import { Filters, hasFiltersChanged } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
-import { getFilteredMoviesQuery, getMovieQuery, getMoviesQuery } from '../../../queries/queries';
 import mockPagination from '../../../util/mockPagination';
 import { RootState } from '../../store';
+import { getMovieByIdQuery, getAllMoviesQuery, getMoviesByFilterQuery } from '../../../queries/movieQueries';
+import { client } from '../../../App';
 
-export const getMovieById = createAsyncThunk<Movie | undefined, number, { state: RootState }>(
+export const getMovieById = createAsyncThunk<Movie | undefined, string, { state: RootState }>(
   'movies/getMovieById',
   async (id) => {
     console.log(`Fetching movie with id ${id}`);
-    const movie = await client.query({ query: getMovieQuery, variables: { id: id } }).then((result) => {
-      return result.data.movie;
+    const movie = await client.query({ query: getMovieByIdQuery, variables: { id: id } }).then((result) => {
+      return result.data.GetMovieById;
     });
     return movie;
   }
@@ -26,8 +26,8 @@ export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: Ro
     const moviesFetchCount = state.movies.moviesFetched;
     const pageSize = state.movies.pageSize;
 
-    const movies = await client.query({ query: getMoviesQuery }).then((result) => {
-      return result.data.movies;
+    const movies = await client.query({ query: getAllMoviesQuery }).then((result) => {
+      return result.data.GetAllMovies;
     });
     return mockPagination(movies, moviesFetchCount, pageSize);
   }
@@ -52,7 +52,7 @@ export const getFilteredMovies = createAsyncThunk<
   // TODO: Fetch movies from API
   const movies = await client
     .query({
-      query: getFilteredMoviesQuery,
+      query: getMoviesByFilterQuery,
       variables: {
         genre: filters.genres,
         sortBy: filters.sortBy,
@@ -61,7 +61,7 @@ export const getFilteredMovies = createAsyncThunk<
       },
     })
     .then((result) => {
-      return result.data.moviesWithFilter;
+      return result.data.GetMoviesByFilter;
     });
 
   return mockPagination(movies, moviesFetchCount, pageSize);
