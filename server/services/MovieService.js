@@ -1,5 +1,4 @@
 const { MovieModel } = require('../models/Movie');
-const { ReviewService } = require('./ReviewService');
 
 class MovieService {
   async getAllMovies() {
