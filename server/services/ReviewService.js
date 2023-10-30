@@ -25,15 +25,12 @@ class ReviewService {
   }
 
   async createReview(reviewData) {
-    console.log('reviewData', reviewData);
     const user = await UserModel.findOne({ email: reviewData.meta.authorEmail });
     if (!user) {
       return null;
     }
     reviewData.meta.authorName = user.name;
-    console.log('reviewData', reviewData);
     if (!validateReviewData(reviewData)) {
-      console.log('validateReviewData');
       return null;
     }
     const newReview = await ReviewModel.create(reviewData);
