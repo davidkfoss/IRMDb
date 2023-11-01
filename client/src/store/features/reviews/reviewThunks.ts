@@ -6,8 +6,6 @@ import { createReviewMutation, deleteReviewMutation, getReviewsByMovieIdQuery } 
 export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, string, object>(
   'reviews/getReviewsOnMovie',
   async (id) => {
-    console.log(`Fetching reviews on movie with id ${id}`);
-
     const reviews = await client
       .query({
         query: getReviewsByMovieIdQuery,
@@ -30,7 +28,6 @@ type ReviewInput = {
 export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput, object>(
   'reviews/addReviewOnMovie',
   async ({ comment, rating, movieId, authorEmail }) => {
-    console.log(`Adding review on movie with id ${movieId}`);
     const addedReview = await client
       .mutate({
         mutation: createReviewMutation,
@@ -52,8 +49,6 @@ export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput
 export const deleteReviewOnMovie = createAsyncThunk<boolean, { authorEmail: string; movieId: string }, object>(
   'reviews/deleteReviewOnMovie',
   async ({ authorEmail, movieId }) => {
-    console.log(`Deleting review on movie with id ${movieId} by author with id ${authorEmail}`);
-
     const deleted = await client
       .mutate({
         mutation: deleteReviewMutation,
