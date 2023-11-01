@@ -3,7 +3,6 @@ import { client } from '../../../App';
 import { Filters, hasFiltersChanged } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
 import { getAllMoviesQuery, getMovieByIdQuery, getMoviesByFilterQuery } from '../../../queries/movieQueries';
-import mockPagination from '../../../util/mockPagination';
 import { RootState } from '../../store';
 
 export const getMovieById = createAsyncThunk<
@@ -12,6 +11,7 @@ export const getMovieById = createAsyncThunk<
   { state: RootState }
 >('movies/getMovieById', async ({ id, refetch = false }) => {
   console.log(`Fetching movie with id ${id}`);
+
   const movie = await client
     .query({ query: getMovieByIdQuery, variables: { id: id }, fetchPolicy: refetch ? 'no-cache' : undefined })
     .then((result) => {
@@ -29,10 +29,18 @@ export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: Ro
     const moviesFetchCount = state.movies.moviesFetched;
     const pageSize = state.movies.pageSize;
 
-    const movies = await client.query({ query: getAllMoviesQuery }).then((result) => {
-      return result.data.GetAllMovies;
-    });
-    return mockPagination(movies, moviesFetchCount, pageSize);
+    const movies = await client
+      .query({
+        query: getAllMoviesQuery,
+        variables: {
+          offset: moviesFetchCount,
+          limit: pageSize,
+        },
+      })
+      .then((result) => {
+        return result.data.GetAllMovies;
+      });
+    return movies;
   }
 );
 
@@ -52,7 +60,6 @@ export const getFilteredMovies = createAsyncThunk<
   const moviesFetchCount = initial ? 0 : state.movies.moviesFetched;
   const pageSize = state.movies.pageSize;
 
-  // TODO: Fetch movies from API
   const movies = await client
     .query({
       query: getMoviesByFilterQuery,

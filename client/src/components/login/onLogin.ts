@@ -1,9 +1,9 @@
 import { CredentialResponse, TokenResponse } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
-import toast from 'react-hot-toast';
 import { client } from '../../App';
 import { JwtUser } from '../../hooks/useUser';
 import { createUserMutation, getUserByEmailQuery } from '../../queries/userQueries';
+import customToast from '../../util/toastWrapper';
 
 type CreateUserResult = 'ERROR' | 'SUCCESS' | 'ALREADY_EXISTING';
 
@@ -25,7 +25,6 @@ const createUser: (user: JwtUser) => Promise<CreateUserResult> = async (user) =>
     status = 'ALREADY_EXISTING';
   }
 
-  console.log('existingUser', existingUser);
   if (!existingUser) {
     await client
       .mutate({
@@ -58,13 +57,13 @@ export const onLoginSuccess = async (response: CredentialResponse) => {
   const status = await createUser(user);
   localStorage.setItem('currUser', JSON.stringify({ ...user, token: response.credential }));
   window.dispatchEvent(new Event('login'));
-  toast.success(loginMessageGeneratorMap[status](user));
+
+  customToast.success(loginMessageGeneratorMap[status](user));
 };
 
 export const onLoginSuccessToken = async (
   tokenResponse: Omit<TokenResponse, 'error' | 'error_description' | 'error_uri'>
 ) => {
-  console.log(tokenResponse);
   if (!tokenResponse.access_token) return;
 
   const user: JwtUser = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
@@ -74,5 +73,6 @@ export const onLoginSuccessToken = async (
   localStorage.setItem('currUser', JSON.stringify({ ...user, token: tokenResponse.access_token }));
   const status = await createUser(user);
   window.dispatchEvent(new Event('login'));
-  toast.success(loginMessageGeneratorMap[status](user));
+
+  customToast.success(loginMessageGeneratorMap[status](user));
 };

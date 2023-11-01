@@ -16,8 +16,6 @@ const formattedMovies = movies
   })
   .filter((movie) => movie.title && movie.releaseDate && movie.posterUrl && movie.overview);
 
-// console.log(formattedMovies);
-
 fs.writeFile('movies.json', JSON.stringify(formattedMovies, null, 2), function (err) {
   if (err) {
     console.log(err);

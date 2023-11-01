@@ -49,4 +49,4 @@ export const reviewsReducer = moviesSlice.reducer;
 export const selectReviews = (state: RootState) => state.reviews;
 
 export const selectReviewInfoOnMovie = (movieId: string) =>
-  createSelector(selectReviews, (reviews) => reviews[movieId]);
+  createSelector(selectReviews, (reviews) => reviews[movieId] || []);
