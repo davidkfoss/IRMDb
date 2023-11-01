@@ -1,86 +1,37 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import StarIcon from '@mui/icons-material/Star';
-import { Button, IconButton, Rating, TextareaAutosize } from '@mui/material';
-import _, { random } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { IconButton } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import ClipLoader from 'react-spinners/ClipLoader';
 import { MoviePopup } from '../../components/moviePopup/MoviePopup';
-import { Pill } from '../../components/pill/Pill';
-import { Review } from '../../components/review/Review';
 import useDebounceDispatch from '../../hooks/useDebounceDispatch';
-import { useUser } from '../../hooks/useUser';
 import { getMovieById } from '../../store/features/movies/movieThunks';
-import { selectCurrentMovie } from '../../store/features/movies/moviesSlice';
-import { addReviewOnMovie } from '../../store/features/reviews/reviewThunks';
-import { selectReviewInfoOnMovie } from '../../store/features/reviews/reviewsSlice';
-import { getYear } from '../../util/parseDate';
+import { selectCurrentMovie, selectDetailsLoadingState } from '../../store/features/movies/moviesSlice';
 import './MovieInfo.css';
-
-const initialReviewInfo = {
-  reviews: [],
-  ratingAverage: 5,
-};
+import { MovieInfoDetailsSection } from './detailsSection/MovieInfoDetailsSection';
+import { MovieInfoReviewSection } from './reviewSection/MovieInfoReviewSection';
 
 export const MovieInfo = () => {
   const [showPopup, setShowPopup] = useState(false);
   const { id: idParam } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useUser();
 
   const id = idParam || 'NULL-1';
 
   const dispatch = useDebounceDispatch(100);
   const movie = useSelector(selectCurrentMovie);
-  const { reviews, ratingAverage } = useSelector(selectReviewInfoOnMovie(id)) || initialReviewInfo;
-
-  const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(3);
-
-  const allReviews = useMemo(
-    () => _.toPairs(reviews).map(([authorEmail, review]) => ({ authorEmail: authorEmail, ...review })),
-    [reviews]
-  );
+  const { resolved, rejected, pending } = useSelector(selectDetailsLoadingState);
 
   useEffect(() => {
     dispatch(getMovieById(id));
   }, [id, dispatch]);
 
-  const onCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(e.target.value);
-  };
-
-  const roundedRating = useMemo(() => Math.round(ratingAverage * 10) / 10, [ratingAverage]);
-
-  if (!movie) {
-    return <div>Loading...</div>;
+  if (rejected || (resolved && !movie)) {
+    return <div>Something went wrong! Try reloading or check if the ID is correct ...</div>;
   }
-
-  const onSubmit = () => {
-    if (!user) {
-      toast.error('You must be logged in to add a review', { style: { background: '#333', color: '#fff' } });
-      return;
-    }
-
-    if (comment === '') {
-      toast.error('Comment cannot be empty', { style: { background: '#333', color: '#fff' } });
-      return;
-    }
-
-    setComment('');
-    setRating(3);
-    dispatch(
-      addReviewOnMovie({
-        movieId: id,
-
-        // TODO: get authorEmail from auth
-        authorEmail: 'hei' + random(0, 1000),
-        review: { rating, comment },
-      })
-    );
-  };
 
   const onBackClick = () => {
     // If there exists a history we want to go back to the previous site,
@@ -95,75 +46,33 @@ export const MovieInfo = () => {
 
   return (
     <>
-      {showPopup && <MoviePopup movie={movie} onClose={() => setShowPopup(false)} />}
+      {showPopup && movie && <MoviePopup movie={movie} onClose={() => setShowPopup(false)} />}
 
       <div className='movie-info-container' aria-disabled={showPopup}>
         <IconButton color='info' sx={{ position: 'absolute', top: '2rem', left: '0.5rem' }} onClick={onBackClick}>
           <ArrowBackIcon fontSize='large' />
           Go back
         </IconButton>
-        <div className='movie-info-info'>
-          <div className='movie-info-rating-container'>
-            <Rating
-              name='half-rating-read'
-              value={ratingAverage ?? 5}
-              readOnly
-              precision={0.5}
-              aria-labelledby='movie-rating'
+        {pending ? (
+          <ClipLoader
+            size={128}
+            color='#1be3e3'
+            cssOverride={{ alignSelf: 'center', justifySelf: 'center', margin: '15vh 0' }}
+          />
+        ) : (
+          <>
+            <MovieInfoDetailsSection movie={movie!} />
+            <h2 id='movie-info-poster'>Poster</h2>
+            <img
+              src={movie?.posterUrl}
+              className='movie-info-image-container'
+              onClick={() => setShowPopup(true)}
+              alt={`${movie?.title} poster`}
             />
-            <span className='movie-info-rating-average' id='movie-rating'>
-              {roundedRating}/5
-            </span>
-          </div>
-          <h1>{movie.title}</h1>
-          <div className='movie-info-genres'>
-            {movie.genre.map((genre) => (
-              <Pill key={genre} className='genre-pill'>
-                {genre}
-              </Pill>
-            ))}
-          </div>
-          <span>{movie.overview}</span>
-          <h3>{getYear(movie.releaseDate)}</h3>
-        </div>
-        <h2 id='movie-info-poster'>Poster</h2>
-        <img
-          src={movie.posterUrl}
-          className='movie-info-image-container'
-          onClick={() => setShowPopup(true)}
-          alt={`${movie.title} poster`}
-        />
+          </>
+        )}
       </div>
-      <div className='movie-info-reviews'>
-        <h2>Reviews</h2>
-        {allReviews.map((review) => (
-          <Review key={review.authorEmail} {...review} />
-        ))}
-        <form className='movie-info-form'>
-          <Rating
-            name='rating'
-            value={rating}
-            onChange={(_, newValue) => {
-              setRating(newValue || 0);
-            }}
-            emptyIcon={<StarIcon color='info' style={{ opacity: 0.6 }} fontSize='inherit' />}
-          />
-          <TextareaAutosize
-            aria-label='minimum height'
-            minRows={3}
-            placeholder='Write your review ...'
-            className='movie-info-textarea'
-            name='comment'
-            value={comment}
-            onChange={onCommentChange}
-          />
-          <br />
-
-          <Button variant='contained' onClick={onSubmit} style={{ font: 'inherit' }} aria-label='Add review'>
-            Add review
-          </Button>
-        </form>
-      </div>
+      <MovieInfoReviewSection movieId={id} />
       <Toaster />
     </>
   );

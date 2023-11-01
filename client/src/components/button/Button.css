@@ -25,3 +25,11 @@
   transform: scale(0.95);
   background: linear-gradient(180deg, #045b5e, #0f4250, #343b42);
 }
+
+.main-button:disabled {
+  background: linear-gradient(0, #033e41, #0c2d36, #343b42);
+  box-shadow: 0 0 1rem rgba(9, 139, 118, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.295);
+  color: rgba(255, 255, 255, 0.295);
+  cursor: not-allowed;
+}
