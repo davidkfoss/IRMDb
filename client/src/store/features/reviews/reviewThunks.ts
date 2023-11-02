@@ -61,6 +61,9 @@ export const deleteReviewOnMovie = createAsyncThunk<boolean, { movieId: string; 
         variables: {
           id,
         },
+        update: (cache, { data }) => {
+          cache.evict({ id: cache.identify(data.DeleteReview) });
+        },
       })
       .then((result) => {
         return result.data.DeleteReview;

@@ -1,0 +1,13 @@
+.name-and-time-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.name-and-time-container > div {
+  display: flex;
+  align-items: center;
+}
+
+.name-and-time-container > div > p {
+  margin: 0.2rem 0.4rem;
+}
