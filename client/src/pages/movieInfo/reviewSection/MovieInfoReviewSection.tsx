@@ -20,7 +20,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
   const user = useUser();
 
   const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(3);
+  const [rating, setRating] = useState(1);
 
   const onCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -48,7 +48,14 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
       })
     )
       .unwrap()
-      .then(() => dispatch(getMovieById({ id: movieId, refetch: true })))
+      .then((review) => {
+        if (!review) {
+          customToast.error('You have already added a review for this movie');
+          return Promise.reject();
+        } else {
+          return dispatch(getMovieById({ id: movieId, refetch: true }));
+        }
+      })
       .then(() => {
         customToast.success('Review added!');
       });
@@ -63,7 +70,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
           name='rating'
           value={rating}
           onChange={(_, newValue) => {
-            setRating(newValue || 0);
+            setRating(newValue || 1);
           }}
           emptyIcon={<StarIcon color='info' style={{ opacity: 0.6 }} fontSize='inherit' />}
         />
