@@ -74,6 +74,20 @@ const ReviewQuery = {
       return ReviewService.getReviewByAuthorAndMovieId(args.movieId, args.authorEmail);
     },
   },
+  GetRecentReviews: {
+    type: new GraphQLList(ReviewType),
+    args: { limit: { type: GraphQLInt } },
+    async resolve(parent, args) {
+      return await ReviewService.getRecentReviews(args.limit);
+    },
+  },
+  GetPopularReviews: {
+    type: new GraphQLList(ReviewType),
+    args: { limit: { type: GraphQLInt } },
+    async resolve(parent, args) {
+      return await ReviewService.getPopularReviews(args.limit);
+    },
+  },
 };
 
 const UpdateMovieRating = async (movieId) => {

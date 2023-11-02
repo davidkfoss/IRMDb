@@ -1,7 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../../../App';
 import { Review } from '../../../models/review';
-import { createReviewMutation, deleteReviewMutation, getReviewsByMovieIdQuery } from '../../../queries/reviewQueries';
+import {
+  createReviewMutation,
+  deleteReviewMutation,
+  getReviewsByMovieIdQuery,
+  getRecentReviewsQuery,
+  getPopularReviewsQuery,
+} from '../../../queries/reviewQueries';
 
 export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, string, object>(
   'reviews/getReviewsOnMovie',
@@ -62,5 +68,35 @@ export const deleteReviewOnMovie = createAsyncThunk<boolean, { authorEmail: stri
       });
 
     return deleted;
+  }
+);
+
+export const getRecentReviews = createAsyncThunk<Review[] | undefined, { limit: number }, object>(
+  'reviews/getRecentReviews',
+  async ({ limit }) => {
+    const reviews = await client
+      .query({
+        query: getRecentReviewsQuery,
+        variables: { limit: limit },
+      })
+      .then((result) => {
+        return result.data.GetRecentReviews;
+      });
+    return reviews;
+  }
+);
+
+export const getPopularReviews = createAsyncThunk<Review[] | undefined, { limit: number }, object>(
+  'reviews/getPopularReviews',
+  async ({ limit }) => {
+    const reviews = await client
+      .query({
+        query: getPopularReviewsQuery,
+        variables: { limit: limit },
+      })
+      .then((result) => {
+        return result.data.GetPopularReviews;
+      });
+    return reviews;
   }
 );

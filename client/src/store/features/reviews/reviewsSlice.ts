@@ -1,17 +1,53 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { Review } from '../../../models/review';
 import { RootState } from '../../store';
-import { addReviewOnMovie, deleteReviewOnMovie, getReviewsOnMovie } from './reviewThunks';
+import {
+  addReviewOnMovie,
+  deleteReviewOnMovie,
+  getReviewsOnMovie,
+  getRecentReviews,
+  getPopularReviews,
+} from './reviewThunks';
+interface LoadingState {
+  pending: boolean;
+  rejected: boolean;
+  resolved: boolean;
+}
 
-interface ReviewsState {
+const initialLoadingState: LoadingState = {
+  pending: true,
+  rejected: false,
+  resolved: false,
+};
+
+interface loadingStates {
+  recentReviews: LoadingState;
+  popularReviews: LoadingState;
+}
+
+const initialLoadingStates: loadingStates = {
+  recentReviews: initialLoadingState,
+  popularReviews: initialLoadingState,
+};
+interface movieReviews {
   [movieId: string]: Review[];
 }
 
+interface ReviewsState {
+  movieReviews: movieReviews;
+  recentReviews: Review[];
+  popularReviews: Review[];
+  loadingStates: loadingStates;
+}
+
 const initialReviewsState: ReviewsState = {
-  reviews: [],
+  movieReviews: {},
+  recentReviews: [],
+  popularReviews: [],
+  loadingStates: initialLoadingStates,
 };
 
-export const moviesSlice = createSlice({
+export const reviewSlice = createSlice({
   name: 'reviews',
   initialState: initialReviewsState,
   reducers: {},
@@ -21,17 +57,17 @@ export const moviesSlice = createSlice({
         if (action.payload) {
           const review = action.payload;
           const { movieId } = action.meta.arg;
-          if (state[movieId]) {
-            state[movieId].push(review);
+          if (state.movieReviews[movieId]) {
+            state.movieReviews[movieId].push(review);
           } else {
-            state[movieId] = [review];
+            state.movieReviews[movieId] = [review];
           }
         }
       })
       .addCase(deleteReviewOnMovie.fulfilled, (state, action) => {
         if (action.payload) {
           const { movieId, authorEmail } = action.meta.arg;
-          const reviews = state[movieId];
+          const reviews = state.movieReviews[movieId];
           const reviewIndex = reviews.findIndex((review) => review.meta.authorEmail === authorEmail);
           if (reviewIndex !== -1) {
             reviews.splice(reviewIndex, 1);
@@ -40,13 +76,43 @@ export const moviesSlice = createSlice({
       })
       .addCase(getReviewsOnMovie.fulfilled, (state, action) => {
         const movieId = action.meta.arg;
-        state[movieId] = action.payload || [];
+        state.movieReviews[movieId] = action.payload || [];
+      })
+      .addCase(getRecentReviews.fulfilled, (state, action) => {
+        state.loadingStates.recentReviews = { pending: false, rejected: false, resolved: true };
+        if (action.payload) {
+          const fetchedReviews = action.payload;
+          state.recentReviews = fetchedReviews;
+        }
+      })
+      .addCase(getRecentReviews.pending, (state) => {
+        state.loadingStates.recentReviews = { pending: true, rejected: false, resolved: false };
+      })
+      .addCase(getRecentReviews.rejected, (state) => {
+        state.loadingStates.recentReviews = { pending: false, rejected: true, resolved: false };
+      })
+      .addCase(getPopularReviews.fulfilled, (state, action) => {
+        state.loadingStates.popularReviews = { pending: false, rejected: false, resolved: true };
+        if (action.payload) {
+          const fetchedReviews = action.payload;
+          state.popularReviews = fetchedReviews;
+        }
+      })
+      .addCase(getPopularReviews.pending, (state) => {
+        state.loadingStates.popularReviews = { pending: true, rejected: false, resolved: false };
+      })
+      .addCase(getPopularReviews.rejected, (state) => {
+        state.loadingStates.popularReviews = { pending: false, rejected: true, resolved: false };
       }),
 });
 
-export const reviewsReducer = moviesSlice.reducer;
+export const reviewsReducer = reviewSlice.reducer;
 
 export const selectReviews = (state: RootState) => state.reviews;
 
 export const selectReviewInfoOnMovie = (movieId: string) =>
-  createSelector(selectReviews, (reviews) => reviews[movieId] || []);
+  createSelector(selectReviews, (reviews) => reviews.movieReviews[movieId] || []);
+
+export const selectRecentReviews = () => createSelector(selectReviews, (reviews) => reviews.recentReviews);
+
+export const selectPopularReviews = () => createSelector(selectReviews, (reviews) => reviews.popularReviews);

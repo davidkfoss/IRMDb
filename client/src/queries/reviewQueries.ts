@@ -80,6 +80,46 @@ const getReviewByAuthorAndMovieIdQuery = gql`
   }
 `;
 
+const getRecentReviewsQuery = gql`
+  query ($limit: Int!) {
+    GetRecentReviews(limit: $limit) {
+      id
+      rating
+      comment
+      votes {
+        vote
+        user
+      }
+      date
+      meta {
+        authorEmail
+        authorName
+        movieId
+      }
+    }
+  }
+`;
+
+const getPopularReviewsQuery = gql`
+  query ($limit: Int!) {
+    GetPopularReviews(limit: $limit) {
+      id
+      rating
+      comment
+      votes {
+        vote
+        user
+      }
+      date
+      meta {
+        authorEmail
+        authorName
+        movieId
+      }
+    }
+  }
+`;
+
 const createReviewMutation = gql`
   mutation ($rating: Int!, $comment: String!, $authorEmail: String!, $movieId: ID!) {
     CreateReview(rating: $rating, comment: $comment, authorEmail: $authorEmail, movieId: $movieId) {
@@ -148,4 +188,6 @@ export {
   getReviewByIdQuery,
   getReviewsByMovieIdQuery,
   voteReviewMutation,
+  getRecentReviewsQuery,
+  getPopularReviewsQuery,
 };
