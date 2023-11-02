@@ -1,11 +1,12 @@
 import StarIcon from '@mui/icons-material/Star';
 import { Button, Rating, TextareaAutosize } from '@mui/material';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ReviewCard } from '../../../components/reviewCard/ReviewCard';
 import { useUser } from '../../../hooks/useUser';
-import { getMovieById } from '../../../store/features/movies/movieThunks';
-import { addReviewOnMovie } from '../../../store/features/reviews/reviewThunks';
+import { Review } from '../../../models/review';
+import { getMovieRatingById } from '../../../store/features/movies/movieThunks';
+import { addReviewOnMovie, deleteReviewOnMovie } from '../../../store/features/reviews/reviewThunks';
 import { selectReviewInfoOnMovie } from '../../../store/features/reviews/reviewsSlice';
 import { useAppDispatch } from '../../../store/store';
 import customToast from '../../../util/toastWrapper';
@@ -53,7 +54,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
           customToast.error('You have already added a review for this movie');
           return Promise.reject();
         } else {
-          return dispatch(getMovieById({ id: movieId, refetch: true }));
+          return dispatch(getMovieRatingById({ id: movieId, refetch: true }));
         }
       })
       .then(() => {
@@ -61,10 +62,43 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
       });
   };
 
+  const canDelete = useCallback(
+    (review: Review) => {
+      if (!user) {
+        return false;
+      }
+
+      return review.meta.authorEmail === user.email;
+    },
+    [user]
+  );
+
+  const onReviewDelete = useCallback(
+    (review: Review) => {
+      if (!canDelete(review)) return;
+
+      dispatch(deleteReviewOnMovie({ movieId, id: review.id }))
+        .unwrap()
+        .then(() => {
+          customToast.success('Review deleted!');
+          return dispatch(getMovieRatingById({ id: movieId, refetch: true }));
+        });
+    },
+    [dispatch, movieId, canDelete]
+  );
+
   return (
     <div className='movie-info-reviews'>
       <h2>Reviews</h2>
-      {reviews && reviews.map((review) => <ReviewCard key={review.id} review={review} />)}
+      {reviews &&
+        reviews.map((review) => (
+          <ReviewCard
+            key={review.id}
+            review={review}
+            onDelete={() => onReviewDelete(review)}
+            canDelete={canDelete(review)}
+          />
+        ))}
       <form className='movie-info-form'>
         <Rating
           name='rating'

@@ -69,8 +69,8 @@ class ReviewService {
   }
 
   async deleteReview(id) {
-    const movie = await ReviewModel.findById(id).select('meta.movieId');
-    await MovieModel.findByIdAndUpdate(movie.meta.movieId, { $pull: { reviewIds: id } });
+    const movieId = await ReviewModel.findById(id).select('meta.movieId');
+    await MovieModel.findByIdAndUpdate(movieId.meta.movieId, { $pull: { reviewIds: id } });
     return await ReviewModel.findByIdAndDelete(id);
   }
 }

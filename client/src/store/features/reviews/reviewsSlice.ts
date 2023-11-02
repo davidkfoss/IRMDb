@@ -4,9 +4,9 @@ import { RootState } from '../../store';
 import {
   addReviewOnMovie,
   deleteReviewOnMovie,
-  getReviewsOnMovie,
-  getRecentReviews,
   getPopularReviews,
+  getRecentReviews,
+  getReviewsOnMovie,
 } from './reviewThunks';
 interface LoadingState {
   pending: boolean;
@@ -66,9 +66,9 @@ export const reviewSlice = createSlice({
       })
       .addCase(deleteReviewOnMovie.fulfilled, (state, action) => {
         if (action.payload) {
-          const { movieId, authorEmail } = action.meta.arg;
-          const reviews = state.movieReviews[movieId];
-          const reviewIndex = reviews.findIndex((review) => review.meta.authorEmail === authorEmail);
+          const { movieId, id } = action.meta.arg;
+          const reviews = state[movieId];
+          const reviewIndex = reviews.findIndex((review) => review.id === id);
           if (reviewIndex !== -1) {
             reviews.splice(reviewIndex, 1);
           }

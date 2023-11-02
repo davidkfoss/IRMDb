@@ -16,6 +16,14 @@ const getMovieByIdQuery = gql`
   }
 `;
 
+const getMovieRatingByIdQuery = gql`
+  query ($id: ID!) {
+    GetMovieById(id: $id) {
+      rating
+    }
+  }
+`;
+
 const getAllMoviesQuery = gql`
   {
     GetAllMovies {
@@ -55,4 +63,4 @@ const getMoviesByFilterQuery = gql`
   }
 `;
 
-export { getAllMoviesQuery, getMovieByIdQuery, getMoviesByFilterQuery };
+export { getAllMoviesQuery, getMovieByIdQuery, getMovieRatingByIdQuery, getMoviesByFilterQuery };

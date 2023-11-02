@@ -52,15 +52,14 @@ export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput
   }
 );
 
-export const deleteReviewOnMovie = createAsyncThunk<boolean, { authorEmail: string; movieId: string }, object>(
+export const deleteReviewOnMovie = createAsyncThunk<boolean, { movieId: string; id: string }, object>(
   'reviews/deleteReviewOnMovie',
-  async ({ authorEmail, movieId }) => {
+  async ({ id }) => {
     const deleted = await client
       .mutate({
         mutation: deleteReviewMutation,
         variables: {
-          movieId: movieId,
-          authorEmail: authorEmail,
+          id,
         },
       })
       .then((result) => {

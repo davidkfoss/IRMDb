@@ -2,7 +2,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../../../App';
 import { Filters } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
-import { getAllMoviesQuery, getMovieByIdQuery, getMoviesByFilterQuery } from '../../../queries/movieQueries';
+import {
+  getAllMoviesQuery,
+  getMovieByIdQuery,
+  getMovieRatingByIdQuery,
+  getMoviesByFilterQuery,
+} from '../../../queries/movieQueries';
 import { RootState } from '../../store';
 
 export const getMovieById = createAsyncThunk<
@@ -16,6 +21,19 @@ export const getMovieById = createAsyncThunk<
       return result.data.GetMovieById;
     });
   return movie;
+});
+
+export const getMovieRatingById = createAsyncThunk<
+  number | undefined,
+  { id: string; refetch?: boolean },
+  { state: RootState }
+>('movies/getMovieRatingById', async ({ id, refetch = false }) => {
+  const rating = await client
+    .query({ query: getMovieRatingByIdQuery, variables: { id: id }, fetchPolicy: refetch ? 'no-cache' : undefined })
+    .then((result) => {
+      return result.data.GetMovieById.rating;
+    });
+  return rating;
 });
 
 export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: RootState }>(
