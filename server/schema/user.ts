@@ -1,5 +1,6 @@
 import { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLNonNull, GraphQLList } from 'graphql';
-import { userService } from '../services/UserService.js';
+import { userService } from '../services/UserService';
+import { User, UserData } from '../types/userTypes';
 
 const UserType = new GraphQLObjectType({
   name: 'User',
@@ -14,21 +15,21 @@ const UserType = new GraphQLObjectType({
 const UserQuery = {
   GetAllUsers: {
     type: new GraphQLList(UserType),
-    async resolve() {
-      return await userService.getAllUsers();
+    async resolve(): Promise<User[]> {
+      return (await userService.getAllUsers()).map((user) => user.toObject()) as User[];
     },
   },
   GetUserById: {
     type: UserType,
     args: { id: { type: GraphQLNonNull(GraphQLID) } },
-    async resolve(parent, args) {
+    async resolve(parent: any, args: { id: string }) {
       return await userService.getUserById(args.id);
     },
   },
   GetUserByEmail: {
     type: UserType,
     args: { email: { type: GraphQLNonNull(GraphQLString) } },
-    async resolve(parent, args) {
+    async resolve(parent: any, args: { email: string }) {
       return await userService.getUserByEmail(args.email);
     },
   },
@@ -42,7 +43,7 @@ const UserMutation = {
       email: { type: new GraphQLNonNull(GraphQLString) },
       profilePictureUrl: { type: new GraphQLNonNull(GraphQLString) },
     },
-    async resolve(parent, args) {
+    async resolve(parent: any, args: UserData) {
       return await userService.createUser({
         name: args.name,
         email: args.email,
@@ -58,7 +59,7 @@ const UserMutation = {
       email: { type: GraphQLString },
       profilePictureUrl: { type: GraphQLString },
     },
-    async resolve(parent, args) {
+    async resolve(parent: any, args: { id: string; name: string; email: string; profilePictureUrl: string }) {
       return await userService.updateUser(args.id, {
         name: args.name,
         email: args.email,

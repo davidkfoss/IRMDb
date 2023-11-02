@@ -1,15 +1,18 @@
-import { MovieModel } from '../models/Movie.js';
+import { MovieModel } from '../models/Movie';
+import { QueryMoviesData, QuerySortMoviesData } from '../types/movireTypes';
+import { Review } from '../types/reviewType';
 
 export class MovieService {
-  async getAllMovies(offset, limit, search, genres, sortBy, direction) {
-    const query = {};
+  async getAllMovies(offset: number, limit: number, search: string, genres: string, sortBy: string, direction: string) {
+    const query: QueryMoviesData = {};
     if (search) {
       query.title = { $regex: search, $options: 'i' };
     }
     if (genres && genres.length > 0) {
       query.genre = { $all: genres };
     }
-    const sortQuery = {};
+
+    const sortQuery: Record<string, number> = {};
     if (sortBy === 'Name') {
       sortQuery.title = direction === 'asc' ? 1 : -1;
     } else if (sortBy === 'Rating') {
@@ -19,29 +22,37 @@ export class MovieService {
     } else {
       sortQuery.popularity = direction === 'asc' ? 1 : -1;
     }
-    return await MovieModel.find(query).sort(sortQuery).skip(offset).limit(limit);
+    return await MovieModel.find(query)
+      .sort(sortQuery as any)
+      .skip(offset)
+      .limit(limit);
   }
 
-  async getMovieById(id) {
+  async getMovieById(id: string) {
     const movie = await MovieModel.findById(id);
-    if (!movie.rating) {
+    if (!movie) {
+      throw new Error('Movie not found');
+    } else if (!movie.rating) {
       movie.rating = 0;
     }
     return movie;
   }
 
-  async updateMovieRating(id, reviews) {
+  async updateMovieRating(id: string, reviews: Review[]) {
     const movie = await MovieModel.findById(id);
+    if (!movie) {
+      throw new Error('Movie not found');
+    }
     if (reviews.length === 0) {
       movie.rating = 0;
       await movie.save();
       return;
     }
-    movie.rating = 0;
+    let totalRating = 0;
     reviews.forEach((review) => {
-      movie.rating += review.rating;
+      totalRating += review.rating;
     });
-    movie.rating = movie.rating / reviews.length;
+    movie.rating = totalRating / reviews.length;
     await movie.save();
   }
 }

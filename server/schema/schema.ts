@@ -1,8 +1,8 @@
 import { GraphQLSchema, GraphQLObjectType } from 'graphql';
 
-import MovieSchema from './movie.js';
-import ReviewSchema from './review.js';
-import UserSchema from './user.js';
+import MovieSchema from './movie';
+import ReviewSchema from './review';
+import UserSchema from './user';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',

@@ -7,7 +7,8 @@ import {
   GraphQLNonNull,
   GraphQLInt,
 } from 'graphql';
-import { movieService } from '../services/MovieService.js';
+import { movieService } from '../services/MovieService';
+import { QueryMoviesByFilterArgs } from '../types/movireTypes';
 
 const MovieType = new GraphQLObjectType({
   name: 'Movie',
@@ -28,15 +29,8 @@ const MovieQuery = {
   GetMovieById: {
     type: MovieType,
     args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-    resolve(parent, args) {
+    resolve(parent: any, args: { id: string }) {
       return movieService.getMovieById(args.id);
-    },
-  },
-  // DEPRECATED
-  GetAllMovies: {
-    type: new GraphQLList(MovieType),
-    resolve() {
-      return movieService.getAllMovies(args.offset, args.limit);
     },
   },
   GetMoviesByFilter: {
@@ -49,7 +43,7 @@ const MovieQuery = {
       offset: { type: GraphQLInt },
       limit: { type: GraphQLInt },
     },
-    async resolve(parent, args) {
+    async resolve(parent: any, args: QueryMoviesByFilterArgs) {
       let movies = await movieService.getAllMovies(
         args.offset,
         args.limit,

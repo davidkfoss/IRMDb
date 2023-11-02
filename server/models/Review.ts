@@ -9,6 +9,7 @@ const ReviewMeta = {
   authorEmail: { type: String, required: true },
   authorName: { type: String, required: true },
   movieId: { type: String, required: true },
+  movieTitle: { type: String },
 };
 
 const ReviewSchema = new mongoose.Schema({
