@@ -25,6 +25,7 @@ const ReviewMetaType = new GraphQLObjectType({
     authorEmail: { type: GraphQLString },
     authorName: { type: GraphQLString },
     movieId: { type: GraphQLString },
+    movieTitle: { type: GraphQLString },
   }),
 });
 

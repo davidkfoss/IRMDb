@@ -28,7 +28,7 @@ export const MovieInfo = () => {
 
   useEffect(() => {
     dispatch(getMovieById({ id }));
-    dispatch(getReviewsOnMovie(id));
+    dispatch(getReviewsOnMovie({ id: id, refetch: true }));
   }, [id, dispatch]);
 
   if (rejected || (resolved && !movie)) {

@@ -9,12 +9,13 @@ import {
   getPopularReviewsQuery,
 } from '../../../queries/reviewQueries';
 
-export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, string, object>(
+export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, { id: string; refetch: boolean }, object>(
   'reviews/getReviewsOnMovie',
-  async (id) => {
+  async ({ id, refetch }) => {
     const reviews = await client
       .query({
         query: getReviewsByMovieIdQuery,
+        fetchPolicy: refetch ? 'no-cache' : undefined,
         variables: { movieId: id },
       })
       .then((result) => {
@@ -80,6 +81,7 @@ export const getRecentReviews = createAsyncThunk<Review[] | undefined, { limit: 
       .query({
         query: getRecentReviewsQuery,
         variables: { limit: limit },
+        fetchPolicy: 'no-cache',
       })
       .then((result) => {
         return result.data.GetRecentReviews;
@@ -95,6 +97,7 @@ export const getPopularReviews = createAsyncThunk<Review[] | undefined, { limit:
       .query({
         query: getPopularReviewsQuery,
         variables: { limit: limit },
+        fetchPolicy: 'no-cache',
       })
       .then((result) => {
         return result.data.GetPopularReviews;
