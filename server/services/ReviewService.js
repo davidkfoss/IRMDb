@@ -34,6 +34,8 @@ class ReviewService {
     reviewData.meta.authorName = user.name;
     if (!validateReviewData(reviewData)) {
       return null;
+    } else if (await this.getReviewByAuthorAndMovieId(reviewData.meta.movieId, reviewData.meta.authorEmail)) {
+      return null;
     }
     const newReview = await ReviewModel.create(reviewData);
     await MovieModel.findByIdAndUpdate(reviewData.meta.movieId, { $push: { reviewIds: newReview.id } });
