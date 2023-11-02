@@ -36,13 +36,13 @@ export const Feed = () => {
     <div className='reviewFeed'>
       <h2>Top reviews</h2>
       {popularReviews && popularReviews.length > 0 ? (
-        popularReviews.map((review) => <FeedReview key={review.meta.authorEmail} {...review} />)
+        popularReviews.map((review) => <FeedReview key={review.id} {...review} />)
       ) : (
         <>No reviews to show</>
       )}
       <h2>Newest reviews</h2>
       {recentReviews && recentReviews.length > 0 ? (
-        recentReviews.map((review) => <FeedReview key={review.meta.authorEmail} {...review} />)
+        recentReviews.map((review) => <FeedReview key={review.id} {...review} />)
       ) : (
         <>No reviews to show</>
       )}
