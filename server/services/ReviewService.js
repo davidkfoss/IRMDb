@@ -33,10 +33,8 @@ class ReviewService {
     }
     reviewData.meta.authorName = user.name;
     if (!validateReviewData(reviewData)) {
-      console.log('Invalid review data');
       return null;
     } else if (await this.getReviewByAuthorAndMovieId(reviewData.meta.movieId, reviewData.meta.authorEmail)) {
-      console.log('Review already exists');
       return null;
     }
     const newReview = await ReviewModel.create(reviewData);
