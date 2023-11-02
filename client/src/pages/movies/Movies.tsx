@@ -44,7 +44,6 @@ export const Movies = () => {
     // Focus on the last movie in the grid after loading more movies
     // This is a workaround for the fact that the focus is lost when more movies are loaded
     const isFocused = document.activeElement?.id === 'load-more';
-    console.log(document.activeElement);
     if (isFocused) {
       const movieGrid = document.getElementById('movie-grid');
       const children = movieGrid?.children;

@@ -1,6 +1,8 @@
 const { validateReviewData, validateVote } = require('../util/validators');
 const { ReviewModel } = require('../models/Review');
 const { MovieModel } = require('../models/Movie');
+const { UserModel } = require('../models/User');
+
 class ReviewService {
   async getAllReviews() {
     return await ReviewModel.find();

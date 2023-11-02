@@ -1,36 +1,26 @@
 import StarIcon from '@mui/icons-material/Star';
 import { Button, Rating, TextareaAutosize } from '@mui/material';
-import _, { random } from 'lodash';
-import { useMemo, useState } from 'react';
-import toast from 'react-hot-toast';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Review } from '../../../components/review/Review';
-import useDebounceDispatch from '../../../hooks/useDebounceDispatch';
+import { ReviewCard } from '../../../components/reviewCard/ReviewCard';
 import { useUser } from '../../../hooks/useUser';
+import { getMovieById } from '../../../store/features/movies/movieThunks';
 import { addReviewOnMovie } from '../../../store/features/reviews/reviewThunks';
 import { selectReviewInfoOnMovie } from '../../../store/features/reviews/reviewsSlice';
-
-const initialReviewInfo = {
-  reviews: [],
-  ratingAverage: 5,
-};
+import { useAppDispatch } from '../../../store/store';
+import customToast from '../../../util/toastWrapper';
 
 interface MovieInfoReviewSectionProps {
   movieId: string;
 }
 
 export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps) => {
-  const dispatch = useDebounceDispatch(100);
-  const { reviews } = useSelector(selectReviewInfoOnMovie(movieId)) || initialReviewInfo;
+  const dispatch = useAppDispatch();
+  const reviews = useSelector(selectReviewInfoOnMovie(movieId));
   const user = useUser();
 
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(3);
-
-  const allReviews = useMemo(
-    () => _.toPairs(reviews).map(([authorEmail, review]) => ({ authorEmail: authorEmail, ...review })),
-    [reviews]
-  );
 
   const onCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -38,12 +28,12 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
 
   const onSubmit = () => {
     if (!user) {
-      toast.error('You must be logged in to add a review', { style: { background: '#333', color: '#fff' } });
+      customToast.error('You must be logged in to add a review');
       return;
     }
 
     if (comment === '') {
-      toast.error('Comment cannot be empty', { style: { background: '#333', color: '#fff' } });
+      customToast.error('Comment cannot be empty');
       return;
     }
 
@@ -52,20 +42,22 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
     dispatch(
       addReviewOnMovie({
         movieId,
-
-        // TODO: get authorEmail from auth
-        authorEmail: 'hei' + random(0, 1000),
-        review: { rating, comment },
+        authorEmail: user.email,
+        rating,
+        comment,
       })
-    );
+    )
+      .unwrap()
+      .then(() => dispatch(getMovieById({ id: movieId, refetch: true })))
+      .then(() => {
+        customToast.success('Review added!');
+      });
   };
 
   return (
     <div className='movie-info-reviews'>
       <h2>Reviews</h2>
-      {allReviews.map((review) => (
-        <Review key={review.authorEmail} {...review} />
-      ))}
+      {reviews && reviews.map((review) => <ReviewCard key={review.id} review={review} />)}
       <form className='movie-info-form'>
         <Rating
           name='rating'

@@ -1,22 +1,17 @@
 import { Rating } from '@mui/material';
+import { round } from 'lodash';
 import { useMemo } from 'react';
 import { Pill } from '../../../components/pill/Pill';
 import { Movie } from '../../../models/movie';
 import { getYear } from '../../../util/parseDate';
 
 export const MovieInfoDetailsSection = ({ movie }: { movie: Movie }) => {
-  const roundedRating = useMemo(() => Math.round(movie.rating ?? 5 * 10) / 10, [movie]);
+  const roundedRating = useMemo(() => round(movie.rating ?? 5, 2), [movie]);
 
   return (
     <div className='movie-info-info'>
       <div className='movie-info-rating-container'>
-        <Rating
-          name='half-rating-read'
-          value={movie.rating ?? 5}
-          readOnly
-          precision={0.5}
-          aria-labelledby='movie-rating'
-        />
+        <Rating name='half-rating-read' value={roundedRating} readOnly precision={0.5} aria-labelledby='movie-rating' />
         <span className='movie-info-rating-average' id='movie-rating'>
           {roundedRating}/5
         </span>
