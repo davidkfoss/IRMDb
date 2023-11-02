@@ -12,13 +12,14 @@
 .review-info {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1rem;
 }
 
 .review-author-info {
   display: flex;
   align-items: center;
+  margin-bottom: 0.5rem;
 }
 
 .review-author-info > * {
@@ -28,6 +29,17 @@
 }
 
 .review-date {
-  color: rgba(236, 236, 236, 0.719);
+  color: rgba(236, 236, 236, 0.587);
   margin: 0;
+  margin-left: 0.5rem;
+}
+
+.review-comment {
+  padding: 0.5rem;
+}
+
+@media screen and (max-width: 1140px) {
+  .review-container {
+    width: 90%;
+  }
 }

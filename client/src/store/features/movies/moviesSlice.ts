@@ -2,7 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { Filters } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
 import { RootState } from '../../store';
-import { getFilteredMovies, getMovieById, getMovies } from './movieThunks';
+import { getFilteredMovies, getMovieById, getMovieRatingById, getMovies } from './movieThunks';
 
 export interface LoadingState {
   pending: boolean;
@@ -101,6 +101,12 @@ export const moviesSlice = createSlice({
       })
       .addCase(getFilteredMovies.rejected, (state) => {
         state.gridLoadingState = { pending: false, fetchMorePending: false, rejected: true, resolved: false };
+      })
+      .addCase(getMovieRatingById.fulfilled, (state, action) => {
+        if (action.payload) {
+          const rating = action.payload;
+          state.currentMovie = { ...state.currentMovie!, rating };
+        }
       });
   },
 });
