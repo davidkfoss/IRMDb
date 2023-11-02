@@ -1,54 +1,51 @@
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { FeedReview } from '../../components/feedReview/FeedReview';
+import { Review } from '../../models/review';
+import { useAppDispatch } from '../../store/store';
+import { getPopularReviews, getRecentReviews } from '../../store/features/reviews/reviewThunks';
+import { selectPopularReviews, selectRecentReviews } from '../../store/features/reviews/reviewsSlice';
 import './Feed.css';
 
 export const Feed = () => {
-  const loremImpsum =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae quam eget nunc aliquam aliquet. Sed euismod, nisl eget aliquam aliquet, nisl nisl aliquam nisl, ne';
-  const mockReviews = [
-    {
-      authorId: 1,
-      authorName: 'John Doe',
-      rating: 5,
-      comment: loremImpsum,
-      date: new Date('2020-09-30T14:48:00.000Z'),
-      upvotes: 5,
-    },
-    {
-      authorId: 2,
-      authorName: 'Jane Doe',
-      rating: 4,
-      comment: loremImpsum,
-      date: new Date('2021-09-30T14:48:00.000Z'),
-      upvotes: 3,
-    },
-    {
-      authorId: 3,
-      authorName: 'John Smith',
-      rating: 3,
-      comment: loremImpsum,
-      date: new Date('2000-09-30T14:48:00.000Z'),
-      upvotes: 1,
-    },
-  ];
+  const dispatch = useAppDispatch();
+  const [recentReviews, setRecentReviews] = useState([] as Review[]);
+  const [popularReviews, setPopularReviews] = useState([] as Review[]);
+  const recentReviewsFromStore = useSelector(selectRecentReviews());
+  const popularReviewsFromStore = useSelector(selectPopularReviews());
+
+  useEffect(() => {
+    const limit = { limit: 3 };
+    dispatch(getRecentReviews(limit));
+    dispatch(getPopularReviews(limit));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (recentReviewsFromStore) {
+      setRecentReviews(recentReviewsFromStore);
+    }
+  }, [recentReviewsFromStore]);
+
+  useEffect(() => {
+    if (popularReviewsFromStore) {
+      setPopularReviews(popularReviewsFromStore);
+    }
+  }, [popularReviewsFromStore]);
 
   return (
     <div className='reviewFeed'>
       <h2>Top reviews</h2>
-      {mockReviews
-        .sort((a, b) => {
-          return b.upvotes - a.upvotes;
-        })
-        .map((review) => {
-          return <FeedReview key={review.authorId} {...review} />;
-        })}
+      {popularReviews && popularReviews.length > 0 ? (
+        popularReviews.map((review) => <FeedReview key={review.meta.authorEmail} {...review} />)
+      ) : (
+        <>No reviews to show</>
+      )}
       <h2>Newest reviews</h2>
-      {mockReviews
-        .sort((a, b) => {
-          return b.date.getTime() - a.date.getTime();
-        })
-        .map((review) => {
-          return <FeedReview key={review.authorId} {...review} />;
-        })}
+      {recentReviews && recentReviews.length > 0 ? (
+        recentReviews.map((review) => <FeedReview key={review.meta.authorEmail} {...review} />)
+      ) : (
+        <>No reviews to show</>
+      )}
     </div>
   );
 };

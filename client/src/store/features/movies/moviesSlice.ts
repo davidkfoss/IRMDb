@@ -4,14 +4,14 @@ import { Movie } from '../../../models/movie';
 import { RootState } from '../../store';
 import { getFilteredMovies, getMovieById, getMovies } from './movieThunks';
 
-interface LoadingState {
+export interface LoadingState {
   pending: boolean;
   fetchMorePending?: boolean;
   rejected: boolean;
   resolved: boolean;
 }
 
-const initialLoadingState: LoadingState = {
+export const initialLoadingState: LoadingState = {
   pending: true,
   rejected: false,
   resolved: false,

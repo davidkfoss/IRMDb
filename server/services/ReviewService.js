@@ -26,6 +26,14 @@ class ReviewService {
     return await ReviewModel.findOne({ 'meta.movieId': movieId, 'meta.authorEmail': authorEmail });
   }
 
+  async getRecentReviews(limit) {
+    return await ReviewModel.find().sort({ date: -1 }).limit(limit);
+  }
+
+  async getPopularReviews(limit) {
+    return await ReviewModel.find().sort({ 'votes.length': -1 }).limit(limit);
+  }
+
   async createReview(reviewData) {
     const user = await UserModel.findOne({ email: reviewData.meta.authorEmail });
     if (!user) {
