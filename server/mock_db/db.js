@@ -12,7 +12,7 @@ const mockMovies = [
   {
     id: 2,
     title: 'The Batman',
-    genre: ['Crime', 'Mystery', 'Thriller','Action'],
+    genre: ['Crime', 'Mystery', 'Thriller', 'Action'],
     releaseDate: '2022-03-01',
     posterUrl: 'https://image.tmdb.org/t/p/original/74xTEgt7R36Fpooo50r9T25onhq.jpg',
     overview:
@@ -22,13 +22,13 @@ const mockMovies = [
   {
     id: 3,
     title: 'No Exit',
-    genre: ['Thriller','Action'],
+    genre: ['Thriller', 'Action'],
     releaseDate: '2022-02-25',
     posterUrl: 'https://image.tmdb.org/t/p/original/vDHsLnOWKlPGmWs0kGfuhNF4w5l.jpg',
     overview:
       'Stranded at a rest stop in the mountains during a blizzard, a recovering addict discovers a kidnapped child hidden in a car belonging to one of the people inside the building which sets her on a terrifying struggle to identify who among them is the kidnapper.',
     popularity: 2618.087,
-},
+  },
   {
     id: 4,
     title: 'Encanto',
@@ -48,38 +48,38 @@ const mockMovies = [
     overview:
       "As a collection of history's worst tyrants and criminal masterminds gather to plot a war to wipe out millions, one man must race against time to stop them.",
     popularity: 1895.511,
-  }
+  },
 ];
 
-const mockReviews = [
-];
+const mockReviews = [];
 
 const mockUsers = [
-    {
-        id: 101,
-        email: 'a@a',
-        profilePictureUrl: 'https://image.tmdb.org/t/p/original/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg'
-    },
-    {
-        id: 102,
-        email: 'b@b',
-        profilePictureUrl: 'https://image.tmdb.org/t/p/original/74xTEgt7R36Fpooo50r9T25onhq.jpg'
-    },
-    {
-        id: 103,
-        email: 'c@c',
-        profilePictureUrl: 'https://image.tmdb.org/t/p/original/vDHsLnOWKlPGmWs0kGfuhNF4w5l.jpg'
-    },
-    {
-        id: 104,
-        email: 'd@d',
-        profilePictureUrl: 'https://image.tmdb.org/t/p/original/vDHsLnOWKlPGmWs0kGfuhNF4w5l.jpg'
-    }];
+  {
+    id: 101,
+    email: 'a@a',
+    profilePictureUrl: 'https://image.tmdb.org/t/p/original/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
+  },
+  {
+    id: 102,
+    email: 'b@b',
+    profilePictureUrl: 'https://image.tmdb.org/t/p/original/74xTEgt7R36Fpooo50r9T25onhq.jpg',
+  },
+  {
+    id: 103,
+    email: 'c@c',
+    profilePictureUrl: 'https://image.tmdb.org/t/p/original/vDHsLnOWKlPGmWs0kGfuhNF4w5l.jpg',
+  },
+  {
+    id: 104,
+    email: 'd@d',
+    profilePictureUrl: 'https://image.tmdb.org/t/p/original/vDHsLnOWKlPGmWs0kGfuhNF4w5l.jpg',
+  },
+];
 
 const db = {
-    movies: mockMovies,
-    reviews: mockReviews,
-    users: mockUsers
-}
+  movies: mockMovies,
+  reviews: mockReviews,
+  users: mockUsers,
+};
 
-module.exports = {db};
+export default { db };

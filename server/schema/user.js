@@ -1,5 +1,5 @@
-const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLNonNull, GraphQLList } = require('graphql');
-const { UserService } = require('../services/UserService');
+import { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLNonNull, GraphQLList } from 'graphql';
+import { userService } from '../services/UserService.js';
 
 const UserType = new GraphQLObjectType({
   name: 'User',
@@ -15,21 +15,21 @@ const UserQuery = {
   GetAllUsers: {
     type: new GraphQLList(UserType),
     async resolve() {
-      return await UserService.getAllUsers();
+      return await userService.getAllUsers();
     },
   },
   GetUserById: {
     type: UserType,
     args: { id: { type: GraphQLNonNull(GraphQLID) } },
     async resolve(parent, args) {
-      return await UserService.getUserById(args.id);
+      return await userService.getUserById(args.id);
     },
   },
   GetUserByEmail: {
     type: UserType,
     args: { email: { type: GraphQLNonNull(GraphQLString) } },
     async resolve(parent, args) {
-      return await UserService.getUserByEmail(args.email);
+      return await userService.getUserByEmail(args.email);
     },
   },
 };
@@ -43,7 +43,7 @@ const UserMutation = {
       profilePictureUrl: { type: new GraphQLNonNull(GraphQLString) },
     },
     async resolve(parent, args) {
-      return await UserService.createUser({
+      return await userService.createUser({
         name: args.name,
         email: args.email,
         profilePictureUrl: args.profilePictureUrl,
@@ -59,7 +59,7 @@ const UserMutation = {
       profilePictureUrl: { type: GraphQLString },
     },
     async resolve(parent, args) {
-      return await UserService.updateUser(args.id, {
+      return await userService.updateUser(args.id, {
         name: args.name,
         email: args.email,
         profilePictureUrl: args.profilePictureUrl,
@@ -67,6 +67,5 @@ const UserMutation = {
     },
   },
 };
-exports.typeDefs = UserType;
-exports.query = UserQuery;
-exports.mutation = UserMutation;
+
+export default { typeDefs: UserType, query: UserQuery, mutation: UserMutation };

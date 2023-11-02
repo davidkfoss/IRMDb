@@ -1,6 +1,6 @@
-const { MovieModel } = require('../models/Movie');
+import { MovieModel } from '../models/Movie.js';
 
-class MovieService {
+export class MovieService {
   async getAllMovies(offset, limit, search, genres, sortBy, direction) {
     const query = {};
     if (search) {
@@ -23,19 +23,27 @@ class MovieService {
   }
 
   async getMovieById(id) {
-    return await MovieModel.findById(id);
+    const movie = await MovieModel.findById(id);
+    if (!movie.rating) {
+      movie.rating = 0;
+    }
+    return movie;
   }
 
   async updateMovieRating(id, reviews) {
     const movie = await MovieModel.findById(id);
-    let totalRating = 0;
+    if (reviews.length === 0) {
+      movie.rating = 0;
+      await movie.save();
+      return;
+    }
+    movie.rating = 0;
     reviews.forEach((review) => {
-      totalRating += review.rating;
+      movie.rating += review.rating;
     });
-    movie.rating = totalRating / reviews.length;
-
+    movie.rating = movie.rating / reviews.length;
     await movie.save();
   }
 }
 
-module.exports.MovieService = new MovieService();
+export const movieService = new MovieService();

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const Vote = {
   vote: { type: Boolean, required: true },
@@ -19,4 +19,4 @@ const ReviewSchema = new mongoose.Schema({
   meta: { type: ReviewMeta, unique: true },
 });
 
-exports.ReviewModel = mongoose.model('Review', ReviewSchema);
+export const ReviewModel = mongoose.model('Review', ReviewSchema);

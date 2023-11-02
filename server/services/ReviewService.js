@@ -1,7 +1,7 @@
-const { validateReviewData, validateVote } = require('../util/validators');
-const { ReviewModel } = require('../models/Review');
-const { MovieModel } = require('../models/Movie');
-const { UserModel } = require('../models/User');
+import { validateReviewData, validateVote } from '../util/validators.js';
+import { ReviewModel } from '../models/Review.js';
+import { MovieModel } from '../models/Movie.js';
+import { UserModel } from '../models/User.js';
 
 class ReviewService {
   async getAllReviews() {
@@ -103,4 +103,4 @@ class ReviewService {
   }
 }
 
-module.exports.ReviewService = new ReviewService();
+export const reviewService = new ReviewService();

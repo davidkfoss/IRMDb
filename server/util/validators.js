@@ -1,5 +1,5 @@
 //User validation
-const validateUserData = (userData) => {
+export const validateUserData = (userData) => {
   if (!userData.name || !userData.email || !userData.profilePictureUrl) {
     return false;
   } else if (
@@ -12,10 +12,8 @@ const validateUserData = (userData) => {
   return true;
 };
 
-exports.validateUserData = validateUserData;
-
 //Review validation
-const validateReviewData = (reviewData) => {
+export const validateReviewData = (reviewData) => {
   if (
     !reviewData.rating ||
     !reviewData.comment ||
@@ -36,7 +34,7 @@ const validateReviewData = (reviewData) => {
   return true;
 };
 
-const validateVote = (review, authorEmail, vote) => {
+export const validateVote = (review, authorEmail, vote) => {
   if (!review || !authorEmail || !vote) {
     return false;
   } else if (typeof review != 'object' || typeof authorEmail != 'string' || typeof vote != 'boolean') {
@@ -46,6 +44,3 @@ const validateVote = (review, authorEmail, vote) => {
   }
   return true;
 };
-
-exports.validateReviewData = validateReviewData;
-exports.validateVote = validateVote;

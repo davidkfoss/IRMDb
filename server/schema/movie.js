@@ -1,4 +1,4 @@
-const {
+import {
   GraphQLFloat,
   GraphQLID,
   GraphQLString,
@@ -6,8 +6,8 @@ const {
   GraphQLObjectType,
   GraphQLNonNull,
   GraphQLInt,
-} = require('graphql');
-const { MovieService } = require('../services/MovieService');
+} from 'graphql';
+import { movieService } from '../services/MovieService.js';
 
 const MovieType = new GraphQLObjectType({
   name: 'Movie',
@@ -29,14 +29,14 @@ const MovieQuery = {
     type: MovieType,
     args: { id: { type: new GraphQLNonNull(GraphQLID) } },
     resolve(parent, args) {
-      return MovieService.getMovieById(args.id);
+      return movieService.getMovieById(args.id);
     },
   },
   // DEPRECATED
   GetAllMovies: {
     type: new GraphQLList(MovieType),
     resolve() {
-      return MovieService.getAllMovies(args.offset, args.limit);
+      return movieService.getAllMovies(args.offset, args.limit);
     },
   },
   GetMoviesByFilter: {
@@ -50,7 +50,7 @@ const MovieQuery = {
       limit: { type: GraphQLInt },
     },
     async resolve(parent, args) {
-      let movies = await MovieService.getAllMovies(
+      let movies = await movieService.getAllMovies(
         args.offset,
         args.limit,
         args.search,
@@ -62,5 +62,5 @@ const MovieQuery = {
     },
   },
 };
-exports.typeDefs = MovieType;
-exports.query = MovieQuery;
+
+export default { typeDefs: MovieType, query: MovieQuery };

@@ -1,7 +1,7 @@
-const { validateUserData } = require('../util/validators');
-const { UserModel } = require('../models/User');
+import { validateUserData } from '../util/validators.js';
+import { UserModel } from '../models/User.js';
 
-class UserService {
+export class UserService {
   async getAllUsers() {
     return await UserModel.find();
   }
@@ -29,4 +29,4 @@ class UserService {
   }
 }
 
-module.exports.UserService = new UserService();
+export const userService = new UserService();

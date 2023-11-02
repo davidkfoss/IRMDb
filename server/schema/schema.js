@@ -1,8 +1,8 @@
-const { GraphQLSchema, GraphQLObjectType } = require('graphql');
+import { GraphQLSchema, GraphQLObjectType } from 'graphql';
 
-const MovieSchema = require('./movie.js');
-const ReviewSchema = require('./review.js');
-const UserSchema = require('./user.js');
+import MovieSchema from './movie.js';
+import ReviewSchema from './review.js';
+import UserSchema from './user.js';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -29,10 +29,8 @@ const Types = [
   UserSchema.typeDefs,
 ];
 
-const schema = new GraphQLSchema({
+export const schema = new GraphQLSchema({
   types: Types,
   query: RootQuery,
   mutation: RootMutation,
 });
-
-exports.schema = schema;

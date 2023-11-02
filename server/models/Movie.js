@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const MovieGenres = [
   'Action',
@@ -33,4 +33,4 @@ const MovieSchema = new mongoose.Schema({
   reviewIds: [{ type: String }],
 });
 
-exports.MovieModel = mongoose.model('Movie', MovieSchema, 'movies');
+export const MovieModel = mongoose.model('Movie', MovieSchema, 'movies');

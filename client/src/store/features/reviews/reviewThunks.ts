@@ -111,6 +111,9 @@ export const deleteReviewOnMovie = createAsyncThunk<boolean, { movieId: string; 
       })
       .then((result) => {
         return result.data.DeleteReview;
+      })
+      .catch((err) => {
+        console.log(err);
       });
 
     return deleted;

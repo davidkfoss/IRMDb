@@ -1,11 +1,11 @@
 //Dependencies
-const path = require('path');
-const { graphqlHTTP } = require('express-graphql');
+import path from 'path';
+import { graphqlHTTP } from 'express-graphql';
 //  Server-dependencies
-const express = require('express');
+import express from 'express';
 //  DB-dependencies
-const mongoose = require('mongoose');
-const cors = require('cors');
+import mongoose from 'mongoose';
+import cors from 'cors';
 
 //Define constants
 
@@ -13,8 +13,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const { PORT } = require('./config/config');
-const { MongoURI } = require('./config/database');
+import { config } from './config/config.js';
+import { MongoURI } from './config/database.js';
 
 //configure mongoose
 mongoose
@@ -34,17 +34,17 @@ app.use((req, res, next) => {
 });
 
 //GraphQL
-const { schema } = require('./schema/schema');
+import { schema } from './schema/schema.js';
 app.use('/graphql', graphqlHTTP({ schema, graphiql: true }));
 
 // Have Node serve the files for our built React app
-app.use(express.static(path.join(__dirname, '../client', 'dist')));
+app.use(express.static(path.join('../client', 'dist')));
 
 // Handle all other GET-reqs
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client', 'dist', 'index.html'));
+  res.sendFile(path.join('../client', 'dist', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+app.listen(config.PORT, () => {
+  console.log(`Server listening on ${config.PORT}`);
 });
