@@ -67,7 +67,7 @@ export const reviewSlice = createSlice({
       .addCase(deleteReviewOnMovie.fulfilled, (state, action) => {
         if (action.payload) {
           const { movieId, id } = action.meta.arg;
-          const reviews = state[movieId];
+          const reviews = state.movieReviews[movieId];
           const reviewIndex = reviews.findIndex((review) => review.id === id);
           if (reviewIndex !== -1) {
             reviews.splice(reviewIndex, 1);
