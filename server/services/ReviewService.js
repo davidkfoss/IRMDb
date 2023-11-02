@@ -43,7 +43,7 @@ class ReviewService {
   }
 
   async getPopularReviews(limit) {
-    const reviews = await ReviewModel.find().sort({ 'votes.length': -1 }).limit(limit);
+    const reviews = await ReviewModel.find().sort({ votes: -1 }).limit(limit);
 
     await Promise.all(
       reviews.map(async (review) => {
@@ -83,6 +83,10 @@ class ReviewService {
     }
     review.votes.push({ vote, user: authorEmail });
     return await ReviewModel.findByIdAndUpdate(reviewId, review, { new: true });
+  }
+
+  async deleteVoteReview(authorEmail, reviewId) {
+    return await ReviewModel.findByIdAndUpdate(reviewId, { $pull: { votes: { user: authorEmail } } }, { new: true });
   }
 
   async updateReview(id, reviewData) {

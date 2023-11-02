@@ -162,6 +162,26 @@ const voteReviewMutation = gql`
   }
 `;
 
+const deleteVoteReviewMutation = gql`
+  mutation ($authorEmail: String!, $reviewId: ID!) {
+    DeleteVoteReview(authorEmail: $authorEmail, reviewId: $reviewId) {
+      id
+      rating
+      comment
+      votes {
+        vote
+        user
+      }
+      date
+      meta {
+        authorEmail
+        authorName
+        movieId
+      }
+    }
+  }
+`;
+
 const deleteReviewMutation = gql`
   mutation ($id: ID!) {
     DeleteReview(id: $id) {
@@ -190,6 +210,7 @@ export {
   getReviewByIdQuery,
   getReviewsByMovieIdQuery,
   voteReviewMutation,
+  deleteVoteReviewMutation,
   getRecentReviewsQuery,
   getPopularReviewsQuery,
 };

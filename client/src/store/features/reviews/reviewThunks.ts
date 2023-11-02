@@ -8,6 +8,7 @@ import {
   getRecentReviewsQuery,
   getPopularReviewsQuery,
   voteReviewMutation,
+  deleteVoteReviewMutation,
 } from '../../../queries/reviewQueries';
 
 export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, { id: string; refetch: boolean }, object>(
@@ -74,6 +75,25 @@ export const addVoteOnReview = createAsyncThunk<
 
   return addedVote;
 });
+
+export const deleteVoteOnReview = createAsyncThunk<boolean, { reviewId: string; authorEmail: string }, object>(
+  'reviews/deleteVoteOnReview',
+  async ({ reviewId, authorEmail }) => {
+    const deletedVote = await client
+      .mutate({
+        mutation: deleteVoteReviewMutation,
+        variables: {
+          reviewId: reviewId,
+          authorEmail: authorEmail,
+        },
+      })
+      .then((result) => {
+        return result.data.VoteReview;
+      });
+
+    return deletedVote;
+  }
+);
 
 //TODO: I dont think we need movieId as param.
 export const deleteReviewOnMovie = createAsyncThunk<boolean, { movieId: string; id: string }, object>(
