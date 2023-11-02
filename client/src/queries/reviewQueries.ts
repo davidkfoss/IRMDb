@@ -95,6 +95,7 @@ const getRecentReviewsQuery = gql`
         authorEmail
         authorName
         movieId
+        movieTitle
       }
     }
   }
@@ -115,6 +116,7 @@ const getPopularReviewsQuery = gql`
         authorEmail
         authorName
         movieId
+        movieTitle
       }
     }
   }
