@@ -75,8 +75,8 @@ export const reviewSlice = createSlice({
         }
       })
       .addCase(getReviewsOnMovie.fulfilled, (state, action) => {
-        const movieId = action.meta.arg;
-        state.movieReviews[movieId] = action.payload || [];
+        const { id } = action.meta.arg;
+        state.movieReviews[id] = action.payload || [];
       })
       .addCase(getRecentReviews.fulfilled, (state, action) => {
         state.loadingStates.recentReviews = { pending: false, rejected: false, resolved: true };

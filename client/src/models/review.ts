@@ -11,6 +11,7 @@ export interface ReviewMeta {
   authorEmail: string;
   authorName: string;
   movieId: string;
+  movieTitle: string;
 }
 
 export interface Vote {

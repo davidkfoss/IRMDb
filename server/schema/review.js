@@ -25,6 +25,7 @@ const ReviewMetaType = new GraphQLObjectType({
     authorEmail: { type: GraphQLString },
     authorName: { type: GraphQLString },
     movieId: { type: GraphQLString },
+    movieTitle: { type: GraphQLString },
   }),
 });
 
@@ -129,6 +130,16 @@ const ReviewMutation = {
     },
     async resolve(parent, args) {
       return await ReviewService.voteReview(args.authorEmail, args.reviewId, args.vote);
+    },
+  },
+  DeleteVoteReview: {
+    type: ReviewType,
+    args: {
+      authorEmail: { type: new GraphQLNonNull(GraphQLString) },
+      reviewId: { type: new GraphQLNonNull(GraphQLID) },
+    },
+    async resolve(parent, args) {
+      return await ReviewService.deleteVoteReview(args.authorEmail, args.reviewId);
     },
   },
   DeleteReview: {

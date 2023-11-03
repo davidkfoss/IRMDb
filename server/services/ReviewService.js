@@ -27,11 +27,35 @@ class ReviewService {
   }
 
   async getRecentReviews(limit) {
-    return await ReviewModel.find().sort({ date: -1 }).limit(limit);
+    const reviews = await ReviewModel.find().sort({ date: -1 }).limit(limit);
+
+    await Promise.all(
+      reviews.map(async (review) => {
+        const movie = await MovieModel.findById(review.meta.movieId);
+        if (!movie || !movie.title) {
+          review.meta.movieTitle = 'Movie not found';
+        } else {
+          review.meta.movieTitle = movie.title;
+        }
+      })
+    );
+    return reviews;
   }
 
   async getPopularReviews(limit) {
-    return await ReviewModel.find().sort({ 'votes.length': -1 }).limit(limit);
+    const reviews = await ReviewModel.find().sort({ votes: -1 }).limit(limit);
+
+    await Promise.all(
+      reviews.map(async (review) => {
+        const movie = await MovieModel.findById(review.meta.movieId);
+        if (!movie || !movie.title) {
+          review.meta.movieTitle = 'Movie not found';
+        } else {
+          review.meta.movieTitle = movie.title;
+        }
+      })
+    );
+    return reviews;
   }
 
   async createReview(reviewData) {
@@ -59,6 +83,10 @@ class ReviewService {
     }
     review.votes.push({ vote, user: authorEmail });
     return await ReviewModel.findByIdAndUpdate(reviewId, review, { new: true });
+  }
+
+  async deleteVoteReview(authorEmail, reviewId) {
+    return await ReviewModel.findByIdAndUpdate(reviewId, { $pull: { votes: { user: authorEmail } } }, { new: true });
   }
 
   async updateReview(id, reviewData) {
