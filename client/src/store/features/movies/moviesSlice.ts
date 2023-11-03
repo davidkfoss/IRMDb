@@ -117,7 +117,7 @@ export const selectMovies = (state: RootState) => state.movies.movies;
 
 export const selectCurrentMovie = (state: RootState) => state.movies.currentMovie;
 
-export const selectMovieById = (id: number) =>
+export const selectMovieById = (id: string) =>
   createSelector(selectMovies, (movies) => movies.find((movie) => movie.id === id));
 
 export const selectPageSize = (state: RootState) => state.movies.pageSize;

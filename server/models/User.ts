@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -17,4 +17,4 @@ const UserSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-exports.UserModel = mongoose.model('User', UserSchema);
+export const UserModel = mongoose.model('User', UserSchema);

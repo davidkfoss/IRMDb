@@ -6,7 +6,13 @@ import { ReviewCard } from '../../../components/reviewCard/ReviewCard';
 import { useUser } from '../../../hooks/useUser';
 import { Review } from '../../../models/review';
 import { getMovieRatingById } from '../../../store/features/movies/movieThunks';
-import { addReviewOnMovie, deleteReviewOnMovie } from '../../../store/features/reviews/reviewThunks';
+import {
+  addReviewOnMovie,
+  addVoteOnReview,
+  deleteReviewOnMovie,
+  deleteVoteOnReview,
+  getReviewsOnMovie,
+} from '../../../store/features/reviews/reviewThunks';
 import { selectReviewInfoOnMovie } from '../../../store/features/reviews/reviewsSlice';
 import { useAppDispatch } from '../../../store/store';
 import customToast from '../../../util/toastWrapper';
@@ -39,7 +45,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
     }
 
     setComment('');
-    setRating(3);
+    setRating(1);
     dispatch(
       addReviewOnMovie({
         movieId,
@@ -87,6 +93,61 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
     [dispatch, movieId, canDelete]
   );
 
+  const onVote = useCallback(
+    (review: Review) => {
+      if (!user) {
+        customToast.error('You must be logged in to vote');
+        return;
+      }
+
+      if (review.votes.includes({ vote: true, user: user.email })) {
+        customToast.error('You have already voted on this review');
+        return;
+      }
+
+      dispatch(
+        addVoteOnReview({
+          vote: true,
+          reviewId: review.id,
+          authorEmail: user.email,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          customToast.success('Vote added!');
+          return dispatch(getReviewsOnMovie({ id: movieId, refetch: true }));
+        });
+    },
+    [dispatch, user, movieId]
+  );
+
+  const onDeleteVote = useCallback(
+    (review: Review) => {
+      if (!user) {
+        customToast.error('You must be logged in to vote');
+        return;
+      }
+
+      if (!(review.votes.filter((vote) => vote.user === user.email).length > 0)) {
+        customToast.error('You have not voted on this review');
+        return;
+      }
+
+      dispatch(
+        deleteVoteOnReview({
+          reviewId: review.id,
+          authorEmail: user.email,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          customToast.success('Vote removed!');
+          return dispatch(getReviewsOnMovie({ id: movieId, refetch: true }));
+        });
+    },
+    [dispatch, user, movieId]
+  );
+
   return (
     <div className='movie-info-reviews'>
       <h2>Reviews</h2>
@@ -97,6 +158,11 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
             review={review}
             onDelete={() => onReviewDelete(review)}
             canDelete={canDelete(review)}
+            onVote={() => onVote(review)}
+            canVote={!!user && !(review.votes.filter((vote) => vote.user === user.email).length > 0)}
+            onDeleteVote={() => onDeleteVote(review)}
+            isLoggedIn={!!user}
+            isFeed={false}
           />
         ))}
       <form className='movie-info-form'>

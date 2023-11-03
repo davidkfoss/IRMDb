@@ -1,12 +1,139 @@
-.reviewFeed {
+.movie-info-container,
+.movie-info-reviews {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
   padding: 0 3rem;
-
-  /*
+  padding-top: 3rem;
   margin: 0rem 15%;
   box-shadow: 0 0 25px rgba(12, 200, 169, 0.098);
   clip-path: inset(10px -20px 10px -20px);
-  border-radius: 10px; */
+  border-radius: 10px;
+  justify-content: space-around;
+}
+
+.movie-info-container {
+  margin-top: -2.5rem;
+  padding-top: 5rem;
+}
+
+.movie-info-reviews {
+  flex-direction: column;
+  padding: 3rem;
+  text-align: start;
+  align-items: center;
+  margin-top: -1.2rem;
+}
+
+.movie-info-info {
+  text-align: start;
+  width: 65%;
+  padding: 1rem;
+}
+
+.movie-info-genres {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.genre-pill {
+  margin-bottom: 0.6rem;
+}
+
+.movie-info-info > h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.199);
+}
+
+.movie-info-image-container {
+  height: 30rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.244);
+  border-radius: 5px;
+  transform: scale(0.92);
+  transition: all 0.2s ease-in-out;
+}
+
+.movie-info-image-container:hover {
+  cursor: pointer;
+  transform: scale(0.89);
+}
+
+#movie-info-poster {
+  display: none;
+}
+
+#movie-info-poster,
+.movie-info-reviews > h2 {
+  text-align: start;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.199);
+  align-self: stretch;
+}
+
+.movie-info-form {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin-top: 1rem;
+}
+
+.movie-info-textarea {
+  font: inherit;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.movie-info-rating-average {
+  margin-left: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.movie-info-rating-container {
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.reviews-title {
+  display: flex;
+  justify-content: center;
+  font-size: xx-large;
+}
+
+@media screen and (max-width: 1000px) {
+  .movie-info-container,
+  .movie-info-reviews {
+    flex-direction: column;
+    padding: 4rem 1rem 0 1rem;
+    margin: 0rem 5%;
+  }
+
+  .movie-info-container {
+    margin-top: -2.5rem;
+  }
+
+  .movie-info-reviews {
+    margin-top: -1.2rem;
+    padding-bottom: 3rem;
+  }
+
+  .movie-info-info {
+    width: 90%;
+  }
+
+  .movie-info-image-container {
+    object-fit: contain;
+    align-self: center;
+  }
+
+  #movie-info-poster {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .movie-info-image-container {
+    height: min-content;
+  }
 }

@@ -1,6 +1,4 @@
-import { Movie } from '../models/movie';
-
-export const mockMovies: Movie[] = [
+const mockMovies = [
   {
     id: 1,
     title: 'Spider-Man: No Way Home',
