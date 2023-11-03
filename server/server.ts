@@ -6,18 +6,18 @@ import express from 'express';
 //  DB-dependencies
 import mongoose from 'mongoose';
 import cors from 'cors';
-
 //Define constants
-
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+//Environment variables
 import { config } from './config/config';
-import { MongoURI } from './config/database';
+import { database } from './config/database';
+console.log('Node environment: ' + config.NODE_ENV);
 
 //configure mongoose
-mongoose.connect(MongoURI, {}).then(() => console.log('MongoDB connected...'));
+mongoose.connect(database.MongoURI, {}).then(() => console.log('MongoDB connected...'));
 
 //Headers
 app.use((req, res, next) => {

@@ -1,16 +1,21 @@
 import dotenv from 'dotenv';
-dotenv.config();
+
+const nodeEnv = process.env.NODE_ENV;
+
+// Load the appropriate .env file based on NODE_ENV
+if (nodeEnv === 'dev') {
+  dotenv.config({ path: '.env.dev' });
+} else if (nodeEnv === 'prod') {
+  dotenv.config({ path: '.env.prod' });
+} else {
+  // Default to '.env'
+  dotenv.config();
+}
 
 export const config = {
-  IS_PROD: process.env.NODE_ENV === 'production',
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
-  HOST: process.env.HOST,
   DB_USERNAME: process.env.DB_USERNAME,
-  DB_PASSWORD: process.env.DB_PASSWORD,
+  DB_PASSWORD: encodeURIComponent(process.env.DB_PASSWORD),
   DB_CLUSTER: process.env.DB_CLUSTER,
-  SESS_SECRET: process.env.SESS_SECRET,
-  COOKIE_NAME: process.env.COOKIE_NAME,
-  JWT_SECRET: process.env.JWT_SECRET,
-  PASSPORT_SECRET: process.env.PASSPORT_SECRET,
 };
