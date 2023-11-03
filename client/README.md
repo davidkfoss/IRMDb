@@ -4,12 +4,12 @@
 
 Welcome to the IRMDb client-side documentation. This README provides an in-depth look at the technical aspects and choices made in the client portion of our app. It will discuss and explain key decisions regarding:
 
-- Folder structure
-- State management with Redux
-- Data retrieval with Apollo client
-- UI components and libraries
-- Error handling with toast notifications
-- Accessibility (WCAG 2.2 compliance)
+- [Folder structure](#folder-structure)
+- [State management with Redux](#state-management-with-redux)
+- [Data retrieval with Apollo client](#data-retrieval-with-apollo-client)
+- [UI components and libraries](#ui-components-and-libraries)
+- [Error handling with toast notifications](#error-handling-with-toast-notifications)
+- [Accessibility (WCAG 2.2 compliance)](#accessibility-wcag-22-compliance)
 
 #
 

@@ -4,18 +4,18 @@
 
 Welcome to the IRMDb server-side documentation. This README provides an in-depth look at the technical aspects and choices made in the server portion of our app. It will discuss and explain key decisions regarding:
 
-- Folder structure
-- Express
-- MongoDB
-- Improving sustainability
-- Database seeding
-- API documentation
+- [Folder structure](#folder-structure)
+- [Express](#express)
+- [MongoDB](#mongodb)
+- [Improving sustainability](#improving-sustainability)
+- [Database seeding](#database-seeding)
+- [API documentation](#api-documentation)
 
 #
 
 ### Starting the server
 
-Navigate to the _server_ folder and run `npm install` to install dependencies. Then run `npm start` to start the server.
+Navigate to the [server](.) folder and run `npm install` to install dependencies. Then run `npm start` to start the server.
 
 #
 
@@ -24,16 +24,16 @@ Navigate to the _server_ folder and run `npm install` to install dependencies. T
 A general overview of the folder structure is provided below:
 
 [**models**](./models/)
-: Contains the MongoDB models for [movies](./models/Movie.js), [reviews](./models/Review.js), and [users](./models/User.js).
+: Contains the MongoDB models for [movies](./models/Movie.ts), [reviews](./models/Review.ts), and [users](./models/User.ts).
 
 [**schema**](./schema/)
-: Contains the [GraphQL schema](./schema/schema.js) which consists of the types, queries and mutations for [movies](./schema/movie.js), [reviews](./schema/review.js), and [users](./schema/user.js).
+: Contains the [GraphQL schema](./schema/schema.ts) which consists of the types, queries and mutations for [movies](./schema/movie.ts), [reviews](./schema/review.ts), and [users](./schema/user.ts).
 
 [**services**](./services/)
-: Contains the services for [movies](./services/MovieService.js), [reviews](./services/ReviewService.js), and [users](./services/UserService.js). These services handle the interaction with the MongoDB database and is used within the GraphQL resolvers.
+: Contains the services for [movies](./services/MovieService.ts), [reviews](./services/ReviewService.ts), and [users](./services/UserService.ts). These services handle the interaction with the MongoDB database and is used within the GraphQL resolvers.
 
 [**util**](./util/)
-: Contains utility functions for [validation](./util/validators.js) of data upon mutation.
+: Contains utility functions for [validation](./util/validators.ts) of data upon mutation.
 
 [**config**](./config/)
 : Contains the configuration for the MongoDB database.
@@ -68,7 +68,7 @@ The server uses MongoDB as the database to store movies, reviews, and user data.
 
 ### Database Seeding
 
-Wee downloaded [this](https://datasetsearch.research.google.com/search?src=3&query=movie%20dataset&docid=L2cvMTFydjVidnk4eA%3D%3D) dataset and used it to seed our database with movies. We created a script to parse the data to our wanted format, and uploaded the json file to our MongoDB database. This script can be found in [here](../client/src/data/parseMovieDataJson.js).
+Wee downloaded [this](https://datasetsearch.research.google.com/search?src=3&query=movie%20dataset&docid=L2cvMTFydjVidnk4eA%3D%3D) dataset and used it to seed our database with movies. We created a script to parse the data to our wanted format, and uploaded the json file to our MongoDB database.
 
 #
 

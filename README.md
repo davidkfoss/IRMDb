@@ -10,7 +10,17 @@ IRMDb is a user-friendly application that helps you discover, review, and rate y
 
 ## Visuals
 
-insert screenshots
+<img src="./client/public/screenshots/Screenshot1.png" width="800"/>
+
+The movies page shows results for the filters you have selected
+
+<img src="./client/public/screenshots/Screenshot2.png" width="800"/>
+
+When clicking on a movie, you can see more details about it and add a review
+
+<img src="./client/public/screenshots/Screenshot3.png" width="800"/>
+
+The landing page shows popular and recent reviews
 
 #
 
@@ -22,7 +32,7 @@ Clone the repository with
 
 #
 
-Navigate to `server` folder and run
+Navigate to [server](./server/) folder and run
 
 `npm install` to install dependencies
 
@@ -33,7 +43,7 @@ to start the server
 
 #
 
-Navigate to `client` folder and run
+Navigate to [client](./client/) folder and run
 
 `npm install` to install dependencies
 
@@ -43,7 +53,7 @@ and
 
 #
 
-Open your web browser and navigate to `localhost:5173` to access the application
+Open your web browser and navigate to [localhost:5173](http://localhost:5173) to access the application
 
 #
 
