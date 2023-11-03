@@ -55,7 +55,6 @@ export const FeedReviewSection = () => {
   const onReviewDelete = useCallback(
     (review: Review) => {
       if (!canDelete(review)) return;
-      console.log('deleting review');
       dispatch(deleteReviewOnMovie({ movieId: review.meta.movieId, id: review.id }))
         .unwrap()
         .then(() => {

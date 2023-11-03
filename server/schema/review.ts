@@ -1,4 +1,4 @@
-const {
+import {
   GraphQLInt,
   GraphQLBoolean,
   GraphQLList,
@@ -6,9 +6,18 @@ const {
   GraphQLNonNull,
   GraphQLID,
   GraphQLString,
-} = require('graphql');
-const { ReviewService } = require('../services/ReviewService');
-const { MovieService } = require('../services/MovieService');
+} from 'graphql';
+import { reviewService } from '../services/ReviewService';
+import { movieService } from '../services/MovieService';
+
+import {
+  QueryReviewArgs,
+  MutateCreateReviewData,
+  MutateVoteReviewData,
+  MutateDeleteReviewData,
+  MutateDeleteVoteReviewData,
+  Review,
+} from '../types/reviewType';
 
 //TypeDefs
 const Vote = new GraphQLObjectType({
@@ -47,22 +56,22 @@ const ReviewType = new GraphQLObjectType({
 const ReviewQuery = {
   GetAllReviews: {
     type: new GraphQLList(ReviewType),
-    async resolve(parent, args) {
-      return await ReviewService.getAllReviews();
+    async resolve(parent: any, args: QueryReviewArgs): Promise<Review[]> {
+      return (await reviewService.getAllReviews()).map((review) => review.toObject()) as Review[];
     },
   },
   GetReviewById: {
     type: ReviewType,
     args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-    async resolve(parent, args) {
-      return await ReviewService.getReviewById(args.id);
+    async resolve(parent: any, args: QueryReviewArgs) {
+      return await reviewService.getReviewById(args.id);
     },
   },
   GetReviewsByMovieId: {
     type: new GraphQLList(ReviewType),
     args: { movieId: { type: new GraphQLNonNull(GraphQLID) } },
-    async resolve(parent, args) {
-      return await ReviewService.getReviewsByMovieId(args.movieId);
+    async resolve(parent: any, args: QueryReviewArgs) {
+      return await reviewService.getReviewsByMovieId(args.movieId);
     },
   },
   GetReviewByAuthorAndMovieId: {
@@ -71,29 +80,29 @@ const ReviewQuery = {
       movieId: { type: new GraphQLNonNull(GraphQLID) },
       authorEmail: { type: new GraphQLNonNull(GraphQLString) },
     },
-    resolve(parent, args) {
-      return ReviewService.getReviewByAuthorAndMovieId(args.movieId, args.authorEmail);
+    resolve(parent: any, args: QueryReviewArgs) {
+      return reviewService.getReviewByAuthorAndMovieId(args.movieId, args.authorEmail);
     },
   },
   GetRecentReviews: {
     type: new GraphQLList(ReviewType),
     args: { limit: { type: GraphQLInt } },
-    async resolve(parent, args) {
-      return await ReviewService.getRecentReviews(args.limit);
+    async resolve(parent: any, args: QueryReviewArgs) {
+      return await reviewService.getRecentReviews(args.limit);
     },
   },
   GetPopularReviews: {
     type: new GraphQLList(ReviewType),
     args: { limit: { type: GraphQLInt } },
-    async resolve(parent, args) {
-      return await ReviewService.getPopularReviews(args.limit);
+    async resolve(parent: any, args: QueryReviewArgs) {
+      return await reviewService.getPopularReviews(args.limit);
     },
   },
 };
 
-const UpdateMovieRating = async (movieId) => {
-  const reviews = await ReviewService.getReviewsByMovieId(movieId);
-  await MovieService.updateMovieRating(movieId, reviews);
+const UpdateMovieRating = async (movieId: string) => {
+  const reviews = (await reviewService.getReviewsByMovieId(movieId)).map((review) => review.toObject()) as Review[];
+  await movieService.updateMovieRating(movieId, reviews);
 };
 
 //Mutations
@@ -106,7 +115,7 @@ const ReviewMutation = {
       authorEmail: { type: new GraphQLNonNull(GraphQLString) },
       movieId: { type: new GraphQLNonNull(GraphQLID) },
     },
-    async resolve(parent, args) {
+    async resolve(parent: any, args: MutateCreateReviewData) {
       const reviewData = {
         rating: args.rating,
         comment: args.comment,
@@ -116,7 +125,7 @@ const ReviewMutation = {
           movieId: args.movieId,
         },
       };
-      const newReview = await ReviewService.createReview(reviewData);
+      const newReview = await reviewService.createReview(reviewData);
       await UpdateMovieRating(args.movieId);
       return newReview;
     },
@@ -128,8 +137,8 @@ const ReviewMutation = {
       reviewId: { type: new GraphQLNonNull(GraphQLID) },
       vote: { type: new GraphQLNonNull(GraphQLBoolean) },
     },
-    async resolve(parent, args) {
-      return await ReviewService.voteReview(args.authorEmail, args.reviewId, args.vote);
+    async resolve(parent: any, args: MutateVoteReviewData) {
+      return await reviewService.voteReview(args.authorEmail, args.reviewId, args.vote);
     },
   },
   DeleteVoteReview: {
@@ -138,20 +147,27 @@ const ReviewMutation = {
       authorEmail: { type: new GraphQLNonNull(GraphQLString) },
       reviewId: { type: new GraphQLNonNull(GraphQLID) },
     },
-    async resolve(parent, args) {
-      return await ReviewService.deleteVoteReview(args.authorEmail, args.reviewId);
+    async resolve(parent: any, args: MutateDeleteVoteReviewData) {
+      return await reviewService.deleteVoteReview(args.authorEmail, args.reviewId);
     },
   },
   DeleteReview: {
     type: ReviewType,
     args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-    async resolve(parent, args) {
-      const deletedReview = await ReviewService.deleteReview(args.id);
+    async resolve(parent: any, args: MutateDeleteReviewData) {
+      const deletedReview = await reviewService.deleteReview(args.id);
+      if (!deletedReview) {
+        throw new Error(`Review with id ${args.id} not found`);
+      }
+      if (!deletedReview.meta) {
+        throw new Error(`Meta data for review with id ${args.id} not found`);
+      }
       await UpdateMovieRating(deletedReview.meta.movieId);
       return deletedReview;
     },
   },
 };
-exports.typeDefs = { ReviewType: ReviewType, Vote: Vote, ReviewMetaType: ReviewMetaType };
-exports.query = ReviewQuery;
-exports.mutation = ReviewMutation;
+
+const typeDefs = { Vote, ReviewMetaType, ReviewType };
+
+export default { query: ReviewQuery, mutation: ReviewMutation, typeDefs };

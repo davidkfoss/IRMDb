@@ -1,7 +1,8 @@
-require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-module.exports = {
-  IS_PROD: process.env.NODE_ENV === "production",
+export const config = {
+  IS_PROD: process.env.NODE_ENV === 'production',
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
   HOST: process.env.HOST,

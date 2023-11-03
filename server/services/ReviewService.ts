@@ -1,18 +1,19 @@
-const { validateReviewData, validateVote } = require('../util/validators');
-const { ReviewModel } = require('../models/Review');
-const { MovieModel } = require('../models/Movie');
-const { UserModel } = require('../models/User');
+import { validateReviewData, validateVote } from '../util/validators';
+import { ReviewModel } from '../models/Review';
+import { MovieModel } from '../models/Movie';
+import { UserModel } from '../models/User';
+import { Review, ReviewData, Vote } from '../types/reviewType';
 
 class ReviewService {
   async getAllReviews() {
     return await ReviewModel.find();
   }
 
-  async getReviewById(id) {
+  async getReviewById(id: string) {
     return await ReviewModel.findById(id);
   }
 
-  async getReviewsByMovieId(movieId) {
+  async getReviewsByMovieId(movieId: string) {
     try {
       const reviews = await ReviewModel.find({ 'meta.movieId': movieId });
       return reviews;
@@ -22,15 +23,18 @@ class ReviewService {
     }
   }
 
-  async getReviewByAuthorAndMovieId(movieId, authorEmail) {
+  async getReviewByAuthorAndMovieId(movieId: string, authorEmail: string) {
     return await ReviewModel.findOne({ 'meta.movieId': movieId, 'meta.authorEmail': authorEmail });
   }
 
-  async getRecentReviews(limit) {
+  async getRecentReviews(limit: number) {
     const reviews = await ReviewModel.find().sort({ date: -1 }).limit(limit);
 
     await Promise.all(
       reviews.map(async (review) => {
+        if (!review.meta || !review.meta.movieId) {
+          return;
+        }
         const movie = await MovieModel.findById(review.meta.movieId);
         if (!movie || !movie.title) {
           review.meta.movieTitle = 'Movie not found';
@@ -42,11 +46,14 @@ class ReviewService {
     return reviews;
   }
 
-  async getPopularReviews(limit) {
+  async getPopularReviews(limit: number) {
     const reviews = await ReviewModel.find().sort({ votes: -1 }).limit(limit);
 
     await Promise.all(
       reviews.map(async (review) => {
+        if (!review.meta || !review.meta.movieId) {
+          return;
+        }
         const movie = await MovieModel.findById(review.meta.movieId);
         if (!movie || !movie.title) {
           review.meta.movieTitle = 'Movie not found';
@@ -58,7 +65,7 @@ class ReviewService {
     return reviews;
   }
 
-  async createReview(reviewData) {
+  async createReview(reviewData: ReviewData) {
     const user = await UserModel.findOne({ email: reviewData.meta.authorEmail });
     if (!user) {
       return null;
@@ -74,33 +81,34 @@ class ReviewService {
     return newReview;
   }
 
-  async voteReview(authorEmail, reviewId, vote) {
+  async voteReview(authorEmail: string, reviewId: string, vote: boolean) {
     const review = await ReviewModel.findById(reviewId);
-    if (!validateReviewData(review)) {
-      return null;
-    } else if (!validateVote(review, authorEmail, vote)) {
+    if (!review) {
       return null;
     }
-    review.votes.push({ vote, user: authorEmail });
-    return await ReviewModel.findByIdAndUpdate(reviewId, review, { new: true });
+    return await ReviewModel.findByIdAndUpdate(
+      reviewId,
+      { $push: { votes: { user: authorEmail, vote: vote } } },
+      { new: true }
+    );
   }
 
-  async deleteVoteReview(authorEmail, reviewId) {
+  async deleteVoteReview(authorEmail: string, reviewId: string) {
     return await ReviewModel.findByIdAndUpdate(reviewId, { $pull: { votes: { user: authorEmail } } }, { new: true });
   }
 
-  async updateReview(id, reviewData) {
-    if (!validateReviewData(reviewData)) {
-      return null;
-    }
+  async updateReview(id: string, reviewData: ReviewData) {
     return await ReviewModel.findByIdAndUpdate(id, reviewData, { new: true });
   }
 
-  async deleteReview(id) {
+  async deleteReview(id: string) {
     const movieId = await ReviewModel.findById(id).select('meta.movieId');
-    await MovieModel.findByIdAndUpdate(movieId.meta.movieId, { $pull: { reviewIds: id } });
+    if (!movieId) {
+      return null;
+    }
+    await MovieModel.findByIdAndUpdate(movieId, { $pull: { reviewIds: id } });
     return await ReviewModel.findByIdAndDelete(id);
   }
 }
 
-module.exports.ReviewService = new ReviewService();
+export const reviewService = new ReviewService();

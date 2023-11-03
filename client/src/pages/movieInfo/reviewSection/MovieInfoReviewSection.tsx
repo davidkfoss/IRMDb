@@ -45,7 +45,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
     }
 
     setComment('');
-    setRating(3);
+    setRating(1);
     dispatch(
       addReviewOnMovie({
         movieId,
