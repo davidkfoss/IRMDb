@@ -126,6 +126,12 @@
   }
 }
 
+@media screen and (max-width: 650px) {
+  .movie-info-form {
+    width: 95%;
+  }
+}
+
 @media screen and (max-width: 410px) {
   .movie-info-image-container {
     height: min-content;

@@ -1,9 +1,9 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import { Review } from '../../models/review';
-import { ReviewInfo } from './reviewInfo/ReviewInfo';
 import './ReviewCard.css';
+import { ReviewInfo } from './reviewInfo/ReviewInfo';
 
 interface ReviewProps {
   review: Review;
@@ -31,27 +31,31 @@ export const ReviewCard = ({
   return (
     <div className='review-container'>
       <div className='review-info'>
-        <ReviewInfo review={review} />
-        {canDelete ? (
-          <IconButton aria-label='delete' size='large' onClick={onDelete}>
-            <DeleteIcon />
-          </IconButton>
-        ) : canVote ? (
-          <IconButton aria-label='upvote' size='large' onClick={onVote}>
-            <ArrowCircleUpIcon style={{ color: 'white' }} />
-          </IconButton>
-        ) : isLoggedIn ? (
-          <IconButton aria-label='upvote' size='large' onClick={onDeleteVote}>
-            <ArrowCircleUpIcon style={{ color: 'green' }} />
-          </IconButton>
-        ) : (
-          <IconButton aria-label='upvote' size='small' disabled onClick={onVote}>
-            <ArrowCircleUpIcon style={{ color: 'grey' }} />
-          </IconButton>
-        )}
+        <ReviewInfo review={review} showTitle={isFeed} />
+        <div className='review-buttons-container'>
+          {canDelete && (
+            <IconButton aria-label='delete' size='large' onClick={onDelete}>
+              <DeleteIcon />
+            </IconButton>
+          )}
+          <div className='review-upvotes-container'>
+            {canVote && !canDelete ? (
+              <IconButton aria-label='upvote' size='large' onClick={onVote}>
+                <ArrowCircleUpIcon style={{ color: 'white' }} />
+              </IconButton>
+            ) : isLoggedIn && !canDelete ? (
+              <IconButton aria-label='upvote' size='large' onClick={onDeleteVote}>
+                <ArrowCircleUpIcon style={{ color: 'rgb(70, 192, 0)' }} />
+              </IconButton>
+            ) : (
+              <IconButton aria-label='upvote' size='large' disabled>
+                <ArrowCircleUpIcon style={{ color: 'rgb(172, 172, 172)' }} />
+              </IconButton>
+            )}
+            <p className='review-votes'>{review.votes.length}</p>
+          </div>
+        </div>
       </div>
-      <p className='review-votes'>Upvotes: {review.votes.length}</p>
-      {isFeed && <h3 className='review-title'>{review.meta.movieTitle}</h3>}
       <div className='review-comment'>{comment}</div>
     </div>
   );
