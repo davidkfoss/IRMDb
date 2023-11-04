@@ -38,8 +38,30 @@
   padding: 0.5rem;
 }
 
+.review-buttons-container {
+  border-radius: 2rem;
+  background-color: rgb(46, 75, 88);
+  display: flex;
+}
+
+.review-votes {
+  margin: 12px 12px 12px 0;
+  font-size: 1.1rem;
+  font-family: monospace;
+}
+
+.review-upvotes-container {
+  display: flex;
+}
+
 @media screen and (max-width: 1140px) {
   .review-container {
     width: 90%;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .review-buttons-container {
+    flex-direction: row-reverse;
   }
 }
