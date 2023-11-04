@@ -23,12 +23,12 @@ export const MovieCard = ({ movie, scale = 1 }: MovieCardProps) => {
   };
 
   return (
-    <div className='movie-card-border'>
+    <article className='movie-card-border'>
       <div
         onClick={onMovieClick}
         onKeyDown={onMovieKeyDown}
         role='button'
-        aria-pressed='false'
+        aria-label={`View details for ${movie.title}`}
         tabIndex={0}
         className='movie-card'
         style={{
@@ -57,6 +57,6 @@ export const MovieCard = ({ movie, scale = 1 }: MovieCardProps) => {
           <p>{movie.overview}</p>
         </div>
       </div>
-    </div>
+    </article>
   );
 };

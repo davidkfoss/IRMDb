@@ -1,10 +1,10 @@
-import { FeedReviewSection } from './reviewSection/FeedReviewSection';
 import './Feed.css';
+import { FeedReviewSection } from './reviewSection/FeedReviewSection';
 
 export const Feed = () => {
   return (
-    <div className='reviewFeed'>
+    <main className='reviewFeed' role='main' aria-label='Feed'>
       <FeedReviewSection />
-    </div>
+    </main>
   );
 };

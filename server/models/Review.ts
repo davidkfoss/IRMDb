@@ -10,6 +10,7 @@ const ReviewMeta = {
   authorName: { type: String, required: true },
   movieId: { type: String, required: true },
   movieTitle: { type: String },
+  votesLength: { type: Number, default: 0 },
 };
 
 const ReviewSchema = new mongoose.Schema({

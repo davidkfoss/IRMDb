@@ -1,45 +1,31 @@
+import { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ReviewCard } from '../../../components/reviewCard/ReviewCard';
 import { useUser } from '../../../hooks/useUser';
 import { Review } from '../../../models/review';
 import {
+  addVoteOnReview,
   deleteReviewOnMovie,
+  deleteVoteOnReview,
   getPopularReviews,
   getRecentReviews,
-  addVoteOnReview,
-  deleteVoteOnReview,
 } from '../../../store/features/reviews/reviewThunks';
 import { selectPopularReviews, selectRecentReviews } from '../../../store/features/reviews/reviewsSlice';
 import { useAppDispatch } from '../../../store/store';
 import customToast from '../../../util/toastWrapper';
-import { useCallback, useEffect, useState } from 'react';
 
 export const FeedReviewSection = () => {
   const limit = 3;
   const dispatch = useAppDispatch();
   const user = useUser();
 
-  const [recentReviews, setRecentReviews] = useState([] as Review[]);
-  const [popularReviews, setPopularReviews] = useState([] as Review[]);
-  const recentReviewsFromStore = useSelector(selectRecentReviews());
-  const popularReviewsFromStore = useSelector(selectPopularReviews());
+  const recentReviews = useSelector(selectRecentReviews());
+  const popularReviews = useSelector(selectPopularReviews());
 
   useEffect(() => {
     dispatch(getRecentReviews({ limit: limit }));
     dispatch(getPopularReviews({ limit: limit }));
   }, [dispatch, limit]);
-
-  useEffect(() => {
-    if (recentReviewsFromStore) {
-      setRecentReviews(recentReviewsFromStore);
-    }
-  }, [recentReviewsFromStore]);
-
-  useEffect(() => {
-    if (popularReviewsFromStore) {
-      setPopularReviews(popularReviewsFromStore);
-    }
-  }, [popularReviewsFromStore]);
 
   const canDelete = useCallback(
     (review: Review) => {
@@ -125,7 +111,7 @@ export const FeedReviewSection = () => {
 
   return (
     <>
-      <div className='movie-info-reviews'>
+      <section aria-label='Popular reviews' className='movie-info-reviews'>
         <h2 className='reviews-title'>Popular reviews</h2>
         {popularReviews &&
           popularReviews.map((review) => (
@@ -141,8 +127,8 @@ export const FeedReviewSection = () => {
               isFeed={true}
             />
           ))}
-      </div>
-      <div className='movie-info-reviews'>
+      </section>
+      <section aria-label='Recent reviews' className='movie-info-reviews'>
         <h2 className='reviews-title'>Recent reviews</h2>
         {recentReviews &&
           recentReviews.map((review) => (
@@ -158,7 +144,7 @@ export const FeedReviewSection = () => {
               isFeed={true}
             />
           ))}
-      </div>
+      </section>
     </>
   );
 };

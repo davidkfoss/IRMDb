@@ -68,6 +68,7 @@ export const reviewSlice = createSlice({
         if (action.payload) {
           const { movieId, id } = action.meta.arg;
           const reviews = state.movieReviews[movieId];
+          if (!reviews) return;
           const reviewIndex = reviews.findIndex((review) => review.id === id);
           if (reviewIndex !== -1) {
             reviews.splice(reviewIndex, 1);

@@ -9,23 +9,27 @@ export const MovieInfoDetailsSection = ({ movie }: { movie: Movie }) => {
   const roundedRating = useMemo(() => round(movie.rating ?? 5, 2), [movie]);
 
   return (
-    <div className='movie-info-info'>
+    <section className='movie-info-info' aria-label='Movie Information'>
       <div className='movie-info-rating-container'>
-        <Rating name='half-rating-read' value={roundedRating} readOnly precision={0.5} aria-labelledby='movie-rating' />
-        <span className='movie-info-rating-average' id='movie-rating'>
-          {roundedRating}/5
-        </span>
+        <Rating
+          name='half-rating-read'
+          value={roundedRating}
+          readOnly
+          precision={0.5}
+          aria-label={`Movie rating: ${roundedRating} out of 5`}
+        />
+        <span className='movie-info-rating-average'>{roundedRating}/5</span>
       </div>
       <h1>{movie.title}</h1>
-      <div className='movie-info-genres'>
+      <div className='movie-info-genres' aria-label='Movie genres'>
         {movie.genre.map((genre) => (
           <Pill key={genre} className='genre-pill'>
             {genre}
           </Pill>
         ))}
       </div>
-      <span>{movie.overview}</span>
-      <h3>{getYear(movie.releaseDate)}</h3>
-    </div>
+      <p>{movie.overview}</p>
+      <h2>{getYear(movie.releaseDate)}</h2>
+    </section>
   );
 };

@@ -31,13 +31,15 @@ export const Header = () => {
 
   return (
     <header className='header'>
-      <nav>
+      <nav aria-label='Main Navigation'>
         {width && width >= 680 && <div></div>}
         <ul>
           {links.map((link) => (
-            <NavLink to={link.path} className={link.className || className} key={link.name}>
-              {link.name.toUpperCase()}
-            </NavLink>
+            <li key={link.name}>
+              <NavLink to={link.path} className={link.className || className}>
+                {link.name.toUpperCase()}
+              </NavLink>
+            </li>
           ))}
         </ul>
         {width && width < 455 ? (

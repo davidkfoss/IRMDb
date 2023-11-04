@@ -65,7 +65,7 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
 
   if (isMobile)
     return (
-      <>
+      <div className='filter-accordion-wrapper'>
         <Accordion sx={{ color: 'white', backgroundColor: 'rgb(58, 94, 110)' }}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1a-content' id='panel1a-header'>
             <Typography>Show filters</Typography>
@@ -81,7 +81,7 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
             </div>
           </AccordionDetails>
         </Accordion>
-      </>
+      </div>
     );
 
   return (

@@ -22,8 +22,17 @@ interface GenreSelectProps {
 
 export const GenreSelect = ({ value, onChange, name, width = 250 }: GenreSelectProps) => {
   return (
-    <FormControl sx={{ m: 1, width: width, backgroundColor: '#333333', borderRadius: '10px' }} variant='filled'>
-      <InputLabel id='genre-checkbox-label' sx={{ color: '#aaaaaa' }}>
+    <FormControl
+      component='fieldset'
+      sx={{
+        m: 1,
+        width: width,
+        backgroundColor: '#333333',
+        borderRadius: '10px',
+      }}
+      variant='filled'
+    >
+      <InputLabel component='legend' id='genre-checkbox-label' sx={{ color: '#aaaaaa' }}>
         Genres
       </InputLabel>
       <Select

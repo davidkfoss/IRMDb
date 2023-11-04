@@ -55,6 +55,7 @@ const getReviewsByMovieIdQuery = gql`
         authorEmail
         authorName
         movieId
+        votesLength
       }
     }
   }
@@ -75,6 +76,7 @@ const getReviewByAuthorAndMovieIdQuery = gql`
         authorEmail
         authorName
         movieId
+        votesLength
       }
     }
   }
@@ -96,6 +98,7 @@ const getRecentReviewsQuery = gql`
         authorName
         movieId
         movieTitle
+        votesLength
       }
     }
   }
@@ -117,6 +120,7 @@ const getPopularReviewsQuery = gql`
         authorName
         movieId
         movieTitle
+        votesLength
       }
     }
   }
@@ -205,12 +209,12 @@ const deleteReviewMutation = gql`
 export {
   createReviewMutation,
   deleteReviewMutation,
+  deleteVoteReviewMutation,
   getAllReviewsQuery,
+  getPopularReviewsQuery,
+  getRecentReviewsQuery,
   getReviewByAuthorAndMovieIdQuery,
   getReviewByIdQuery,
   getReviewsByMovieIdQuery,
   voteReviewMutation,
-  deleteVoteReviewMutation,
-  getRecentReviewsQuery,
-  getPopularReviewsQuery,
 };

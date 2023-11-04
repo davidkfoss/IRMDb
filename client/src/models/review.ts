@@ -12,6 +12,7 @@ export interface ReviewMeta {
   authorName: string;
   movieId: string;
   movieTitle: string;
+  votesLength: number;
 }
 
 export interface Vote {

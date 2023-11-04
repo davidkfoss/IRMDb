@@ -28,12 +28,20 @@ const SearchBar = ({ onSearch, initialValue, width = 350 }: SearchBarProps) => {
   };
 
   return (
-    <FormControl sx={{ m: 1, width: width, backgroundColor: '#333333', borderRadius: '20px' }} variant='filled'>
-      <InputLabel htmlFor='outlined-adornment-search' sx={{ color: 'grey' }}>
+    <FormControl
+      component='form'
+      sx={{ m: 1, width: width, backgroundColor: '#333333', borderRadius: '20px' }}
+      variant='filled'
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSearch(searchInput);
+      }}
+    >
+      <InputLabel htmlFor='search-input' sx={{ color: 'grey' }}>
         Search
       </InputLabel>
       <OutlinedInput
-        id='outlined-adornment-search'
+        id='search-input'
         type='text'
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
@@ -45,7 +53,7 @@ const SearchBar = ({ onSearch, initialValue, width = 350 }: SearchBarProps) => {
               sx={{ color: grey[200] }}
               aria-label='search for movie'
               onMouseDown={handleMouseDown}
-              onClick={() => onSearch(searchInput)}
+              type='submit'
               size='large'
               edge='end'
             >
@@ -54,6 +62,7 @@ const SearchBar = ({ onSearch, initialValue, width = 350 }: SearchBarProps) => {
           </InputAdornment>
         }
         label='Search'
+        aria-label='Search for movies'
       />
     </FormControl>
   );

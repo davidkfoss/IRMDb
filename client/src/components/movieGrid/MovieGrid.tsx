@@ -14,22 +14,34 @@ interface MovieGridProps {
 
 export const MovieGrid = ({ movies, id, pending: loading, fetchMorePending, rejected: error }: MovieGridProps) => {
   if (loading && !fetchMorePending) {
-    return <ClipLoader size={128} color='#1be3e3' cssOverride={{ marginTop: '2rem' }} />;
+    return (
+      <div role='alert' aria-busy='true' aria-live='polite'>
+        <ClipLoader size={128} color='#1be3e3' cssOverride={{ marginTop: '2rem' }} />
+      </div>
+    );
   }
 
   if (error) {
-    return <h3>Something went wrong</h3>;
+    return (
+      <div role='alert'>
+        <h3>Something went wrong</h3>
+      </div>
+    );
   }
 
   if (movies.length === 0) {
-    return <h3>No movies found matching the current filters ...</h3>;
+    return (
+      <div role='alert'>
+        <h3>No movies found matching the current filters ...</h3>
+      </div>
+    );
   }
 
   return (
-    <div className='movie-grid' id={id}>
+    <section className='movie-grid' id={id}>
       {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} scale={1.15} />
       ))}
-    </div>
+    </section>
   );
 };

@@ -33,7 +33,9 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
     setComment(e.target.value);
   };
 
-  const onSubmit = () => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (!user) {
       customToast.error('You must be logged in to add a review');
       return;
@@ -149,7 +151,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
   );
 
   return (
-    <div className='movie-info-reviews'>
+    <section aria-label='Movie reviews' className='movie-info-reviews'>
       <h2>Reviews</h2>
       {reviews &&
         reviews.map((review) => (
@@ -165,7 +167,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
             isFeed={false}
           />
         ))}
-      <form className='movie-info-form'>
+      <form aria-label='Add review form' className='movie-info-form' onSubmit={onSubmit}>
         <Rating
           name='rating'
           value={rating}
@@ -175,7 +177,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
           emptyIcon={<StarIcon color='info' style={{ opacity: 0.6 }} fontSize='inherit' />}
         />
         <TextareaAutosize
-          aria-label='minimum height'
+          aria-label='Write your review'
           minRows={3}
           placeholder='Write your review ...'
           className='movie-info-textarea'
@@ -185,10 +187,10 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
         />
         <br />
 
-        <Button variant='contained' onClick={onSubmit} style={{ font: 'inherit' }} aria-label='Add review'>
+        <Button variant='contained' type='submit' style={{ font: 'inherit' }} aria-label='Add review button'>
           Add review
         </Button>
       </form>
-    </div>
+    </section>
   );
 };
