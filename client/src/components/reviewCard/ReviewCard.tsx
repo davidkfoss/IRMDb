@@ -53,7 +53,7 @@ export const ReviewCard = ({
               </IconButton>
             )}
             <p className='review-votes' aria-label={`${review.votes.length} upvotes`}>
-              {review.votes.length}
+              {review.meta.votesLength}
             </p>
           </div>
         </div>

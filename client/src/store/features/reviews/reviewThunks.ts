@@ -4,11 +4,11 @@ import { Review } from '../../../models/review';
 import {
   createReviewMutation,
   deleteReviewMutation,
-  getReviewsByMovieIdQuery,
-  getRecentReviewsQuery,
-  getPopularReviewsQuery,
-  voteReviewMutation,
   deleteVoteReviewMutation,
+  getPopularReviewsQuery,
+  getRecentReviewsQuery,
+  getReviewsByMovieIdQuery,
+  voteReviewMutation,
 } from '../../../queries/reviewQueries';
 
 export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, { id: string; refetch: boolean }, object>(
@@ -148,6 +148,7 @@ export const getPopularReviews = createAsyncThunk<Review[] | undefined, { limit:
       .then((result) => {
         return result.data.GetPopularReviews;
       });
+
     return reviews;
   }
 );

@@ -1,8 +1,8 @@
-import { validateReviewData, validateVote } from '../util/validators';
-import { ReviewModel } from '../models/Review';
 import { MovieModel } from '../models/Movie';
+import { ReviewModel } from '../models/Review';
 import { UserModel } from '../models/User';
-import { Review, ReviewData, Vote } from '../types/reviewType';
+import { ReviewData } from '../types/reviewType';
+import { validateReviewData } from '../util/validators';
 
 class ReviewService {
   async getAllReviews() {
@@ -47,7 +47,7 @@ class ReviewService {
   }
 
   async getPopularReviews(limit: number) {
-    const reviews = await ReviewModel.find().sort({ votes: -1 }).limit(limit);
+    const reviews = await ReviewModel.find().sort({ 'meta.votesLength': -1 }).limit(limit);
 
     await Promise.all(
       reviews.map(async (review) => {
@@ -88,13 +88,17 @@ class ReviewService {
     }
     return await ReviewModel.findByIdAndUpdate(
       reviewId,
-      { $push: { votes: { user: authorEmail, vote: vote } } },
+      { $push: { votes: { user: authorEmail, vote: vote } }, $inc: { 'meta.votesLength': 1 } },
       { new: true }
     );
   }
 
   async deleteVoteReview(authorEmail: string, reviewId: string) {
-    return await ReviewModel.findByIdAndUpdate(reviewId, { $pull: { votes: { user: authorEmail } } }, { new: true });
+    return await ReviewModel.findByIdAndUpdate(
+      reviewId,
+      { $pull: { votes: { user: authorEmail } }, $inc: { 'meta.votesLength': -1 } },
+      { new: true }
+    );
   }
 
   async updateReview(id: string, reviewData: ReviewData) {

@@ -1,21 +1,21 @@
 import {
-  GraphQLInt,
   GraphQLBoolean,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLNonNull,
   GraphQLID,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
-import { reviewService } from '../services/ReviewService';
 import { movieService } from '../services/MovieService';
+import { reviewService } from '../services/ReviewService';
 
 import {
-  QueryReviewArgs,
   MutateCreateReviewData,
-  MutateVoteReviewData,
   MutateDeleteReviewData,
   MutateDeleteVoteReviewData,
+  MutateVoteReviewData,
+  QueryReviewArgs,
   Review,
 } from '../types/reviewType';
 
@@ -35,6 +35,7 @@ const ReviewMetaType = new GraphQLObjectType({
     authorName: { type: GraphQLString },
     movieId: { type: GraphQLString },
     movieTitle: { type: GraphQLString },
+    votesLength: { type: GraphQLInt },
   }),
 });
 
@@ -71,7 +72,8 @@ const ReviewQuery = {
     type: new GraphQLList(ReviewType),
     args: { movieId: { type: new GraphQLNonNull(GraphQLID) } },
     async resolve(parent: any, args: QueryReviewArgs) {
-      return await reviewService.getReviewsByMovieId(args.movieId);
+      const result = await reviewService.getReviewsByMovieId(args.movieId);
+      return result;
     },
   },
   GetReviewByAuthorAndMovieId: {
@@ -95,7 +97,8 @@ const ReviewQuery = {
     type: new GraphQLList(ReviewType),
     args: { limit: { type: GraphQLInt } },
     async resolve(parent: any, args: QueryReviewArgs) {
-      return await reviewService.getPopularReviews(args.limit);
+      const res = await reviewService.getPopularReviews(args.limit);
+      return res;
     },
   },
 };

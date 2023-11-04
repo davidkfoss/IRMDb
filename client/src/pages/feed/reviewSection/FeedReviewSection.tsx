@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ReviewCard } from '../../../components/reviewCard/ReviewCard';
 import { useUser } from '../../../hooks/useUser';
@@ -19,27 +19,13 @@ export const FeedReviewSection = () => {
   const dispatch = useAppDispatch();
   const user = useUser();
 
-  const [recentReviews, setRecentReviews] = useState([] as Review[]);
-  const [popularReviews, setPopularReviews] = useState([] as Review[]);
-  const recentReviewsFromStore = useSelector(selectRecentReviews());
-  const popularReviewsFromStore = useSelector(selectPopularReviews());
+  const recentReviews = useSelector(selectRecentReviews());
+  const popularReviews = useSelector(selectPopularReviews());
 
   useEffect(() => {
     dispatch(getRecentReviews({ limit: limit }));
     dispatch(getPopularReviews({ limit: limit }));
   }, [dispatch, limit]);
-
-  useEffect(() => {
-    if (recentReviewsFromStore) {
-      setRecentReviews(recentReviewsFromStore);
-    }
-  }, [recentReviewsFromStore]);
-
-  useEffect(() => {
-    if (popularReviewsFromStore) {
-      setPopularReviews(popularReviewsFromStore);
-    }
-  }, [popularReviewsFromStore]);
 
   const canDelete = useCallback(
     (review: Review) => {
