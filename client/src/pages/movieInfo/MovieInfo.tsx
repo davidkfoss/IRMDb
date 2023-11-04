@@ -32,7 +32,7 @@ export const MovieInfo = () => {
   }, [id, dispatch]);
 
   if (rejected || (resolved && !movie)) {
-    return <div>Something went wrong! Try reloading or check if the ID is correct ...</div>;
+    return <div role='alert'>Something went wrong! Try reloading or check if the ID is correct ...</div>;
   }
 
   const onBackClick = () => {
@@ -50,8 +50,13 @@ export const MovieInfo = () => {
     <>
       {showPopup && movie && <MoviePopup movie={movie} onClose={() => setShowPopup(false)} />}
 
-      <div className='movie-info-container' aria-disabled={showPopup}>
-        <IconButton color='info' sx={{ position: 'absolute', top: '2rem', left: '0.5rem' }} onClick={onBackClick}>
+      <main className='movie-info-container' aria-disabled={showPopup}>
+        <IconButton
+          color='info'
+          aria-label='Go back'
+          sx={{ position: 'absolute', top: '2rem', left: '0.5rem' }}
+          onClick={onBackClick}
+        >
           <ArrowBackIcon fontSize='large' />
           Go back
         </IconButton>
@@ -60,6 +65,7 @@ export const MovieInfo = () => {
             size={128}
             color='#1be3e3'
             cssOverride={{ alignSelf: 'center', justifySelf: 'center', margin: '15vh 0' }}
+            aria-label='Loading'
           />
         ) : (
           <>
@@ -70,10 +76,11 @@ export const MovieInfo = () => {
               className='movie-info-image-container'
               onClick={() => setShowPopup(true)}
               alt={`${movie?.title} poster`}
+              aria-describedby='movie-info-poster'
             />
           </>
         )}
-      </div>
+      </main>
       <MovieInfoReviewSection movieId={id} />
       <Toaster />
     </>

@@ -1,11 +1,6 @@
 .header-profile-container {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   height: 2.5rem;
-}
-
-.header-profile-picture {
-  border-radius: 100rem;
-  height: 100%;
-  margin: 0 0.5rem;
 }

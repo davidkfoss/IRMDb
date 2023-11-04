@@ -1,8 +1,8 @@
 .filter-container {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 0.7rem;
-  margin-right: 2rem;
+  margin: 0.5rem 1rem;
+  padding: 0.5rem;
   justify-content: space-between;
   width: 100%;
 }
@@ -11,10 +11,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.search-bar-container {
-  margin-left: 1rem;
 }
 
 .search-bar-container,
@@ -27,4 +23,8 @@
 
 .filters-container-mobile {
   width: 100%;
+}
+
+.filter-accordion-wrapper {
+  margin-top: 2rem;
 }

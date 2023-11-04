@@ -1,3 +1,4 @@
+import { Avatar } from '@mui/material';
 import { useLogout } from '../../../hooks/useLogout';
 import { JwtUser } from '../../../hooks/useUser';
 import './HeaderProfile.css';
@@ -11,8 +12,7 @@ export const HeaderProfile = ({ user }: HeaderProfileProps) => {
 
   return (
     <div className='header-profile-container'>
-      <img className='header-profile-picture' src={user.picture} />
-      {/* <span>{user.name}</span> */}
+      <Avatar sx={{ width: 32, height: 32 }} src={user.picture} />
       <span onClick={logout}>Logout</span>
     </div>
   );

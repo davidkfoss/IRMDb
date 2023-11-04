@@ -58,11 +58,13 @@ export const Movies = () => {
     !allFetched && !loadingState.rejected && (!loadingState.pending || loadingState.fetchMorePending);
 
   return (
-    <>
-      <div className='movie-filter-container'>
+    <main>
+      <section aria-label='Movie filters' className='movie-filter-container'>
         <MovieFilter onChange={onFilterChange} />
-      </div>
-      <MovieGrid movies={movies} id='movie-grid' {...loadingState} />
+      </section>
+      <section aria-label='Movie grid'>
+        <MovieGrid movies={movies} id='movie-grid' {...loadingState} />
+      </section>
       {showLoadMoreButton && (
         <Button
           id='load-more'
@@ -70,10 +72,12 @@ export const Movies = () => {
           onKeyDown={onLoadButtonKeyDown}
           loading={loadingState.pending}
           style={{ width: '12rem', height: '2rem' }}
+          role='button'
+          aria-label={`Load ${pageSize} more movies`}
         >
           Load {pageSize} more movies
         </Button>
       )}
-    </>
+    </main>
   );
 };

@@ -21,22 +21,30 @@ export const ReviewInfo = ({ review, showTitle }: ReviewInfoProps) => {
   }, [meta.movieId, navigate]);
 
   return (
-    <div className='review-info-container'>
+    <article className='review-info-container'>
       {showTitle && (
-        <span className='review-movie-title' onClick={onTitleClick}>
+        <h3 className='review-movie-title' onClick={onTitleClick} role='link' tabIndex={0}>
           {meta.movieTitle}
-        </span>
+        </h3>
       )}
       <div className='review-author-info'>
         <Avatar sx={{ width: 45, height: 45 }}>{meta.authorName[0]}</Avatar>
         <div className='name-and-time-container'>
           <div className='review-info-author'>
             <p>{meta.authorName}</p>
-            <p className='review-date'>{parseMillisecondsString(date)}</p>
+            <time className='review-date' dateTime={date}>
+              {parseMillisecondsString(date)}
+            </time>
           </div>
-          <Rating name='read-only' value={rating} readOnly style={{ color: blue[100] }} />
+          <Rating
+            name='read-only'
+            value={rating}
+            readOnly
+            style={{ color: blue[100] }}
+            aria-label={`Rating: ${rating} out of 5`}
+          />
         </div>
       </div>
-    </div>
+    </article>
   );
 };

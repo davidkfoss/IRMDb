@@ -1,6 +1,5 @@
 .header {
-  padding-top: 1.25rem;
-  margin-bottom: 2rem;
+  padding-top: 0.5rem;
   border-bottom: solid 1px;
   border-image: linear-gradient(to right, #ffffff9e, #ffffff17, #ffffff93);
   border-image-slice: 1;
@@ -23,7 +22,7 @@
   align-items: center;
 }
 
-.header > nav > ul > *,
+.header > nav > ul > li > *,
 .header > nav > .header-auth {
   margin: 0 1.8rem;
   text-decoration: none;
@@ -32,10 +31,13 @@
   padding: 0.5rem 0;
   font-weight: 300;
   position: relative;
+}
+
+.header > nav > ul > li {
   transition: all 0.1s ease-in-out;
 }
 
-.header > nav > ul > *:hover {
+.header > nav > ul > li:hover {
   transform: scale(1.05);
 }
 .header > nav > .header-auth span {
@@ -70,7 +72,7 @@
 }
 
 @media screen and (max-width: 370px) {
-  .header > nav > ul > *,
+  .header > nav > ul > li > *,
   .header > nav > .header-auth {
     margin: 0 1rem;
   }

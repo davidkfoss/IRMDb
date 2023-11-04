@@ -29,34 +29,36 @@ export const ReviewCard = ({
   const { comment } = review;
 
   return (
-    <div className='review-container'>
-      <div className='review-info'>
+    <article className='review-container'>
+      <header className='review-info'>
         <ReviewInfo review={review} showTitle={isFeed} />
         <div className='review-buttons-container'>
           {canDelete && (
-            <IconButton aria-label='delete' size='large' onClick={onDelete}>
+            <IconButton aria-label='Delete review' size='large' onClick={onDelete}>
               <DeleteIcon />
             </IconButton>
           )}
           <div className='review-upvotes-container'>
             {canVote && !canDelete ? (
-              <IconButton aria-label='upvote' size='large' onClick={onVote}>
+              <IconButton aria-label='Upvote review' size='large' onClick={onVote}>
                 <ArrowCircleUpIcon style={{ color: 'white' }} />
               </IconButton>
             ) : isLoggedIn && !canDelete ? (
-              <IconButton aria-label='upvote' size='large' onClick={onDeleteVote}>
+              <IconButton aria-label='Remove upvote from review' size='large' onClick={onDeleteVote}>
                 <ArrowCircleUpIcon style={{ color: 'rgb(70, 192, 0)' }} />
               </IconButton>
             ) : (
-              <IconButton aria-label='upvote' size='large' disabled>
+              <IconButton aria-label='Upvote review' size='large' disabled aria-disabled='true'>
                 <ArrowCircleUpIcon style={{ color: 'rgb(172, 172, 172)' }} />
               </IconButton>
             )}
-            <p className='review-votes'>{review.votes.length}</p>
+            <p className='review-votes' aria-label={`${review.votes.length} upvotes`}>
+              {review.votes.length}
+            </p>
           </div>
         </div>
-      </div>
+      </header>
       <div className='review-comment'>{comment}</div>
-    </div>
+    </article>
   );
 };
