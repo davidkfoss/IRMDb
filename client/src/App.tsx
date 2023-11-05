@@ -1,19 +1,15 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
+import { client } from './client';
 import { Feed } from './pages/feed/Feed';
 import { MovieInfo } from './pages/movieInfo/MovieInfo';
 import { Movies } from './pages/movies/Movies';
 import { Root } from './pages/root/Root';
 import { store } from './store/store';
-
-export const client = new ApolloClient({
-  uri: 'http://localhost:3001/graphql',
-  cache: new InMemoryCache(),
-});
 
 function App() {
   const basename = import.meta.env.PROD ? '/project2' : undefined;

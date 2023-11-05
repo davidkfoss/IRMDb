@@ -1,6 +1,6 @@
 import { CredentialResponse, TokenResponse } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
-import { client } from '../../App';
+import { client } from '../../client';
 import { JwtUser } from '../../hooks/useUser';
 import { createUserMutation, getUserByEmailQuery } from '../../queries/userQueries';
 import customToast from '../../util/toastWrapper';

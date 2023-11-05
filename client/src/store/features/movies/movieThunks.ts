@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { client } from '../../../App';
+import { client } from '../../../client';
 import { Filters } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
 import {
