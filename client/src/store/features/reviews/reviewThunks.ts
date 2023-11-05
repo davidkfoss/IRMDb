@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { client } from '../../../App';
+import { client } from '../../../client';
 import { Review } from '../../../models/review';
 import {
   createReviewMutation,
