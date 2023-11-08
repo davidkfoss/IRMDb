@@ -6,7 +6,6 @@
 }
 
 .switch-auth-state-button:hover {
-  text-decoration: underline;
   transform: scale(1.1);
 }
 
