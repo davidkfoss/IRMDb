@@ -59,6 +59,10 @@
   -webkit-text-stroke-color: rgb(255, 255, 255);
 }
 
+/* .header > nav > ul > li.logo {
+  margin-right: auto;
+} */
+
 @media screen and (max-width: 680px) {
   .header > nav {
     grid-template-columns: 1fr 1fr;

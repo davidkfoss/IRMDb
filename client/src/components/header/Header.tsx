@@ -1,9 +1,10 @@
 import { useWindowSize } from '@uidotdev/usehooks';
 import { NavLink } from 'react-router-dom';
 import { useUser } from '../../hooks/useUser';
-import './Header.css';
 import { HeaderAuth } from './headerAuth/HeaderAuth';
 import { MobileMenu } from './mobileMenu/MobileMenu';
+import './Header.css';
+import { Logo } from '../logo/Logo';
 
 interface Link {
   name: string;
@@ -32,7 +33,12 @@ export const Header = () => {
   return (
     <header className='header'>
       <nav aria-label='Main Navigation'>
-        {width && width >= 680 && <div></div>}
+        {width && width >= 680 && (
+          <div>
+            {' '}
+            <Logo />
+          </div>
+        )}
         <ul>
           {links.map((link) => (
             <li key={link.name}>
