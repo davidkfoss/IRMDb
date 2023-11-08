@@ -21,21 +21,29 @@ const loginMessageGeneratorMap: Record<LoginResult, (user?: User) => string> = {
   error: () => `Please check your email and password and try again.`,
 };
 
-export const useLogin = () => {
-  const login = useCallback(async (email: string, password: string) => {
-    const user = await loginUser(email, password);
+interface UseLoginOptions {
+  onSuccess?: () => void;
+}
 
-    const status: LoginResult = user ? 'success' : 'error';
+export const useLogin = (options: UseLoginOptions) => {
+  const login = useCallback(
+    async (email: string, password: string) => {
+      const user = await loginUser(email, password);
 
-    customToast[status](loginMessageGeneratorMap[status](user));
+      const status: LoginResult = user ? 'success' : 'error';
 
-    if (status === 'error') {
-      return;
-    }
+      customToast[status](loginMessageGeneratorMap[status](user));
 
-    localStorage.setItem('currUser', JSON.stringify({ ...user }));
-    window.dispatchEvent(new Event('login'));
-  }, []);
+      if (status === 'error') {
+        return;
+      }
+
+      options.onSuccess?.();
+      localStorage.setItem('currUser', JSON.stringify({ ...user }));
+      window.dispatchEvent(new Event('login'));
+    },
+    [options]
+  );
 
   return login;
 };
