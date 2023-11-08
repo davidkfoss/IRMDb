@@ -82,7 +82,10 @@ class ReviewService {
   }
 
   async voteReview(authorEmail: string, reviewId: string, vote: boolean) {
-    const review = await ReviewModel.findById(reviewId);
+    const review = await ReviewModel.findOne({
+      '_id': reviewId,
+      'votes.user': { $nin: [authorEmail] },
+    });
     if (!review) {
       return null;
     }
@@ -94,6 +97,14 @@ class ReviewService {
   }
 
   async deleteVoteReview(authorEmail: string, reviewId: string) {
+    const review = await ReviewModel.findOne({
+      '_id': reviewId,
+      'votes.user': { $in: [authorEmail] },
+    });
+    if (!review) {
+      return null;
+    }
+
     return await ReviewModel.findByIdAndUpdate(
       reviewId,
       { $pull: { votes: { user: authorEmail } }, $inc: { 'meta.votesLength': -1 } },
