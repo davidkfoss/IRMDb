@@ -1,0 +1,43 @@
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+}
+
+.logo-box {
+  background-color: rgba(58, 94, 110, 0.6);
+  padding: 7px 16px;
+  border-radius: 2%;
+  box-shadow: 0 0 0.1rem 0.1rem rgba(255, 255, 255, 0.6);
+}
+
+.logo-text {
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+@media screen and (max-width: 680px) {
+  .logo-box {
+    padding: 8px 14px;
+  }
+
+  .logo-text {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 455px) {
+  .logo-box {
+    padding: 6px 12px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+  }
+}
