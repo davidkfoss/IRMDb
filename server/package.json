@@ -4,8 +4,10 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec ts-node server.ts"
+    "start": "nodemon --exec ts-node server.ts",
+    "start-dev": "NODE_ENV=dev nodemon --exec ts-node server.ts",
+    "start-prod": "NODE_ENV=prod ts-node server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
