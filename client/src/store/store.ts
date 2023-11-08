@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { moviesReducer } from './features/movies/moviesSlice';
 import { reviewsReducer } from './features/reviews/reviewsSlice';
+import { userReducer } from './features/user/userSlice';
 
 /**
  * Redux store configuration.
@@ -10,6 +11,7 @@ export const store = configureStore({
   reducer: {
     movies: moviesReducer,
     reviews: reviewsReducer,
+    user: userReducer,
   },
 });
 

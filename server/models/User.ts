@@ -7,11 +7,15 @@ const UserSchema = new mongoose.Schema({
     unique: true,
   },
   name: { type: String, required: true },
-  profilePictureUrl: String,
   role: {
     type: String,
     enum: ['admin', 'moderator', 'user'],
     default: 'user',
+  },
+  password: {
+    type: String,
+    minlength: 6,
+    required: true,
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

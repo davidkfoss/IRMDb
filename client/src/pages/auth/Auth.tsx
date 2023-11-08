@@ -32,6 +32,14 @@ export const Auth = () => {
     setAuthState((prevState) => ({ ...prevState, page }));
   };
 
+  const onLogin = () => {
+    console.log('login');
+  };
+
+  const onRegister = () => {
+    console.log('register');
+  };
+
   return (
     <main className='auth-page-container'>
       <h2>{pageStateToHeaderTextMap[authState.page]}</h2>

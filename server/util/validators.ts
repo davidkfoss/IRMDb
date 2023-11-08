@@ -3,7 +3,7 @@ import { UserData } from '../types/userTypes';
 
 //User validation
 export const validateUserData = (userData: UserData) => {
-  if (!userData.name || !userData.email || !userData.profilePictureUrl) {
+  if (!userData.name || !userData.email) {
     return false;
   }
   return true;
