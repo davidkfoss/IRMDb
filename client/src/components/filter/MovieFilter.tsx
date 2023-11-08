@@ -71,7 +71,7 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
             <Typography>Show filters</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div className='filter-container-mobile'>
+            <div className='filter-container-mobile' data-testid='search-bar-container'>
               <SearchBar onSearch={handleSearch} width={'100%'} initialValue={filters.search} />
               <GenreSelect value={filters.genres} name='genres' width={'100%'} onChange={handleChange} />
               <div className='filters-container-mobile'>
