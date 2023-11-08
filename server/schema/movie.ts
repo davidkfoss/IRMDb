@@ -1,11 +1,11 @@
 import {
   GraphQLFloat,
   GraphQLID,
-  GraphQLString,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLNonNull,
   GraphQLInt,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
 } from 'graphql';
 import { movieService } from '../services/MovieService';
 import { QueryMoviesByFilterArgs } from '../types/movireTypes';
@@ -44,7 +44,7 @@ const MovieQuery = {
       limit: { type: GraphQLInt },
     },
     async resolve(parent: any, args: QueryMoviesByFilterArgs) {
-      let movies = await movieService.getAllMovies(
+      const movies = await movieService.getAllMovies(
         args.offset,
         args.limit,
         args.search,

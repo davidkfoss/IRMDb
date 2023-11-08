@@ -7,7 +7,7 @@ export const HeaderAuth = () => {
   const user = useUser();
 
   return user ? (
-    <HeaderProfile user={user} />
+    <HeaderProfile />
   ) : (
     <NavLink className='header-login-button' to='/login'>
       Login

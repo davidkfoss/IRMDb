@@ -57,7 +57,7 @@ const ReviewType = new GraphQLObjectType({
 const ReviewQuery = {
   GetAllReviews: {
     type: new GraphQLList(ReviewType),
-    async resolve(parent: any, args: QueryReviewArgs): Promise<Review[]> {
+    async resolve(): Promise<Review[]> {
       return (await reviewService.getAllReviews()).map((review) => review.toObject()) as Review[];
     },
   },
