@@ -20,6 +20,7 @@ export class UserService {
   }
 
   async createUser(userData: { email: string; name: string; password: string }) {
+    console.log('step 0');
     if (!validateUserData({ email: userData.email, name: userData.name })) {
       return null;
     }

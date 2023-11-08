@@ -29,6 +29,7 @@ export const Login = () => {
   };
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    console.log('step 3');
     event.preventDefault();
     login(loginState.email, loginState.password);
   };

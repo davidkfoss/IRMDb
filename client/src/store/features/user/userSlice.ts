@@ -25,11 +25,6 @@ const initialUserState: UserState = {
   loadingState: initialLoadingState,
 };
 
-/**
- * A slice of the Redux store that manages the state related to movies.
- * @name movies
- * @type {Slice}
- */
 export const userSlice = createSlice({
   name: 'users',
   initialState: initialUserState,

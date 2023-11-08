@@ -34,6 +34,7 @@ const UserQuery = {
   },
   GetUserAuth: {
     type: UserType,
+    args: { email: { type: GraphQLNonNull(GraphQLString) }, password: { type: GraphQLNonNull(GraphQLString) } },
     async resolve(parent: any, args: { email: string; password: string }) {
       return await userService.getAuthUser(args);
     },
@@ -49,6 +50,7 @@ const UserMutation = {
       password: { type: new GraphQLNonNull(GraphQLString) },
     },
     async resolve(parent: any, args: { name: string; email: string; password: string }) {
+      console.log('step 1');
       return await userService.createUser({
         name: args.name,
         email: args.email,

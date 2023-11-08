@@ -6,7 +6,7 @@ import { getUserAuth } from '../store/features/user/userThunks';
 
 type LoginResult = 'success' | 'error';
 
-const loginMessageGeneratorMap: Record<LoginResult, (user?: User) => string> = {
+const loginMessageGeneratorMap: Record<LoginResult, (user: User | null) => string> = {
   success: (user) => `Welcome back, ${user?.name}!`,
   error: () => `Please check your email and password and try again.`,
 };

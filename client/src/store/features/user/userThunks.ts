@@ -5,7 +5,7 @@ import { User } from '../../../models/user';
 import { createUserMutation, getUserAuthQuery } from '../../../queries/userQueries';
 
 export const getUserAuth = createAsyncThunk<
-  User | undefined,
+  User | null,
   { email: string; password: string; refetch?: boolean },
   { state: RootState }
 >('users/getUserAuth', async ({ email, password, refetch = false }) => {
@@ -16,30 +16,24 @@ export const getUserAuth = createAsyncThunk<
       fetchPolicy: refetch ? 'no-cache' : undefined,
     })
     .then((result) => {
-      return result.data.GetUserAuth;
+      return result.data.GetUserAuth ?? null;
     });
   return user;
 });
 
-/**
- * A Redux Async Thunk that retrieves the rating of a movie by its ID.
- * @param id - The ID of the movie to retrieve the rating for.
- * @param refetch - Whether to bypass the cache and fetch the rating again.
- * @returns The rating of the movie, or undefined if it could not be retrieved.
- */
 export const createUser = createAsyncThunk<
-  User | undefined,
+  User | null,
   { email: string; password: string; name: string; refetch?: boolean },
   { state: RootState }
 >('users/createUser', async ({ email, password, name, refetch = false }) => {
   const user = await client
-    .query({
-      query: createUserMutation,
+    .mutate({
+      mutation: createUserMutation,
       variables: { email: email, password: password, name: name },
       fetchPolicy: refetch ? 'no-cache' : undefined,
     })
     .then((result) => {
-      return result.data.CreateUser;
+      return result.data.CreateUser ?? null;
     });
   return user;
 });

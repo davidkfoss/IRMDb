@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRegister } from '../../hooks/useRegister';
+import { useNavigate } from 'react-router-dom';
 
 interface RegisterState {
   email: string;
@@ -14,8 +15,13 @@ const initialRegisterState = {
 };
 
 export const Register = () => {
+  const navigate = useNavigate();
   const [registerState, setRegisterState] = useState<RegisterState>(initialRegisterState);
-  const register = useRegister();
+  const register = useRegister({
+    onSuccess: () => {
+      navigate('/');
+    },
+  });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
