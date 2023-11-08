@@ -15,6 +15,10 @@
   padding: 3rem;
 }
 
+.reviews-title {
+  text-align: center !important;
+}
+
 .movie-info-reviews {
   flex-direction: column;
   padding: 1.5rem 3rem;
