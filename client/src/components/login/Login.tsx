@@ -1,12 +1,46 @@
-import { GoogleLogin, GsiButtonConfiguration } from '@react-oauth/google';
-import { onLoginSuccess } from './onLogin';
+import { useState } from 'react';
+import { useLogin } from '../../hooks/useLogin';
+import './Login.css';
+
+interface LoginState {
+  email: string;
+  password: string;
+  name: string;
+}
+
+const initialLoginState = {
+  email: '',
+  password: '',
+  name: '',
+};
 
 export const Login = () => {
-  const buttonStyle: GsiButtonConfiguration = {
-    shape: 'pill',
-    theme: 'filled_blue',
-    text: 'signin',
+  const [loginState, setLoginState] = useState<LoginState>(initialLoginState);
+  const login = useLogin();
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setLoginState((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  return <GoogleLogin onSuccess={onLoginSuccess} {...buttonStyle}></GoogleLogin>;
+  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    login(loginState.email, loginState.password);
+  };
+
+  return (
+    <section className='auth-page-container'>
+      <form onSubmit={handleLogin} id='auth-form'>
+        <label>
+          Email:
+          <input type='email' name='email' value={loginState.email} onChange={handleInputChange} required />
+        </label>
+        <label>
+          Password:
+          <input type='password' name='password' value={loginState.password} onChange={handleInputChange} required />
+        </label>
+        <button type='submit'>Login</button>
+      </form>
+    </section>
+  );
 };

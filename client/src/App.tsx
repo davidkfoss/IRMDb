@@ -1,10 +1,10 @@
 import { ApolloProvider } from '@apollo/client';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
 import { client } from './client';
+import { Auth } from './pages/auth/Auth';
 import { Feed } from './pages/feed/Feed';
 import { MovieInfo } from './pages/movieInfo/MovieInfo';
 import { Movies } from './pages/movies/Movies';
@@ -36,6 +36,10 @@ function App() {
             element: <MovieInfo />,
           },
           {
+            path: 'login',
+            element: <Auth />,
+          },
+          {
             path: '*',
             element: <h1>404 Not found!</h1>,
           },
@@ -45,18 +49,12 @@ function App() {
     { basename }
   );
 
-  // The client id for the google oauth provider
-  // Note that this is a public id, and is not a secret, thus is not in .env.
-  const clientId = '279259714095-qs93f4ssl6lssejv5j7ri5n2eq0j307i.apps.googleusercontent.com';
-
   return (
     <ApolloProvider client={client}>
-      <GoogleOAuthProvider clientId={clientId}>
-        <Provider store={store}>
-          <Toaster />
-          <RouterProvider router={router} />
-        </Provider>
-      </GoogleOAuthProvider>
+      <Provider store={store}>
+        <Toaster />
+        <RouterProvider router={router} />
+      </Provider>
     </ApolloProvider>
   );
 }

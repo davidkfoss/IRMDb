@@ -1,0 +1,11 @@
+.switch-auth-state-button {
+  text-decoration: underline;
+  transition: transform 0.2s ease-in-out;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.switch-auth-state-button:hover {
+  text-decoration: underline;
+  transform: scale(1.1);
+}

@@ -1,10 +1,10 @@
 import { Avatar } from '@mui/material';
 import { useLogout } from '../../../hooks/useLogout';
-import { JwtUser } from '../../../hooks/useUser';
+import { User } from '../../../hooks/useUser';
 import './HeaderProfile.css';
 
 interface HeaderProfileProps {
-  user: JwtUser;
+  user: User;
 }
 
 export const HeaderProfile = ({ user }: HeaderProfileProps) => {

@@ -1,4 +1,3 @@
-import { googleLogout } from '@react-oauth/google';
 import { useCallback } from 'react';
 
 /**
@@ -9,7 +8,6 @@ import { useCallback } from 'react';
 export const useLogout = (): (() => void) => {
   const logout = useCallback(() => {
     localStorage.removeItem('currUser');
-    googleLogout();
 
     // Dispatch a logout event on the window object
     window.dispatchEvent(new Event('logout'));
