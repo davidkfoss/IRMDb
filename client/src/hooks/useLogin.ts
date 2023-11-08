@@ -11,9 +11,12 @@ const loginMessageGeneratorMap: Record<LoginResult, (user?: User) => string> = {
   error: () => `Please check your email and password and try again.`,
 };
 
-export const useLogin = () => {
-  const dispatch = useAppDispatch();
+interface UseLoginOptions {
+  onSuccess?: () => void;
+}
 
+export const useLogin = (options: UseLoginOptions) => {
+  const dispatch = useAppDispatch();
   const login = useCallback(
     async (email: string, password: string) => {
       const user = await dispatch(getUserAuth({ email, password })).unwrap();
@@ -26,10 +29,11 @@ export const useLogin = () => {
         return;
       }
 
+      options.onSuccess?.();
       localStorage.setItem('currUser', JSON.stringify({ ...user }));
       window.dispatchEvent(new Event('login'));
     },
-    [dispatch]
+    [options, dispatch]
   );
 
   return login;

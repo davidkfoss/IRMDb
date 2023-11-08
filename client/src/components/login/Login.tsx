@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLogin } from '../../hooks/useLogin';
 import './Login.css';
 
@@ -14,7 +15,13 @@ const initialLoginState = {
 
 export const Login = () => {
   const [loginState, setLoginState] = useState<LoginState>(initialLoginState);
-  const login = useLogin();
+  const navigate = useNavigate();
+
+  const login = useLogin({
+    onSuccess: () => {
+      navigate('/');
+    },
+  });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

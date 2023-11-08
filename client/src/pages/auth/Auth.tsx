@@ -18,6 +18,11 @@ const pageStateToButtonTextMap: Record<Page, string> = {
   signup: "Don't have an account? Sign up!",
 };
 
+const pageStateToHeaderTextMap: Record<Page, string> = {
+  login: 'Sign in to your account',
+  signup: 'Create an account to get started!',
+};
+
 const otherPage = (page: 'login' | 'signup') => (page === 'login' ? 'signup' : 'login');
 
 export const Auth = () => {
@@ -28,12 +33,12 @@ export const Auth = () => {
   };
 
   return (
-    <section className='auth-page-container'>
-      <h2>{authState.page === 'login' ? 'Login' : 'Sign up'}</h2>
+    <main className='auth-page-container'>
+      <h2>{pageStateToHeaderTextMap[authState.page]}</h2>
       {authState.page === 'login' ? <Login /> : <Register />}
       <a className='switch-auth-state-button' onClick={() => handlePageChange(otherPage(authState.page))}>
         {pageStateToButtonTextMap[otherPage(authState.page)]}
       </a>
-    </section>
+    </main>
   );
 };

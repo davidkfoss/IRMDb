@@ -1,4 +1,4 @@
-import { Google, Logout } from '@mui/icons-material';
+import { Login, Logout } from '@mui/icons-material';
 import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
 import { useWindowSize } from '@uidotdev/usehooks';
 import React from 'react';
@@ -93,7 +93,7 @@ export const MobileMenu = ({ user }: MobileMenuProps) => {
         ) : (
           <MenuItem onClick={() => navigate('/login')}>
             <ListItemIcon>
-              <Google fontSize='small' />
+              <Login fontSize='small' />
             </ListItemIcon>
             Login
           </MenuItem>
