@@ -91,7 +91,7 @@ class ReviewService {
     }
     return await ReviewModel.findByIdAndUpdate(
       reviewId,
-      { $push: { votes: { user: authorEmail, vote: vote } }, $inc: { 'meta.votesLength': 1 } },
+      { '$push': { votes: { user: authorEmail, vote: vote } }, 'meta.votesLength': review.votes.length + 1 },
       { new: true }
     );
   }
@@ -107,7 +107,7 @@ class ReviewService {
 
     return await ReviewModel.findByIdAndUpdate(
       reviewId,
-      { $pull: { votes: { user: authorEmail } }, $inc: { 'meta.votesLength': -1 } },
+      { '$pull': { votes: { user: authorEmail } }, 'meta.votesLength': review.votes.length - 1 },
       { new: true }
     );
   }
