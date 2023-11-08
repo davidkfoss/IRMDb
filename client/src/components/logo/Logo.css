@@ -9,22 +9,27 @@
 
 .logo-box {
   background-color: rgba(58, 94, 110, 0.6);
-  padding: 7px 16px;
-  border-radius: 2%;
-  box-shadow: 0 0 0.1rem 0.1rem rgba(255, 255, 255, 0.6);
+  padding: 7px 14px;
+  border-radius: 10px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+  border: 1px solid rgba(128, 128, 128, 0.331);
 }
 
 .logo-box:hover {
   transform: scale(1.05);
-  cursor: pointer;
 }
 
 .logo-text {
-  color: white;
-  font-family: Arial, sans-serif;
-  font-size: 24px;
+  color: rgb(239, 255, 249);
+  font-size: 22px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
   line-height: 1;
   text-decoration: none;
+  user-select: none;
 }
 
 @media screen and (max-width: 680px) {
