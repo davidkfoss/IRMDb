@@ -1,6 +1,6 @@
-import { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLNonNull, GraphQLList } from 'graphql';
+import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { userService } from '../services/UserService';
-import { User, UserData } from '../types/userTypes';
+import { User } from '../types/userTypes';
 
 const UserType = new GraphQLObjectType({
   name: 'User',
@@ -50,7 +50,6 @@ const UserMutation = {
       password: { type: new GraphQLNonNull(GraphQLString) },
     },
     async resolve(parent: any, args: { name: string; email: string; password: string }) {
-      console.log('step 1');
       return await userService.createUser({
         name: args.name,
         email: args.email,

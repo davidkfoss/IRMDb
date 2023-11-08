@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useRegister } from '../../hooks/useRegister';
 import { useNavigate } from 'react-router-dom';
+import { useRegister } from '../../hooks/useRegister';
 
 interface RegisterState {
   email: string;
@@ -44,7 +44,14 @@ export const Register = () => {
         </label>
         <label>
           Password:
-          <input type='password' name='password' value={registerState.password} onChange={handleInputChange} required />
+          <input
+            type='password'
+            name='password'
+            minLength={6}
+            value={registerState.password}
+            onChange={handleInputChange}
+            required
+          />
         </label>
         <label>
           Name:

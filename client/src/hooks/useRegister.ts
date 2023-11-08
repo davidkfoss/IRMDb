@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
+import { createUser } from '../store/features/user/userThunks';
+import { useAppDispatch } from '../store/store';
 import customToast from '../util/toastWrapper';
 import { User } from './useUser';
-import { useAppDispatch } from '../store/store';
-import { createUser } from '../store/features/user/userThunks';
 
 type RegisterResult = 'success' | 'error';
 
@@ -20,7 +20,13 @@ export const useRegister = (options: UseRegisterOptions) => {
 
   const register = useCallback(
     async (email: string, password: string, name: string) => {
-      const user = await dispatch(createUser({ email, password, name })).unwrap();
+      const user = await dispatch(createUser({ email, password, name }))
+        .unwrap()
+        .catch(() => {
+          return null;
+        });
+
+      console.log(user);
 
       const status: RegisterResult = user ? 'success' : 'error';
 

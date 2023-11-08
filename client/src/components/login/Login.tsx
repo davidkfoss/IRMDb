@@ -29,7 +29,6 @@ export const Login = () => {
   };
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('step 3');
     event.preventDefault();
     login(loginState.email, loginState.password);
   };
@@ -43,7 +42,14 @@ export const Login = () => {
         </label>
         <label>
           Password:
-          <input type='password' name='password' value={loginState.password} onChange={handleInputChange} required />
+          <input
+            type='password'
+            name='password'
+            minLength={6}
+            value={loginState.password}
+            onChange={handleInputChange}
+            required
+          />
         </label>
         <button type='submit'>Login</button>
       </form>
