@@ -117,3 +117,9 @@ export const selectReviewInfoOnMovie = (movieId: string) =>
 export const selectRecentReviews = () => createSelector(selectReviews, (reviews) => reviews.recentReviews);
 
 export const selectPopularReviews = () => createSelector(selectReviews, (reviews) => reviews.popularReviews);
+
+export const selectRecentReviewLoadingStates = () =>
+  createSelector(selectReviews, (reviews) => reviews.loadingStates.recentReviews);
+
+export const selectPopularReviewLoadingStates = () =>
+  createSelector(selectReviews, (reviews) => reviews.loadingStates.popularReviews);
