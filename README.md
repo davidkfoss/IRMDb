@@ -76,6 +76,20 @@ We welcome any suggestions or feature requests from the community.
 
 #
 
+## Linting and formatting
+
+To lint the code, run the following command in the respective client and server folders:
+
+`npm run lint`
+
+To check the formatting of the code, run the following command:
+
+`npm run check-format`
+
+To format the code with prettier, run the following command:
+
+`npm run format`
+
 ## Authors and acknowledgment
 
 Thor Sjursen
