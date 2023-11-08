@@ -1,6 +1,7 @@
 export interface QueryMoviesData {
   title?: {};
   genre?: {};
+  rating?: {};
 }
 
 export interface QuerySortMoviesData {

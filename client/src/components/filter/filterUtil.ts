@@ -13,7 +13,7 @@ export interface Filters {
 export const initialFilters: Filters = {
   genres: [],
   sortBy: sortOptions[0],
-  direction: directions[0],
+  direction: directions[1],
   search: '',
 };
 
