@@ -12,6 +12,9 @@ interface Link {
   className?: string;
 }
 
+/**
+ * Header component that displays the navigation bar and user authentication options.
+ */
 export const Header = () => {
   const { width } = useWindowSize();
   const user = useUser();

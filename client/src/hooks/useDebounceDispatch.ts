@@ -2,6 +2,11 @@ import _ from 'lodash';
 import { useMemo } from 'react';
 import { useAppDispatch } from '../store/store';
 
+/**
+ * Returns a debounced version of the provided dispatch function.
+ * @param delay - The delay in milliseconds before the dispatch function is called.
+ * @returns A debounced version of the provided dispatch function.
+ */
 export default (delay: number) => {
   const dispatch = useAppDispatch();
 

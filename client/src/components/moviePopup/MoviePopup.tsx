@@ -10,25 +10,34 @@ interface MoviePopupProps {
 }
 
 export const MoviePopup = ({ movie, onClose }: MoviePopupProps) => {
+  // Define a function that stops the propagation of an event
   const consumeEvent = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
   };
 
+  // Add an event listener to the window to catch keyboard events
   useEffect(() => {
     const catchFocus = (e: KeyboardEvent) => {
+      // If the user presses the escape key, close the popup
       if (e.key === 'Escape') {
         onClose();
-      } else if (e.key === 'Tab') {
+      }
+      // If the user presses the tab key, focus on the close button
+      else if (e.key === 'Tab') {
         e.preventDefault();
 
         const close = document.getElementById('close');
         close?.focus();
       }
+      // Stop the propagation of the event
       e.stopPropagation();
     };
 
     window.addEventListener('keydown', catchFocus);
+    // Disable scrolling on the body element
     document.body.style.overflow = 'hidden';
+
+    // Remove the event listener and re-enable scrolling when the component unmounts
     return () => {
       window.removeEventListener('keydown', catchFocus);
       document.body.style.overflow = 'auto';

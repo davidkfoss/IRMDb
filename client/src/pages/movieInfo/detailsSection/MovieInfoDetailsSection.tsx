@@ -6,6 +6,10 @@ import { Movie } from '../../../models/movie';
 import { getYear } from '../../../util/parseDate';
 
 export const MovieInfoDetailsSection = ({ movie }: { movie: Movie }) => {
+  /**
+   * The rounded rating of the movie.
+   * If the movie rating is null, the default value is 5.
+   */
   const roundedRating = useMemo(() => round(movie.rating ?? 5, 2), [movie]);
 
   return (

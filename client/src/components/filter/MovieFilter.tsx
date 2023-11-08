@@ -35,11 +35,13 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
     const { target } = event;
     const { name, value, checked } = target;
 
+    // If the checkbox is checked, set the direction to ascending, otherwise set it to descending
     if (checked !== undefined) {
       setFilters((prev) => {
         return { ...prev, [name]: checked ? directions[0] : directions[1] };
       });
     } else {
+      // Otherwise, set the filter to the new value
       setFilters((prev) => {
         return { ...prev, [name]: value };
       });
@@ -52,10 +54,12 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
     });
   };
 
+  // Using useEffect to check if the filters have changed and call the onChange function if they have
   useEffect(() => {
     if (hasFiltersChanged(filters, storeFilters)) {
       onChange(filters);
     }
+    // Sets the filters in session storage when the component is unmounted
     return () => {
       setFiltersInSessionStorage(filters);
     };
@@ -63,6 +67,7 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
 
   const isMobile = useMemo(() => width && width < 1065, [width]);
 
+  // If the window size is less than 1065 pixels, return the mobile filter view
   if (isMobile)
     return (
       <div className='filter-accordion-wrapper'>
@@ -84,6 +89,7 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
       </div>
     );
 
+  // Otherwise, return the desktop filter view
   return (
     <div className='filter-container'>
       <div className='search-bar-container'>

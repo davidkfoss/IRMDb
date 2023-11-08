@@ -7,9 +7,15 @@ import customToast from '../../util/toastWrapper';
 
 type CreateUserResult = 'ERROR' | 'SUCCESS' | 'ALREADY_EXISTING';
 
+/**
+ * Creates a new user in the database if the user does not already exist.
+ * @param user - The user to create.
+ * @returns A Promise that resolves to a CreateUserResult indicating the status of the operation.
+ */
 const createUser: (user: JwtUser) => Promise<CreateUserResult> = async (user) => {
   let status: CreateUserResult = 'ERROR';
 
+  // Check if user already exists in the database
   const existingUser = await client
     .query({
       query: getUserByEmailQuery,
@@ -21,10 +27,12 @@ const createUser: (user: JwtUser) => Promise<CreateUserResult> = async (user) =>
       return result.data.GetUserByEmail;
     });
 
+  // If user already exists, set status to 'ALREADY_EXISTING'
   if (existingUser && existingUser.id) {
     status = 'ALREADY_EXISTING';
   }
 
+  // If user does not exist, create a new user in the database and set status to 'SUCCESS'
   if (!existingUser) {
     await client
       .mutate({
@@ -50,6 +58,11 @@ const loginMessageGeneratorMap: Record<CreateUserResult, (user?: JwtUser) => str
   ERROR: () => `Something went wrong! Please try again ...`,
 };
 
+/**
+ * Handles successful login by creating a user, setting the current user in local storage, and dispatching a login event.
+ * @param response - The response containing the user's credential.
+ * @returns A Promise that resolves or rejects depending on the status of the operation.
+ */
 export const onLoginSuccess = async (response: CredentialResponse) => {
   if (!response.credential) return;
 
@@ -61,6 +74,11 @@ export const onLoginSuccess = async (response: CredentialResponse) => {
   customToast.success(loginMessageGeneratorMap[status](user));
 };
 
+/**
+ * Handles successful login with token response.
+ * @param tokenResponse - The token response object.
+ * @returns Promise<void>
+ */
 export const onLoginSuccessToken = async (
   tokenResponse: Omit<TokenResponse, 'error' | 'error_description' | 'error_uri'>
 ) => {

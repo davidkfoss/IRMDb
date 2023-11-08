@@ -1,7 +1,9 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
+/**
+ * Apollo client for making GraphQL requests to the server.
+ */
 export const client = new ApolloClient({
-  // TODO: use env variable to allow for different endpoints
   uri: 'http://localhost:3001/graphql',
   cache: new InMemoryCache({
     typePolicies: {

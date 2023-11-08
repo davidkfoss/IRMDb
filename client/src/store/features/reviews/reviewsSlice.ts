@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { Slice, createSelector, createSlice } from '@reduxjs/toolkit';
 import { Review } from '../../../models/review';
 import { RootState } from '../../store';
 import {
@@ -21,11 +21,13 @@ const initialLoadingState: LoadingState = {
 };
 
 interface loadingStates {
+  reviews: LoadingState;
   recentReviews: LoadingState;
   popularReviews: LoadingState;
 }
 
 const initialLoadingStates: loadingStates = {
+  reviews: initialLoadingState,
   recentReviews: initialLoadingState,
   popularReviews: initialLoadingState,
 };
@@ -47,7 +49,12 @@ const initialReviewsState: ReviewsState = {
   loadingStates: initialLoadingStates,
 };
 
-export const reviewSlice = createSlice({
+/**
+ * A Redux slice for managing movie reviews.
+ * @name reviews
+ * @type {Slice}
+ */
+export const reviewSlice: Slice = createSlice({
   name: 'reviews',
   initialState: initialReviewsState,
   reducers: {},
@@ -69,6 +76,7 @@ export const reviewSlice = createSlice({
           const { movieId, id } = action.meta.arg;
           const reviews = state.movieReviews[movieId];
           if (!reviews) return;
+
           const reviewIndex = reviews.findIndex((review) => review.id === id);
           if (reviewIndex !== -1) {
             reviews.splice(reviewIndex, 1);
@@ -78,6 +86,13 @@ export const reviewSlice = createSlice({
       .addCase(getReviewsOnMovie.fulfilled, (state, action) => {
         const { id } = action.meta.arg;
         state.movieReviews[id] = action.payload || [];
+        state.loadingStates.reviews = { pending: false, rejected: false, resolved: true };
+      })
+      .addCase(getReviewsOnMovie.pending, (state) => {
+        state.loadingStates.reviews = { pending: true, rejected: false, resolved: false };
+      })
+      .addCase(getReviewsOnMovie.rejected, (state) => {
+        state.loadingStates.reviews = { pending: false, rejected: true, resolved: false };
       })
       .addCase(getRecentReviews.fulfilled, (state, action) => {
         state.loadingStates.recentReviews = { pending: false, rejected: false, resolved: true };
@@ -123,3 +138,6 @@ export const selectRecentReviewLoadingStates = () =>
 
 export const selectPopularReviewLoadingStates = () =>
   createSelector(selectReviews, (reviews) => reviews.loadingStates.popularReviews);
+
+export const selectReviewLoadingStates = () =>
+  createSelector(selectReviews, (reviews) => reviews.loadingStates.reviews);

@@ -18,11 +18,19 @@ export interface JwtUser {
   sub: string;
 }
 
-const getUser = () => {
+/**
+ * Retrieves the current user from local storage.
+ * @returns {JwtUser | null} The current user object or null if not found.
+ */
+const getUser = (): JwtUser | null => {
   const currUser = localStorage.getItem('currUser');
   return currUser ? JSON.parse(currUser) : null;
 };
 
+/**
+ * A custom hook that returns the current user.
+ * @returns {JwtUser | null} The current user or null if no user is logged in.
+ */
 export const useUser = () => {
   const [currUser, setCurrUser] = useState<JwtUser | null>(null);
 

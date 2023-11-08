@@ -1,3 +1,6 @@
+/**
+ * Represents a user object.
+ */
 export interface User {
   id: string;
   name: string;

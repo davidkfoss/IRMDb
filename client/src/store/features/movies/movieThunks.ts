@@ -10,6 +10,12 @@ import {
 } from '../../../queries/movieQueries';
 import { RootState } from '../../store';
 
+/**
+ * A Redux Async Thunk that retrieves a movie by its ID.
+ * @param id - The ID of the movie to retrieve.
+ * @param refetch - Whether to bypass the cache and fetch the movie directly from the server.
+ * @returns A promise that resolves to the retrieved movie, or undefined if the movie was not found.
+ */
 export const getMovieById = createAsyncThunk<
   Movie | undefined,
   { id: string; refetch?: boolean },
@@ -23,6 +29,12 @@ export const getMovieById = createAsyncThunk<
   return movie;
 });
 
+/**
+ * A Redux Async Thunk that retrieves the rating of a movie by its ID.
+ * @param id - The ID of the movie to retrieve the rating for.
+ * @param refetch - Whether to bypass the cache and fetch the rating again.
+ * @returns The rating of the movie, or undefined if it could not be retrieved.
+ */
 export const getMovieRatingById = createAsyncThunk<
   number | undefined,
   { id: string; refetch?: boolean },
@@ -36,6 +48,10 @@ export const getMovieRatingById = createAsyncThunk<
   return rating;
 });
 
+/**
+ * A Redux Async Thunk that fetches movies from the server.
+ * @returns A promise that resolves to an array of Movie objects, or undefined if the request fails.
+ */
 export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: RootState }>(
   'movies/getMovies',
   async (_, { getState }) => {
@@ -58,6 +74,12 @@ export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: Ro
   }
 );
 
+/**
+ * A Redux Async Thunk that fetches a list of movies based on the provided filters.
+ * @param filters - The filters to apply to the movie search.
+ * @param initial - Whether this is the initial fetch or not.
+ * @returns A promise that resolves to an array of Movie objects or undefined.
+ */
 export const getFilteredMovies = createAsyncThunk<
   Movie[] | undefined,
   { filters: Filters; initial: boolean },
