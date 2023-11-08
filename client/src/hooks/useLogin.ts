@@ -1,17 +1,10 @@
 import { useCallback } from 'react';
 import customToast from '../util/toastWrapper';
 import { User } from './useUser';
+import { useAppDispatch } from '../store/store';
+import { getUserAuth } from '../store/features/user/userThunks';
 
 type LoginResult = 'success' | 'error';
-
-/**
- * Creates a new user in the database if the user does not already exist.
- * @param user - The user to create.
- * @returns A Promise that resolves to a CreateUserResult indicating the status of the operation.
- */
-const loginUser: (email: string, password: string) => Promise<User> = async (email, password) => {
-  return {} as User;
-};
 
 const loginMessageGeneratorMap: Record<LoginResult, (user?: User) => string> = {
   success: (user) => `Welcome back, ${user?.name}!`,
@@ -19,20 +12,25 @@ const loginMessageGeneratorMap: Record<LoginResult, (user?: User) => string> = {
 };
 
 export const useLogin = () => {
-  const login = useCallback(async (email: string, password: string) => {
-    const user = await loginUser(email, password);
+  const dispatch = useAppDispatch();
 
-    const status: LoginResult = user ? 'success' : 'error';
+  const login = useCallback(
+    async (email: string, password: string) => {
+      const user = await dispatch(getUserAuth({ email, password })).unwrap();
 
-    customToast[status](loginMessageGeneratorMap[status](user));
+      const status: LoginResult = user ? 'success' : 'error';
 
-    if (status === 'error') {
-      return;
-    }
+      customToast[status](loginMessageGeneratorMap[status](user));
 
-    localStorage.setItem('currUser', JSON.stringify({ ...user }));
-    window.dispatchEvent(new Event('login'));
-  }, []);
+      if (status === 'error') {
+        return;
+      }
+
+      localStorage.setItem('currUser', JSON.stringify({ ...user }));
+      window.dispatchEvent(new Event('login'));
+    },
+    [dispatch]
+  );
 
   return login;
 };

@@ -27,14 +27,6 @@ export const Auth = () => {
     setAuthState((prevState) => ({ ...prevState, page }));
   };
 
-  const onLogin = () => {
-    console.log('login');
-  };
-
-  const onRegister = () => {
-    console.log('register');
-  };
-
   return (
     <section className='auth-page-container'>
       <h2>{authState.page === 'login' ? 'Login' : 'Sign up'}</h2>
