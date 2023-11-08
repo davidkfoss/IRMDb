@@ -1,3 +1,6 @@
+/**
+ * Represents a movie object.
+ */
 export interface Movie {
   id: string;
   title: string;

@@ -3,7 +3,7 @@ import { ReviewCard } from '../../../components/reviewCard/ReviewCard';
 import { useUser } from '../../../hooks/useUser';
 import { Review } from '../../../models/review';
 
-interface FeedReviewsProps {
+interface ReviewsProps {
   canDelete: (review: Review) => boolean;
   onVote: (review: Review) => void;
   onDeleteVote: (review: Review) => void;
@@ -12,9 +12,10 @@ interface FeedReviewsProps {
   resolved: boolean;
   pending: boolean;
   rejected: boolean;
+  isFeed: boolean;
 }
 
-export const FeedReviews = ({
+export const Reviews = ({
   onReviewDelete,
   canDelete,
   onVote,
@@ -23,7 +24,8 @@ export const FeedReviews = ({
   pending,
   rejected,
   reviews,
-}: FeedReviewsProps) => {
+  isFeed = false,
+}: ReviewsProps) => {
   const user = useUser();
   if (pending && reviews && reviews.length === 0) {
     return <ClipLoader size={128} color='#1be3e3' cssOverride={{ marginTop: '2rem' }} />;
@@ -49,7 +51,7 @@ export const FeedReviews = ({
           canVote={user != null && review.votes.every((vote) => vote.user !== user.email)}
           onDeleteVote={() => onDeleteVote(review)}
           isLoggedIn={user != null}
-          isFeed={true}
+          isFeed={isFeed}
         />
       ))}
     </>

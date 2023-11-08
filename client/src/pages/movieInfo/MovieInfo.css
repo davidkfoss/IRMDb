@@ -3,31 +3,30 @@
   display: flex;
   position: relative;
   padding: 0 3rem;
-  padding-top: 3rem;
   margin: 0rem 15%;
   box-shadow: 0 0 25px rgba(12, 200, 169, 0.098);
-  clip-path: inset(10px -20px 10px -20px);
+  clip-path: inset(0px -20px 10px -20px);
   border-radius: 10px;
   justify-content: space-around;
+  z-index: 0;
 }
 
 .movie-info-container {
-  margin-top: -2.5rem;
-  padding-top: 5rem;
+  padding: 3rem;
 }
 
 .movie-info-reviews {
   flex-direction: column;
-  padding: 3rem;
+  padding: 1.5rem 3rem;
   text-align: start;
   align-items: center;
-  margin-top: -1.2rem;
 }
 
 .movie-info-info {
   text-align: start;
   width: 65%;
   padding: 1rem;
+  margin-top: 1.5rem;
 }
 
 .movie-info-genres {

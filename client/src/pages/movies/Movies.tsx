@@ -35,6 +35,13 @@ export const Movies = () => {
     dispatch(getFilteredMovies({ filters: filters.current, initial: false }));
   };
 
+  /**
+   * Handles key down events for the load more button.
+   * If the key pressed is not "Enter", the function returns.
+   * Otherwise, it prevents the default action, calls onLoadButtonClicked function,
+   * and focuses on the last movie in the grid after loading more movies.
+   * @param event - The keyboard event.
+   */
   const onLoadButtonKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (event.key !== 'Enter') return;
 

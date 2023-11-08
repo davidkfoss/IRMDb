@@ -12,6 +12,8 @@ import { Root } from './pages/root/Root';
 import { store } from './store/store';
 
 function App() {
+  // Set the basename to the project name if in production, otherwise set it to undefined
+  // This is used because the project is hosted on .../project2 on the VM
   const basename = import.meta.env.PROD ? '/project2' : undefined;
 
   const router = createBrowserRouter(
@@ -43,9 +45,13 @@ function App() {
     { basename }
   );
 
+  // The client id for the google oauth provider
+  // Note that this is a public id, and is not a secret, thus is not in .env.
+  const clientId = '279259714095-qs93f4ssl6lssejv5j7ri5n2eq0j307i.apps.googleusercontent.com';
+
   return (
     <ApolloProvider client={client}>
-      <GoogleOAuthProvider clientId='279259714095-qs93f4ssl6lssejv5j7ri5n2eq0j307i.apps.googleusercontent.com'>
+      <GoogleOAuthProvider clientId={clientId}>
         <Provider store={store}>
           <Toaster />
           <RouterProvider router={router} />
