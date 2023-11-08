@@ -1,3 +1,4 @@
+import StarIcon from '@mui/icons-material/Star';
 import { Rating } from '@mui/material';
 import { round } from 'lodash';
 import { useMemo } from 'react';
@@ -21,6 +22,7 @@ export const MovieInfoDetailsSection = ({ movie }: { movie: Movie }) => {
           readOnly
           precision={0.5}
           aria-label={`Movie rating: ${roundedRating} out of 5`}
+          emptyIcon={<StarIcon color='info' style={{ opacity: 0.4 }} fontSize='inherit' />}
         />
         <span className='movie-info-rating-average'>{roundedRating}/5</span>
       </div>
