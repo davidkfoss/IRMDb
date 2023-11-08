@@ -5,13 +5,11 @@ import './Login.css';
 interface LoginState {
   email: string;
   password: string;
-  name: string;
 }
 
 const initialLoginState = {
   email: '',
   password: '',
-  name: '',
 };
 
 export const Login = () => {

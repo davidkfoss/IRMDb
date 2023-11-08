@@ -1,7 +1,7 @@
 .switch-auth-state-button {
   text-decoration: underline;
   transition: transform 0.2s ease-in-out;
-  margin-top: 1rem;
+  margin-top: 2rem;
   cursor: pointer;
 }
 

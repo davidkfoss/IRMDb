@@ -1,6 +1,4 @@
 import { useCallback } from 'react';
-import { client } from '../client';
-import { getUserByEmailQuery } from '../queries/userQueries';
 import customToast from '../util/toastWrapper';
 import { User } from './useUser';
 
@@ -12,20 +10,10 @@ type LoginResult = 'success' | 'error';
  * @returns A Promise that resolves to a CreateUserResult indicating the status of the operation.
  */
 const loginUser: (email: string, password: string) => Promise<User> = async (email, password) => {
-  // Check if user already exists in the database
-  console.log(password);
-  const existingUser = await client
-    .query({
-      query: getUserByEmailQuery,
-      variables: {
-        email: email,
-      },
-    })
-    .then((result) => {
-      return result.data.GetUserByEmail;
-    });
+  // TODO: Implement this function
+  console.log(email, password);
 
-  return existingUser;
+  return {} as User;
 };
 
 const loginMessageGeneratorMap: Record<LoginResult, (user?: User) => string> = {

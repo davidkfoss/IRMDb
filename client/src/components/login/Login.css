@@ -19,7 +19,12 @@
 
 .auth-page-container > form > label {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+}
+
+.auth-page-container > form > label {
+  text-align: start;
 }
 
 .auth-page-container > form > button {
@@ -32,4 +37,6 @@
 
 .auth-page-container > form > button {
   margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }

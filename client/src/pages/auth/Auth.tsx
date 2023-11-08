@@ -13,6 +13,11 @@ const initialAuthState = {
   page: 'login' as Page,
 };
 
+const pageStateToButtonTextMap: Record<Page, string> = {
+  login: 'Already have an account? Login!',
+  signup: "Don't have an account? Sign up!",
+};
+
 const otherPage = (page: 'login' | 'signup') => (page === 'login' ? 'signup' : 'login');
 
 export const Auth = () => {
@@ -27,7 +32,7 @@ export const Auth = () => {
       <h2>{authState.page === 'login' ? 'Login' : 'Sign up'}</h2>
       {authState.page === 'login' ? <Login /> : <Register />}
       <a className='switch-auth-state-button' onClick={() => handlePageChange(otherPage(authState.page))}>
-        {otherPage(authState.page)}
+        {pageStateToButtonTextMap[otherPage(authState.page)]}
       </a>
     </section>
   );
