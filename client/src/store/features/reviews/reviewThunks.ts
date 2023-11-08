@@ -60,6 +60,10 @@ export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput
           authorEmail: authorEmail,
           movieId: movieId,
         },
+        update: (cache) => {
+          cache.evict({ fieldName: 'GetMoviesByFilter' });
+          cache.gc();
+        },
       })
       .then((result) => {
         return result.data.CreateReview;
@@ -139,6 +143,8 @@ export const deleteReviewOnMovie = createAsyncThunk<boolean, { movieId: string; 
         },
         update: (cache, { data }) => {
           cache.evict({ id: cache.identify(data.DeleteReview) });
+          cache.evict({ fieldName: 'GetMoviesByFilter' });
+          cache.gc();
         },
       })
       .then((result) => {
