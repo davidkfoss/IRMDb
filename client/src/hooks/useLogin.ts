@@ -10,9 +10,6 @@ type LoginResult = 'success' | 'error';
  * @returns A Promise that resolves to a CreateUserResult indicating the status of the operation.
  */
 const loginUser: (email: string, password: string) => Promise<User> = async (email, password) => {
-  // TODO: Implement this function
-  console.log(email, password);
-
   return {} as User;
 };
 

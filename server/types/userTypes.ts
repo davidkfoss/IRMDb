@@ -1,7 +1,6 @@
 export interface UserData {
   name: string;
   email: string;
-  profilePictureUrl: string;
 }
 
 export interface User {
@@ -10,5 +9,4 @@ export interface User {
   role: 'user' | 'admin' | 'moderator';
   createdAt: Date;
   updatedAt: Date;
-  profilePictureUrl?: string;
 }
