@@ -1,11 +1,9 @@
 import { MovieModel } from '../models/Movie';
-import { QueryMoviesData, QuerySortMoviesData } from '../types/movireTypes';
+import { QueryMoviesData } from '../types/movireTypes';
 import { Review } from '../types/reviewType';
 
 export class MovieService {
   async getAllMovies(offset: number, limit: number, search: string, genres: string, sortBy: string, direction: string) {
-    console.log('getAllMovies', offset, limit, search, genres, sortBy, direction);
-
     const query: QueryMoviesData = {};
     if (search) {
       query.title = { $regex: search, $options: 'i' };

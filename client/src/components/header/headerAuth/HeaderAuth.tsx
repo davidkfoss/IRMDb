@@ -1,9 +1,16 @@
+import { NavLink } from 'react-router-dom';
 import { useUser } from '../../../hooks/useUser';
-import { Login } from '../../login/Login';
 import { HeaderProfile } from '../headerProfile/HeaderProfile';
+import './HeaderAuth.css';
 
 export const HeaderAuth = () => {
   const user = useUser();
 
-  return user ? <HeaderProfile user={user} /> : <Login />;
+  return user ? (
+    <HeaderProfile user={user} />
+  ) : (
+    <NavLink className='header-login-button' to='/login'>
+      Login
+    </NavLink>
+  );
 };

@@ -1,22 +1,21 @@
-import { Google, Logout } from '@mui/icons-material';
+import { Login, Logout } from '@mui/icons-material';
 import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
-import { useGoogleLogin } from '@react-oauth/google';
 import { useWindowSize } from '@uidotdev/usehooks';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLogout } from '../../../hooks/useLogout';
-import { JwtUser } from '../../../hooks/useUser';
-import { onLoginSuccessToken } from '../../login/onLogin';
+import { User } from '../../../hooks/useUser';
 
 interface MobileMenuProps {
-  user: JwtUser | null;
+  user: User | null;
 }
 
 export const MobileMenu = ({ user }: MobileMenuProps) => {
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorElement);
   const logout = useLogout();
-  const login = useGoogleLogin({ onSuccess: onLoginSuccessToken });
   const { width } = useWindowSize();
+  const navigate = useNavigate();
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElement(event.currentTarget);
@@ -81,7 +80,7 @@ export const MobileMenu = ({ user }: MobileMenuProps) => {
               style={{ backgroundColor: 'transparent', cursor: 'default' }}
               onClick={(e) => e.stopPropagation()}
             >
-              <Avatar src={user?.picture} /> {user?.name}
+              <Avatar /> {user?.name}
             </MenuItem>
             <Divider />
             <MenuItem onClick={logout}>
@@ -92,9 +91,9 @@ export const MobileMenu = ({ user }: MobileMenuProps) => {
             </MenuItem>
           </div>
         ) : (
-          <MenuItem onClick={() => login()}>
+          <MenuItem onClick={() => navigate('/login')}>
             <ListItemIcon>
-              <Google fontSize='small' />
+              <Login fontSize='small' />
             </ListItemIcon>
             Login
           </MenuItem>
