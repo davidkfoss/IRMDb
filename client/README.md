@@ -10,6 +10,7 @@ Welcome to the IRMDb client-side documentation. This README provides an in-depth
 - [UI components and libraries](#ui-components-and-libraries)
 - [Error handling with toast notifications](#error-handling-with-toast-notifications)
 - [Accessibility (WCAG 2.2 compliance)](#accessibility-wcag-22-compliance)
+- [User Authentication](#user-authentication)
 
 #
 
@@ -93,3 +94,11 @@ We have ensured that the app adheres to the Web Content Accessibility Guidelines
 **Alternative Text for Images**: All images in the application are accompanied by descriptive alternative text (alt text).
 
 **ARIA Roles and Attributes**: For custom components such as [MovieCard](./src/components/movieCard/MovieCard.tsx) and [MoviePopup](./src/components/moviePopup/MoviePopup.tsx), we have implemented descriptive ARIA roles and attributes to enhance semantic understanding. This ensures that screen readers can interpret and convey the purpose of these components to users.
+
+#
+
+### User authentication
+
+We currently don't have secure user authentication. We use a simple system which serves as a placeholder for a more secure system in the future.
+
+Our initial solution used Google OAuth, but since the server is hosted on http and not https, we are not able to use it anymore. We are currently looking into other solutions and have therefore not implemented secure principles such as password hashing and salting yet.

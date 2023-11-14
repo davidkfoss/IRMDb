@@ -1,30 +1,26 @@
 import { useEffect, useState } from 'react';
 
-export interface JwtUser {
-  aud: string;
-  azp: string;
-  email: string;
-  email_verified: true;
-  exp: number;
-  family_name: string;
-  given_name: string;
-  iat: number;
-  iss: string;
-  jti: string;
-  locale: string;
+export interface User {
   name: string;
-  nbf: number;
-  picture: string;
-  sub: string;
+  email: string;
+  password?: string;
 }
 
-const getUser = () => {
+/**
+ * Retrieves the current user from local storage.
+ * @returns {User | null} The current user object or null if not found.
+ */
+const getUser = (): User | null => {
   const currUser = localStorage.getItem('currUser');
   return currUser ? JSON.parse(currUser) : null;
 };
 
+/**
+ * A custom hook that returns the current user.
+ * @returns {User | null} The current user or null if no user is logged in.
+ */
 export const useUser = () => {
-  const [currUser, setCurrUser] = useState<JwtUser | null>(null);
+  const [currUser, setCurrUser] = useState<User | null>(null);
 
   useEffect(() => {
     setCurrUser(getUser());

@@ -1,3 +1,4 @@
+import StarIcon from '@mui/icons-material/Star';
 import { Rating } from '@mui/material';
 import { round } from 'lodash';
 import { useMemo } from 'react';
@@ -6,6 +7,10 @@ import { Movie } from '../../../models/movie';
 import { getYear } from '../../../util/parseDate';
 
 export const MovieInfoDetailsSection = ({ movie }: { movie: Movie }) => {
+  /**
+   * The rounded rating of the movie.
+   * If the movie rating is null, the default value is 5.
+   */
   const roundedRating = useMemo(() => round(movie.rating ?? 5, 2), [movie]);
 
   return (
@@ -17,6 +22,7 @@ export const MovieInfoDetailsSection = ({ movie }: { movie: Movie }) => {
           readOnly
           precision={0.5}
           aria-label={`Movie rating: ${roundedRating} out of 5`}
+          emptyIcon={<StarIcon color='info' style={{ opacity: 0.4 }} fontSize='inherit' />}
         />
         <span className='movie-info-rating-average'>{roundedRating}/5</span>
       </div>

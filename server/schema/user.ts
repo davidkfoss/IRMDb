@@ -1,6 +1,6 @@
-import { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLNonNull, GraphQLList } from 'graphql';
+import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { userService } from '../services/UserService';
-import { User, UserData } from '../types/userTypes';
+import { User } from '../types/userTypes';
 
 const UserType = new GraphQLObjectType({
   name: 'User',
@@ -8,7 +8,6 @@ const UserType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     email: { type: GraphQLString },
-    profilePictureUrl: { type: GraphQLString },
   }),
 });
 
@@ -33,6 +32,13 @@ const UserQuery = {
       return await userService.getUserByEmail(args.email);
     },
   },
+  GetUserAuth: {
+    type: UserType,
+    args: { email: { type: GraphQLNonNull(GraphQLString) }, password: { type: GraphQLNonNull(GraphQLString) } },
+    async resolve(parent: any, args: { email: string; password: string }) {
+      return await userService.getAuthUser(args);
+    },
+  },
 };
 
 const UserMutation = {
@@ -41,13 +47,13 @@ const UserMutation = {
     args: {
       name: { type: new GraphQLNonNull(GraphQLString) },
       email: { type: new GraphQLNonNull(GraphQLString) },
-      profilePictureUrl: { type: new GraphQLNonNull(GraphQLString) },
+      password: { type: new GraphQLNonNull(GraphQLString) },
     },
-    async resolve(parent: any, args: UserData) {
+    async resolve(parent: any, args: { name: string; email: string; password: string }) {
       return await userService.createUser({
         name: args.name,
         email: args.email,
-        profilePictureUrl: args.profilePictureUrl,
+        password: args.password,
       });
     },
   },
@@ -57,13 +63,11 @@ const UserMutation = {
       id: { type: new GraphQLNonNull(GraphQLID) },
       name: { type: GraphQLString },
       email: { type: GraphQLString },
-      profilePictureUrl: { type: GraphQLString },
     },
-    async resolve(parent: any, args: { id: string; name: string; email: string; profilePictureUrl: string }) {
+    async resolve(parent: any, args: { id: string; name: string; email: string }) {
       return await userService.updateUser(args.id, {
         name: args.name,
         email: args.email,
-        profilePictureUrl: args.profilePictureUrl,
       });
     },
   },

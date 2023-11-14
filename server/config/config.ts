@@ -15,6 +15,7 @@ if (nodeEnv === 'dev') {
 export const config = {
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
+  DB_PREFIX: process.env.DB_PREFIX,
   DB_USERNAME: process.env.DB_USERNAME,
   DB_PASSWORD: encodeURIComponent(process.env.DB_PASSWORD),
   DB_CLUSTER: process.env.DB_CLUSTER,

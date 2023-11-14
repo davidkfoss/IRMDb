@@ -82,21 +82,32 @@ class ReviewService {
   }
 
   async voteReview(authorEmail: string, reviewId: string, vote: boolean) {
-    const review = await ReviewModel.findById(reviewId);
+    const review = await ReviewModel.findOne({
+      '_id': reviewId,
+      'votes.user': { $nin: [authorEmail] },
+    });
     if (!review) {
       return null;
     }
     return await ReviewModel.findByIdAndUpdate(
       reviewId,
-      { $push: { votes: { user: authorEmail, vote: vote } }, $inc: { 'meta.votesLength': 1 } },
+      { '$push': { votes: { user: authorEmail, vote: vote } }, 'meta.votesLength': review.votes.length + 1 },
       { new: true }
     );
   }
 
   async deleteVoteReview(authorEmail: string, reviewId: string) {
+    const review = await ReviewModel.findOne({
+      '_id': reviewId,
+      'votes.user': { $in: [authorEmail] },
+    });
+    if (!review) {
+      return null;
+    }
+
     return await ReviewModel.findByIdAndUpdate(
       reviewId,
-      { $pull: { votes: { user: authorEmail } }, $inc: { 'meta.votesLength': -1 } },
+      { '$pull': { votes: { user: authorEmail } }, 'meta.votesLength': review.votes.length - 1 },
       { new: true }
     );
   }

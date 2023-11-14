@@ -6,7 +6,6 @@ const getAllUsersQuery = gql`
       id
       name
       email
-      profilePictureUrl
     }
   }
 `;
@@ -17,7 +16,6 @@ const getUserByIdQuery = gql`
       id
       name
       email
-      profilePictureUrl
     }
   }
 `;
@@ -28,20 +26,28 @@ const getUserByEmailQuery = gql`
       id
       name
       email
-      profilePictureUrl
+    }
+  }
+`;
+
+const getUserAuthQuery = gql`
+  query ($email: String!, $password: String!) {
+    GetUserAuth(email: $email, password: $password) {
+      id
+      name
+      email
     }
   }
 `;
 
 const createUserMutation = gql`
-  mutation ($name: String!, $email: String!, $profilePictureUrl: String!) {
-    CreateUser(name: $name, email: $email, profilePictureUrl: $profilePictureUrl) {
+  mutation ($name: String!, $email: String!, $password: String!) {
+    CreateUser(name: $name, email: $email, password: $password) {
       id
       name
       email
-      profilePictureUrl
     }
   }
 `;
 
-export { createUserMutation, getAllUsersQuery, getUserByEmailQuery, getUserByIdQuery };
+export { createUserMutation, getAllUsersQuery, getUserByEmailQuery, getUserByIdQuery, getUserAuthQuery };

@@ -1,5 +1,5 @@
 import { MovieModel } from '../models/Movie';
-import { QueryMoviesData, QuerySortMoviesData } from '../types/movireTypes';
+import { QueryMoviesData } from '../types/movireTypes';
 import { Review } from '../types/reviewType';
 
 export class MovieService {
@@ -10,6 +10,9 @@ export class MovieService {
     }
     if (genres && genres.length > 0) {
       query.genre = { $all: genres };
+    }
+    if (sortBy === 'Rating') {
+      query.rating = { $ne: undefined };
     }
 
     const sortQuery: Record<string, number> = {};
@@ -22,6 +25,8 @@ export class MovieService {
     } else {
       sortQuery.popularity = direction === 'asc' ? 1 : -1;
     }
+    sortQuery._id = 1;
+
     return await MovieModel.find(query)
       .sort(sortQuery as any)
       .skip(offset)
@@ -44,7 +49,7 @@ export class MovieService {
       throw new Error('Movie not found');
     }
     if (reviews.length === 0) {
-      movie.rating = 0;
+      movie.rating = undefined;
       await movie.save();
       return;
     }

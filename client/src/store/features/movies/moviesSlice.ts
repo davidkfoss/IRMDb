@@ -38,6 +38,11 @@ const initialMoviesState: MoviesState = {
   detailsLoadingState: initialLoadingState,
 };
 
+/**
+ * A slice of the Redux store that manages the state related to movies.
+ * @name movies
+ * @type {Slice}
+ */
 export const moviesSlice = createSlice({
   name: 'movies',
   initialState: initialMoviesState,
@@ -81,7 +86,11 @@ export const moviesSlice = createSlice({
           const fetchedMovies = action.payload;
           state.allFetched = fetchedMovies.length < state.pageSize;
 
-          if (action.meta.arg.initial) {
+          // Define custom merge strategy for the movies array
+          // If the initial call is true, replace the movies array with the fetched movies
+          // Otherwise, append the fetched movies to the existing movies array
+          const isInitialCall = action.meta.arg.initial;
+          if (isInitialCall) {
             state.movies = fetchedMovies;
             state.moviesFetched = action.payload.length;
           } else {

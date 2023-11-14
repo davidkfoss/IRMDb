@@ -1,6 +1,6 @@
-import { validateUserData } from '../util/validators';
 import { UserModel } from '../models/User';
 import { UserData } from '../types/userTypes';
+import { validateUserData } from '../util/validators';
 
 export class UserService {
   async getAllUsers() {
@@ -15,8 +15,12 @@ export class UserService {
     return await UserModel.findOne({ email: email });
   }
 
-  async createUser(userData: UserData) {
-    if (!validateUserData(userData)) {
+  async getAuthUser(userData: { email: string; password: string }) {
+    return await UserModel.findOne(userData);
+  }
+
+  async createUser(userData: { email: string; name: string; password: string }) {
+    if (!validateUserData({ email: userData.email, name: userData.name })) {
       return null;
     }
     return await UserModel.create(userData);
@@ -26,7 +30,7 @@ export class UserService {
     if (!validateUserData(userData)) {
       return null;
     }
-    return await UserModel.findByIdAndUpdate(id, userData, { new: true });
+    return await UserModel.findByIdAndUpdate(id, { email: userData.email, name: userData.name }, { new: true });
   }
 }
 

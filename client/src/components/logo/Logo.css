@@ -1,0 +1,53 @@
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+}
+
+.logo-box {
+  background-color: rgba(58, 94, 110, 0.6);
+  padding: 7px 14px;
+  border-radius: 10px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+  border: 1px solid rgba(128, 128, 128, 0.331);
+}
+
+.logo-box:hover {
+  transform: scale(1.05);
+}
+
+.logo-text {
+  color: rgb(239, 255, 249);
+  font-size: 22px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  user-select: none;
+}
+
+@media screen and (max-width: 680px) {
+  .logo-box {
+    padding: 8px 14px;
+  }
+
+  .logo-text {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 455px) {
+  .logo-box {
+    padding: 6px 12px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+  }
+}

@@ -1,9 +1,10 @@
 import { useWindowSize } from '@uidotdev/usehooks';
 import { NavLink } from 'react-router-dom';
 import { useUser } from '../../hooks/useUser';
-import './Header.css';
 import { HeaderAuth } from './headerAuth/HeaderAuth';
 import { MobileMenu } from './mobileMenu/MobileMenu';
+import './Header.css';
+import { Logo } from '../logo/Logo';
 
 interface Link {
   name: string;
@@ -11,6 +12,9 @@ interface Link {
   className?: string;
 }
 
+/**
+ * Header component that displays the navigation bar and user authentication options.
+ */
 export const Header = () => {
   const { width } = useWindowSize();
   const user = useUser();
@@ -32,7 +36,12 @@ export const Header = () => {
   return (
     <header className='header'>
       <nav aria-label='Main Navigation'>
-        {width && width >= 680 && <div></div>}
+        {width && width >= 680 && (
+          <div>
+            {' '}
+            <Logo />
+          </div>
+        )}
         <ul>
           {links.map((link) => (
             <li key={link.name}>

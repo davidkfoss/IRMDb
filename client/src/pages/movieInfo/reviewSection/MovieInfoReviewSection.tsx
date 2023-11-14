@@ -2,20 +2,14 @@ import StarIcon from '@mui/icons-material/Star';
 import { Button, Rating, TextareaAutosize } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { ReviewCard } from '../../../components/reviewCard/ReviewCard';
+import { useReview } from '../../../hooks/useReview';
 import { useUser } from '../../../hooks/useUser';
-import { Review } from '../../../models/review';
 import { getMovieRatingById } from '../../../store/features/movies/movieThunks';
-import {
-  addReviewOnMovie,
-  addVoteOnReview,
-  deleteReviewOnMovie,
-  deleteVoteOnReview,
-  getReviewsOnMovie,
-} from '../../../store/features/reviews/reviewThunks';
-import { selectReviewInfoOnMovie } from '../../../store/features/reviews/reviewsSlice';
+import { addReviewOnMovie, getReviewsOnMovie } from '../../../store/features/reviews/reviewThunks';
+import { selectReviewInfoOnMovie, selectReviewLoadingStates } from '../../../store/features/reviews/reviewsSlice';
 import { useAppDispatch } from '../../../store/store';
 import customToast from '../../../util/toastWrapper';
+import { Reviews } from '../../feed/reviewSection/Reviews';
 
 interface MovieInfoReviewSectionProps {
   movieId: string;
@@ -25,9 +19,32 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
   const dispatch = useAppDispatch();
   const reviews = useSelector(selectReviewInfoOnMovie(movieId));
   const user = useUser();
-
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(1);
+  const { pending, resolved, rejected } = useSelector(selectReviewLoadingStates());
+
+  // Define necessary callbacks for review actions
+  const onReviewDeleteSuccess = useCallback(() => {
+    customToast.success('Review deleted!');
+    return dispatch(getMovieRatingById({ id: movieId, refetch: true }));
+  }, [dispatch, movieId]);
+
+  const onVoteSuccess = useCallback(() => {
+    customToast.success('Vote added!');
+    return dispatch(getReviewsOnMovie({ id: movieId, refetch: true }));
+  }, [dispatch, movieId]);
+
+  const onDeleteVoteSuccess = useCallback(() => {
+    customToast.success('Vote removed!');
+    return dispatch(getReviewsOnMovie({ id: movieId, refetch: true }));
+  }, [dispatch, movieId]);
+
+  // Use the useReview hook to get necessary review actions
+  const { onReviewDelete, onVote, onDeleteVote, canDelete } = useReview({
+    onReviewDeleteSuccess,
+    onVoteSuccess,
+    onDeleteVoteSuccess,
+  });
 
   const onCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -70,103 +87,20 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
       });
   };
 
-  const canDelete = useCallback(
-    (review: Review) => {
-      if (!user) {
-        return false;
-      }
-
-      return review.meta.authorEmail === user.email;
-    },
-    [user]
-  );
-
-  const onReviewDelete = useCallback(
-    (review: Review) => {
-      if (!canDelete(review)) return;
-
-      dispatch(deleteReviewOnMovie({ movieId, id: review.id }))
-        .unwrap()
-        .then(() => {
-          customToast.success('Review deleted!');
-          return dispatch(getMovieRatingById({ id: movieId, refetch: true }));
-        });
-    },
-    [dispatch, movieId, canDelete]
-  );
-
-  const onVote = useCallback(
-    (review: Review) => {
-      if (!user) {
-        customToast.error('You must be logged in to vote');
-        return;
-      }
-
-      if (review.votes.includes({ vote: true, user: user.email })) {
-        customToast.error('You have already voted on this review');
-        return;
-      }
-
-      dispatch(
-        addVoteOnReview({
-          vote: true,
-          reviewId: review.id,
-          authorEmail: user.email,
-        })
-      )
-        .unwrap()
-        .then(() => {
-          customToast.success('Vote added!');
-          return dispatch(getReviewsOnMovie({ id: movieId, refetch: true }));
-        });
-    },
-    [dispatch, user, movieId]
-  );
-
-  const onDeleteVote = useCallback(
-    (review: Review) => {
-      if (!user) {
-        customToast.error('You must be logged in to vote');
-        return;
-      }
-
-      if (!(review.votes.filter((vote) => vote.user === user.email).length > 0)) {
-        customToast.error('You have not voted on this review');
-        return;
-      }
-
-      dispatch(
-        deleteVoteOnReview({
-          reviewId: review.id,
-          authorEmail: user.email,
-        })
-      )
-        .unwrap()
-        .then(() => {
-          customToast.success('Vote removed!');
-          return dispatch(getReviewsOnMovie({ id: movieId, refetch: true }));
-        });
-    },
-    [dispatch, user, movieId]
-  );
-
   return (
     <section aria-label='Movie reviews' className='movie-info-reviews'>
       <h2>Reviews</h2>
-      {reviews &&
-        reviews.map((review) => (
-          <ReviewCard
-            key={review.id}
-            review={review}
-            onDelete={() => onReviewDelete(review)}
-            canDelete={canDelete(review)}
-            onVote={() => onVote(review)}
-            canVote={!!user && !(review.votes.filter((vote) => vote.user === user.email).length > 0)}
-            onDeleteVote={() => onDeleteVote(review)}
-            isLoggedIn={!!user}
-            isFeed={false}
-          />
-        ))}
+      <Reviews
+        onReviewDelete={onReviewDelete}
+        canDelete={canDelete}
+        onVote={onVote}
+        onDeleteVote={onDeleteVote}
+        reviews={reviews}
+        resolved={resolved}
+        pending={pending}
+        rejected={rejected}
+        isFeed={false}
+      />
       <form aria-label='Add review form' className='movie-info-form' onSubmit={onSubmit}>
         <Rating
           name='rating'

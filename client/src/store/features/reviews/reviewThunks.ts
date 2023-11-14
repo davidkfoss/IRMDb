@@ -11,6 +11,12 @@ import {
   voteReviewMutation,
 } from '../../../queries/reviewQueries';
 
+/**
+ * Retrieves reviews for a movie with the given ID.
+ * @param id - The ID of the movie to retrieve reviews for.
+ * @param refetch - Whether to bypass the cache and fetch the data from the server.
+ * @returns A promise that resolves to an array of reviews for the movie, or undefined if there was an error.
+ */
 export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, { id: string; refetch: boolean }, object>(
   'reviews/getReviewsOnMovie',
   async ({ id, refetch }) => {
@@ -34,6 +40,14 @@ type ReviewInput = {
   rating: number;
 };
 
+/**
+ * Adds a review for a movie.
+ * @param comment - The comment for the review.
+ * @param rating - The rating for the movie.
+ * @param movieId - The ID of the movie being reviewed.
+ * @param authorEmail - The email of the author of the review.
+ * @returns A promise that resolves to the added review, or undefined if the review could not be added.
+ */
 export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput, object>(
   'reviews/addReviewOnMovie',
   async ({ comment, rating, movieId, authorEmail }) => {
@@ -46,6 +60,10 @@ export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput
           authorEmail: authorEmail,
           movieId: movieId,
         },
+        update: (cache) => {
+          cache.evict({ fieldName: 'GetMoviesByFilter' });
+          cache.gc();
+        },
       })
       .then((result) => {
         return result.data.CreateReview;
@@ -55,6 +73,13 @@ export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput
   }
 );
 
+/**
+ * Adds a vote on a review.
+ * @param authorEmail The email of the author who is voting.
+ * @param reviewId The ID of the review to vote on.
+ * @param vote The vote to add (true for upvote, false for downvote).
+ * @returns A boolean indicating whether the vote was successfully added.
+ */
 export const addVoteOnReview = createAsyncThunk<
   boolean,
   { authorEmail: string; reviewId: string; vote: boolean },
@@ -76,6 +101,12 @@ export const addVoteOnReview = createAsyncThunk<
   return addedVote;
 });
 
+/**
+ * Deletes a vote on a review.
+ * @param reviewId - The ID of the review to delete the vote from.
+ * @param authorEmail - The email of the author who cast the vote.
+ * @returns A boolean indicating whether the vote was successfully deleted.
+ */
 export const deleteVoteOnReview = createAsyncThunk<boolean, { reviewId: string; authorEmail: string }, object>(
   'reviews/deleteVoteOnReview',
   async ({ reviewId, authorEmail }) => {
@@ -95,7 +126,12 @@ export const deleteVoteOnReview = createAsyncThunk<boolean, { reviewId: string; 
   }
 );
 
-//TODO: I dont think we need movieId as param.
+/**
+ * Deletes a review on a movie with the given ID.
+ * @param movieId - The ID of the movie the review belongs to.
+ * @param id- The ID of the review to delete.
+ * @returns {Promise<boolean>} A Promise that resolves to true if the review was successfully deleted, or false otherwise.
+ */
 export const deleteReviewOnMovie = createAsyncThunk<boolean, { movieId: string; id: string }, object>(
   'reviews/deleteReviewOnMovie',
   async ({ id }) => {
@@ -107,6 +143,8 @@ export const deleteReviewOnMovie = createAsyncThunk<boolean, { movieId: string; 
         },
         update: (cache, { data }) => {
           cache.evict({ id: cache.identify(data.DeleteReview) });
+          cache.evict({ fieldName: 'GetMoviesByFilter' });
+          cache.gc();
         },
       })
       .then((result) => {
@@ -120,6 +158,11 @@ export const deleteReviewOnMovie = createAsyncThunk<boolean, { movieId: string; 
   }
 );
 
+/**
+ * Fetches the most recent reviews from the server.
+ * @param limit - The maximum number of reviews to fetch.
+ * @returns A promise that resolves to an array of Review objects, or undefined if the request fails.
+ */
 export const getRecentReviews = createAsyncThunk<Review[] | undefined, { limit: number }, object>(
   'reviews/getRecentReviews',
   async ({ limit }) => {
@@ -136,6 +179,11 @@ export const getRecentReviews = createAsyncThunk<Review[] | undefined, { limit: 
   }
 );
 
+/**
+ * Fetches popular reviews from the server.
+ * @param limit - The maximum number of reviews to fetch.
+ * @returns A promise that resolves to an array of Review objects, or undefined if the request fails.
+ */
 export const getPopularReviews = createAsyncThunk<Review[] | undefined, { limit: number }, object>(
   'reviews/getPopularReviews',
   async ({ limit }) => {
