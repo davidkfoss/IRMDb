@@ -1,43 +1,45 @@
-import { render } from '@testing-library/react';
-import { beforeEach, describe, expect, vi, it } from 'vitest';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { MovieFilter } from './MovieFilter';
-import { createStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
-
-const rootReducer = (state: any, action: any) => {
-  state = {
-    movies: {
-      filters: {
-        search: '',
-        genre: '',
-        sortBy: '',
-        ascDesc: '',
-      },
-    },
-  };
-  return state;
-};
-
-const store = createStore(rootReducer);
 
 describe('MovieFilter component', () => {
-  const onChangeMock = vi.fn();
-
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it('renders the MovieFilter component', async () => {
-    const { getByText, findByTestId } = render(
-      <Provider store={store}>
-        <MovieFilter onChange={onChangeMock} />
-      </Provider>
-    );
+  vi.mock('react-redux', () => ({
+    useSelector: vi.fn(),
+  }));
 
-    const showFiltersText = getByText('Show filters');
-    expect(showFiltersText).toBeInTheDocument();
+  vi.mock('../../store/features/movies/moviesSlice.ts', () => ({
+    selectFilters: vi.fn(),
+  }));
 
-    const searchBar = await findByTestId('search-bar-container');
-    expect(searchBar).toBeInTheDocument();
+  vi.mock('./filterUtil.ts', () => ({
+    getFiltersFromSessionStorage: {
+      search: 'test',
+      genres: ['Action'],
+      sortBy: 'Name',
+      direction: 'asc',
+    },
+    setFiltersInSessionStorage: vi.fn(),
+    hasFiltersChanged: vi.fn(),
+  }));
+
+  it('renders mobile filter view when window size is less than 1065 pixels', () => {
+    vi.mock('@uidotdev/usehooks', () => ({
+      useWindowSize: vi.fn(() => ({ width: 1064 })),
+    }));
+
+    render(<MovieFilter onChange={() => {}} />);
+
+    const showFiltersButton = screen.getByText(/Show filters/i);
+    expect(showFiltersButton).toBeVisible();
+
+    const filterOptionBefore = screen.queryByText(/Sort order/i);
+    expect(filterOptionBefore).not.toBeVisible();
+
+    fireEvent.click(showFiltersButton);
+    const filterOptionAfter = screen.queryByText(/Sort order/i);
+    expect(filterOptionAfter).toBeVisible();
   });
 });
