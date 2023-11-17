@@ -27,9 +27,20 @@ describe('MovieGrid Component', () => {
       rating: 1,
       reviews: ['ReviewId'],
     },
+    {
+      id: '3',
+      title: 'Movie 3',
+      genre: ['Drama'],
+      releaseDate: '2021-01-01',
+      posterUrl: 'Poster URL',
+      overview: 'Movie overview',
+      popularity: 20,
+      rating: 1,
+      reviews: ['ReviewId'],
+    },
   ];
 
-  it('renders the MovieGrid component', async () => {
+  it('renders the MovieGrid component with 3 movies', async () => {
     const { findByTestId } = render(
       <MemoryRouter>
         <MovieGrid movies={movies} id='movie-grid' />
@@ -37,7 +48,8 @@ describe('MovieGrid Component', () => {
     );
 
     const movieGrid = await findByTestId('movie-grid');
-    expect(movieGrid).toBeInTheDocument();
+    expect(movieGrid).toBeVisible();
+    expect(movieGrid.children.length).toBe(3);
   });
 
   it('renders the MovieGrid component with no movies', async () => {
@@ -48,7 +60,7 @@ describe('MovieGrid Component', () => {
     );
 
     const alertElement = await findByRole('alert');
-    expect(alertElement).toBeInTheDocument();
+    expect(alertElement).toBeVisible();
     expect(alertElement).toHaveTextContent('No movies found matching the current filters ...');
   });
 
@@ -60,7 +72,7 @@ describe('MovieGrid Component', () => {
     );
 
     const alertElement = await findByTestId('loading-circle');
-    expect(alertElement).toBeInTheDocument();
+    expect(alertElement).toBeVisible();
   });
 
   it('renders the MovieGrid component with error state', async () => {
@@ -71,7 +83,54 @@ describe('MovieGrid Component', () => {
     );
 
     const alertElement = await findByRole('alert');
-    expect(alertElement).toBeInTheDocument();
+    expect(alertElement).toBeVisible();
+    expect(alertElement).toHaveTextContent('Something went wrong');
+  });
+
+  it('renders the MovieGrid component with resolved state', async () => {
+    const { findByTestId } = render(
+      <MemoryRouter>
+        <MovieGrid movies={movies} id='movie-grid' resolved />
+      </MemoryRouter>
+    );
+
+    const movieGrid = await findByTestId('movie-grid');
+    expect(movieGrid).toBeVisible();
+    expect(movieGrid.children.length).toBe(3);
+  });
+
+  it('renders the MovieGrid component with resolved state and no movies', async () => {
+    const { findByRole } = render(
+      <MemoryRouter>
+        <MovieGrid movies={[]} id='movie-grid' resolved />
+      </MemoryRouter>
+    );
+
+    const alertElement = await findByRole('alert');
+    expect(alertElement).toBeVisible();
+    expect(alertElement).toHaveTextContent('No movies found matching the current filters ...');
+  });
+
+  it('renders the MovieGrid component with resolved state and loading state', async () => {
+    const { findByTestId } = render(
+      <MemoryRouter>
+        <MovieGrid movies={[]} id='movie-grid' resolved pending />
+      </MemoryRouter>
+    );
+
+    const alertElement = await findByTestId('loading-circle');
+    expect(alertElement).toBeVisible();
+  });
+
+  it('renders the MovieGrid component with resolved state and error state', async () => {
+    const { findByRole } = render(
+      <MemoryRouter>
+        <MovieGrid movies={[]} id='movie-grid' resolved rejected />
+      </MemoryRouter>
+    );
+
+    const alertElement = await findByRole('alert');
+    expect(alertElement).toBeVisible();
     expect(alertElement).toHaveTextContent('Something went wrong');
   });
 });

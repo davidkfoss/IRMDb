@@ -37,10 +37,17 @@ export const Register = () => {
 
   return (
     <section className='auth-page-container'>
-      <form id='auth-form' onSubmit={handleRegister}>
+      <form id='auth-form' onSubmit={handleRegister} data-testid='register-form'>
         <label>
           Email:
-          <input type='email' name='email' value={registerState.email} onChange={handleInputChange} required />
+          <input
+            type='email'
+            name='email'
+            value={registerState.email}
+            data-testid='email'
+            onChange={handleInputChange}
+            required
+          />
         </label>
         <label>
           Password:
@@ -49,13 +56,21 @@ export const Register = () => {
             name='password'
             minLength={6}
             value={registerState.password}
+            data-testid='password'
             onChange={handleInputChange}
             required
           />
         </label>
         <label>
           Name:
-          <input type='text' name='name' value={registerState.name} onChange={handleInputChange} required />
+          <input
+            type='text'
+            name='name'
+            value={registerState.name}
+            data-testid='name'
+            onChange={handleInputChange}
+            required
+          />
         </label>
         <button type='submit'>Sign up</button>
       </form>

@@ -35,10 +35,17 @@ export const Login = () => {
 
   return (
     <section className='auth-page-container'>
-      <form onSubmit={handleLogin} id='auth-form'>
+      <form onSubmit={handleLogin} id='auth-form' data-testid='login-form'>
         <label>
           Email:
-          <input type='email' name='email' value={loginState.email} onChange={handleInputChange} required />
+          <input
+            type='email'
+            name='email'
+            value={loginState.email}
+            data-testid='email'
+            onChange={handleInputChange}
+            required
+          />
         </label>
         <label>
           Password:
@@ -47,6 +54,7 @@ export const Login = () => {
             name='password'
             minLength={6}
             value={loginState.password}
+            data-testid='password'
             onChange={handleInputChange}
             required
           />

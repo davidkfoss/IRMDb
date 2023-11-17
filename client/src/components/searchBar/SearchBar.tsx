@@ -36,6 +36,7 @@ const SearchBar = ({ onSearch, initialValue, width = 350 }: SearchBarProps) => {
         e.preventDefault();
         onSearch(searchInput);
       }}
+      data-testid='search-form'
     >
       <InputLabel htmlFor='search-input' sx={{ color: 'grey' }}>
         Search
@@ -53,6 +54,7 @@ const SearchBar = ({ onSearch, initialValue, width = 350 }: SearchBarProps) => {
               sx={{ color: grey[200] }}
               aria-label='search for movie'
               onMouseDown={handleMouseDown}
+              data-testid='search-button'
               type='submit'
               size='large'
               edge='end'
