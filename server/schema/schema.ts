@@ -21,6 +21,10 @@ const RootMutation = new GraphQLObjectType({
   },
 });
 
+/**
+ * Array of type definitions for GraphQL schema.
+ * @type {Array}
+ */
 const Types = [
   MovieSchema.typeDefs,
   ReviewSchema.typeDefs.Vote,

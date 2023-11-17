@@ -13,6 +13,9 @@ const UserType = new GraphQLObjectType({
   }),
 });
 
+/**
+ * Represents a collection of query operations for the User type.
+ */
 const UserQuery = {
   GetAllUsers: {
     type: new GraphQLList(UserType),
@@ -51,6 +54,9 @@ const UserQuery = {
   },
 };
 
+/**
+ * Represents a collection of mutation operations for the User type.
+ */
 const UserMutation = {
   CreateUser: {
     type: UserType,

@@ -22,6 +22,9 @@ const MovieGenres = [
   'Western',
 ];
 
+/**
+ * Represents a movie in the database.
+ */
 const MovieSchema = new mongoose.Schema({
   title: { type: String, unique: true, required: true },
   genre: [{ type: String, enum: MovieGenres }],

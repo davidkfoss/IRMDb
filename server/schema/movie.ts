@@ -25,6 +25,9 @@ const MovieType = new GraphQLObjectType({
   }),
 });
 
+/**
+ * MovieQuery represents the GraphQL queries related to movies.
+ */
 const MovieQuery = {
   GetMovieById: {
     type: MovieType,
