@@ -12,9 +12,9 @@ import { Root } from './pages/root/Root';
 import { store } from './store/store';
 
 function App() {
-  // Set the basename to the project name if in production, otherwise set it to undefined
+  // Set the basename to the project name if in production, it will be empty otherwise
   // This is used because the project is hosted on .../project2 on the VM
-  const basename = import.meta.env.PROD ? '/project2' : undefined;
+  const basename = import.meta.env.BASE_URL;
 
   const router = createBrowserRouter(
     [
