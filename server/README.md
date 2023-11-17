@@ -62,4 +62,14 @@ Wee downloaded [this](https://datasetsearch.research.google.com/search?src=3&que
 
 ## API Documentation
 
-To view documentation for the GraphQL API, start the server by running `npm start` from the _server_ folder. Then open [localhost:3001/graphql](http://localhost:3001/graphql) in your browser and go to the _docs_ section.
+To view documentation for the GraphQL API, start the server, navigate to the correct graphql playground and open the docs panel.
+
+```
+    :3001/graphql
+
+    In production mode:
+    http://it2810-44.idi.ntnu.no:3001/graphql
+
+    In development mode:
+    http://localhost:3001/graphql
+```
