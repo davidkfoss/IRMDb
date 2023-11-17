@@ -19,4 +19,5 @@ export const config = {
   DB_USERNAME: process.env.DB_USERNAME,
   DB_PASSWORD: encodeURIComponent(process.env.DB_PASSWORD),
   DB_CLUSTER: process.env.DB_CLUSTER,
+  SALT_ROUNDS: process.env.SALT_ROUNDS || '10',
 };

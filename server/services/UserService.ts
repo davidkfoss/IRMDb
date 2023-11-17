@@ -1,7 +1,6 @@
 import { UserModel } from '../models/User';
 import { UserData } from '../types/userTypes';
 import { validateUserData } from '../util/validators';
-
 export class UserService {
   async getAllUsers() {
     return await UserModel.find();
@@ -13,10 +12,6 @@ export class UserService {
 
   async getUserByEmail(email: string) {
     return await UserModel.findOne({ email: email });
-  }
-
-  async getAuthUser(userData: { email: string; password: string }) {
-    return await UserModel.findOne(userData);
   }
 
   async createUser(userData: { email: string; name: string; password: string }) {
