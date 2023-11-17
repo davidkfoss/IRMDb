@@ -112,6 +112,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
         />
         <TextareaAutosize
           aria-label='Write your review'
+          id='textarea-comment'
           minRows={3}
           placeholder='Write your review ...'
           className='movie-info-textarea'

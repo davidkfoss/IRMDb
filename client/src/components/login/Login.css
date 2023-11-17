@@ -46,10 +46,6 @@
   border: 2px solid rgb(11, 139, 109);
 }
 
-.auth-page-container > form > button {
-  width: 200px;
-}
-
 .auth-page-container > form {
   width: clamp(500px, 50%, 800px);
 }
@@ -57,10 +53,11 @@
 .auth-page-container > form > button {
   all: unset;
   margin-top: 1rem;
+  width: 200px;
   padding: 0.5rem 1rem;
   cursor: pointer;
   border-radius: 8px;
-  background-color: rgb(11, 139, 109);
+  background-color: rgb(9, 108, 85);
   width: clamp(200px, 30%, 400px);
   border: 1px solid rgb(115, 176, 162);
   font-weight: 600;
