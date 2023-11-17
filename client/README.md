@@ -12,15 +12,11 @@ Welcome to the IRMDb client-side documentation. This README provides an in-depth
 - [Accessibility (WCAG 2.2 compliance)](#accessibility-wcag-22-compliance)
 - [User Authentication](#user-authentication)
 
-#
-
-### Starting the client
+## Starting the client
 
 Navigate to the _client_ folder and run `npm install` to install dependencies. Then run `npm run dev` to start the client.
 
-#
-
-### Folder Structure
+## Folder Structure
 
 A general overview of the folder structure is provided below:
 
@@ -39,9 +35,7 @@ A general overview of the folder structure is provided below:
 [**Models**](./src/models/)
 : Contains the TypeScript interfaces for the [Movie](./src/models/movie.ts), [Review](./src/models/review.ts) and [User](./src/models/user.ts) objects.
 
-#
-
-### State Management with Redux
+## State Management with Redux
 
 We use Redux for state management within the client. Here's why:
 
@@ -53,9 +47,7 @@ We use Redux for state management within the client. Here's why:
 
 **DevTools**: Redux comes with developer tools that help us inspect the state and status on dispatched actions in real-time. This feature is invaluable during development and debugging, allowing us to identify and resolve issues efficiently.
 
-#
-
-### Data Retrieval with Apollo client
+## Data Retrieval with Apollo client
 
 To interact with our server and send GraphQL queries, we use Apollo Client. Here's why:
 
@@ -65,9 +57,7 @@ To interact with our server and send GraphQL queries, we use Apollo Client. Here
 
 **Cache Management**: Apollo Client provides a cache for storing data, allowing us to access data without making additional requests to the server. This improves performance and reduces the amount of data transferred between the client and server, which is crucial for sustainability.
 
-#
-
-### UI Components and Libraries
+## UI Components and Libraries
 
 We utilize **Material-UI**, a component library, for many of our UI components and icons. Material-UI offers pre-designed, highly customizable components. This choice provides several advantages:
 
@@ -75,17 +65,13 @@ We utilize **Material-UI**, a component library, for many of our UI components a
 
 While Material-UI covers most of our UI needs, some components required unique behaviors or designs, such as our [MovieCard](./src/components/movieCard/MovieCard.tsx), which was created manually. This approach allows us to tailor specific UI elements to our application's requirements.
 
-#
-
 ### Error Handling with Toast Notifications
 
 We use the **toast** library for notifying users about errors and success. Toast notifications are displayed to the user in a non-intrusive manner, providing information about the outcome of their actions. This approach improves the user experience by keeping them informed without disrupting their flow.
 
-#
+## Accessibility (WCAG 2.2 Compliance)
 
-### Accessibility (WCAG 2.2 Compliance)
-
-We have ensured that the app adheres to the Web Content Accessibility Guidelines (WCAG) 2.2, focusing on various aspects to make the application more accessible. Here are some of the key accessibility considerations:
+We have ensured that the web application adheres to the Web Content Accessibility Guidelines (WCAG) 2.2, focusing on various aspects to make the application more accessible. Here are some of the key accessibility considerations:
 
 **Keystroke Navigation**: We've enabled tab-based navigation as well as replicating a mouse click with the enter key. This allows keyboard users to navigate the application without a mouse.
 
@@ -95,9 +81,17 @@ We have ensured that the app adheres to the Web Content Accessibility Guidelines
 
 **ARIA Roles and Attributes**: For custom components such as [MovieCard](./src/components/movieCard/MovieCard.tsx) and [MoviePopup](./src/components/moviePopup/MoviePopup.tsx), we have implemented descriptive ARIA roles and attributes to enhance semantic understanding. This ensures that screen readers can interpret and convey the purpose of these components to users.
 
-#
+**Using semantic HTML5 elements**: Semantic HTML tags such as `<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`, `<article>` and `<aside>` are used to improve the semantic understanding of the application. This ensures that screen readers can interpret and convey the purpose of these elements to users, as well as providing a better structure for the application. We have also used `<label>` elements to associate labels with form elements, which is important for screen reader users.
 
-### User authentication
+**Color Contrast**: We have ensured that the color contrast between text and background meets the WCAG 2.2 AA or AAA standard. This ensures that users with low vision can easily read the text and separate ui components. We have also used a dark theme, which is beneficial for users with light sensitivity.
+
+**Responsive Design**: We have ensured that the application is responsive and works well on all screen sizes. This helps users with low vision or other visual impairments to use the application, in addition to allow users to use the application on any device.
+
+### Verification of WCAG 2.2 Compliance
+
+To verify that the application is WCAG 2.2 compliant, we used [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview/). The tool provides a detailed report of the accessibility issues in the application, which we have then addressed. Out of a score of 100, all the pages in the application scored above 95, with all but one scoring 100. To verify this yourself, you can run the Lighthouse audit in your chromium browser (Chrome, Brave, etc.) by opening the developer tools and navigating to the _Lighthouse_ tab. In addition to the issues reported by Lighthouse, we have also performed manual checks on important accessibility aspects such as keyboard navigation, focus management and other aspects.
+
+## User authentication
 
 We currently don't have secure user authentication. We use a simple system which serves as a placeholder for a more secure system in the future.
 
