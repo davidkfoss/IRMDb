@@ -40,13 +40,21 @@ export const Register = () => {
       <form id='auth-form' onSubmit={handleRegister}>
         <label>
           Email:
-          <input type='email' name='email' value={registerState.email} onChange={handleInputChange} required />
+          <input
+            type='email'
+            name='email'
+            value={registerState.email}
+            onChange={handleInputChange}
+            autoComplete='email'
+            required
+          />
         </label>
         <label>
           Password:
           <input
             type='password'
             name='password'
+            autoComplete='new-password'
             minLength={6}
             value={registerState.password}
             onChange={handleInputChange}
@@ -55,7 +63,14 @@ export const Register = () => {
         </label>
         <label>
           Name:
-          <input type='text' name='name' value={registerState.name} onChange={handleInputChange} required />
+          <input
+            type='text'
+            name='name'
+            value={registerState.name}
+            onChange={handleInputChange}
+            autoComplete='name'
+            required
+          />
         </label>
         <button type='submit'>Sign up</button>
       </form>

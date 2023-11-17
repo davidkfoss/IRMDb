@@ -38,7 +38,14 @@ export const Login = () => {
       <form onSubmit={handleLogin} id='auth-form'>
         <label>
           Email:
-          <input type='email' name='email' value={loginState.email} onChange={handleInputChange} required />
+          <input
+            type='email'
+            name='email'
+            value={loginState.email}
+            onChange={handleInputChange}
+            autoComplete='email'
+            required
+          />
         </label>
         <label>
           Password:
@@ -48,6 +55,7 @@ export const Login = () => {
             minLength={6}
             value={loginState.password}
             onChange={handleInputChange}
+            autoComplete='current-password'
             required
           />
         </label>

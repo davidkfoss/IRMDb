@@ -37,7 +37,7 @@ const SearchBar = ({ onSearch, initialValue, width = 350 }: SearchBarProps) => {
         onSearch(searchInput);
       }}
     >
-      <InputLabel htmlFor='search-input' sx={{ color: 'grey' }}>
+      <InputLabel htmlFor='search-input' sx={{ color: 'lightgrey' }}>
         Search
       </InputLabel>
       <OutlinedInput

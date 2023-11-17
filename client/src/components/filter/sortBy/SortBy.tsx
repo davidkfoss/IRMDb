@@ -11,17 +11,21 @@ interface SortByProps {
 
 export const SortBy = ({ value, onChange, name, width = 150 }: SortByProps) => {
   return (
-    <FormControl sx={{ m: 1, width: width, backgroundColor: '#333333', borderRadius: '10px' }} variant='filled'>
-      <InputLabel id='sort-by-select-label' sx={{ color: '#aaaaaa' }}>
+    <FormControl
+      sx={{ m: 1, width: width, backgroundColor: '#333333', borderRadius: '10px' }}
+      variant='filled'
+      aria-labelledby='sort-by-select-label'
+    >
+      <InputLabel component='legend' id='sort-by-select-label' sx={{ color: '#aaaaaa' }}>
         Sort by
       </InputLabel>
       <Select
         sx={{ color: 'white' }}
         labelId='sort-by-select-label'
+        aria-labelledby='sort-by-select-label'
         id='sort-by-select'
         name={name}
         value={value}
-        label='Sort by'
         onChange={onChange}
       >
         {...sortOptions.map((sortOption) => (

@@ -6,9 +6,11 @@ export const HeaderProfile = () => {
   const logout = useLogout();
 
   return (
-    <div className='header-profile-container'>
+    <aside className='header-profile-container'>
       <Avatar sx={{ width: 32, height: 32 }} src={''} />
-      <span onClick={logout}>Logout</span>
-    </div>
+      <a onClick={logout} role='link' tabIndex={0}>
+        Logout
+      </a>
+    </aside>
   );
 };
