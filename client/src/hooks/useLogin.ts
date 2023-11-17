@@ -19,7 +19,11 @@ export const useLogin = (options: UseLoginOptions) => {
   const dispatch = useAppDispatch();
   const login = useCallback(
     async (email: string, password: string) => {
-      const user = await dispatch(getUserAuth({ email, password })).unwrap();
+      const user = await dispatch(getUserAuth({ email, password }))
+        .unwrap()
+        .catch(() => {
+          return null;
+        });
 
       const status: LoginResult = user ? 'success' : 'error';
 
