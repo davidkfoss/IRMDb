@@ -1,4 +1,5 @@
-[------------------------nav------------------------](navigation.md)
+[/nav](navigation.md)
+/root
 
 # International Review Movie Database (IRMDb)
 
@@ -53,27 +54,37 @@ Clone the repository with
 
 <br>
 
-Navigate to [server](./server/) folder and run
+Navigate to the [server](./server/) folder and create a .env.dev file containing the following:
+
+```
+  PORT=3001
+  DB_PREFIX=mongodb+srv://
+  DB_USERNAME=admin
+  DB_PASSWORD=admin
+  DB_CLUSTER=cluster0.mnvsrky.mongodb.net/?retryWrites=true&w=majority
+```
+
+The values here can be changed to your liking, but the .env file must be present for the server to run.
+
+The provided mongoDB cluster is a free tier cluster, and may be slow to respond at times. The application ran in production mode will use a seperate database, which is hosted on a virtual machine at NTNU. This database is faster, but may be unavailable at times.
+
+Then install all dependencies by running
 
 `npm install`
 
-to install dependencies, and
+and start the server by running
 
-`npm start`
-
-to start the server
+`npm run start-dev`
 
 <br>
 
-Navigate to [client](./client/) folder and run
+Navigate to [client](./client/) folder and install dependencies by running
 
 `npm install`
 
-to install dependencies, and
+and start the client by running
 
 `npm run dev`
-
-to start the client.
 
 <br>
 
@@ -132,6 +143,7 @@ To format the code with prettier, run the following command:
 
 Thor Sjursen
 
+Christian Veiby
 Christian Veiby
 
 David Foss

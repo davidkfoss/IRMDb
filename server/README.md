@@ -1,4 +1,4 @@
-[------------------------nav------------------------](../navigation.md)
+[/nav](../navigation.md) /server
 
 # Server documentation
 

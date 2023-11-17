@@ -1,3 +1,5 @@
+/nav
+
 # Documentation navigation
 
 - [Root](README.md)
