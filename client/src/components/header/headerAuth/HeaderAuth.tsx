@@ -9,7 +9,7 @@ export const HeaderAuth = () => {
   return user ? (
     <HeaderProfile />
   ) : (
-    <NavLink className='header-login-button' to='/login'>
+    <NavLink className='header-login-button' to='/login' data-testid='header-auth-not-logged-in'>
       Login
     </NavLink>
   );

@@ -42,6 +42,7 @@
     "@types/lodash": "^4.14.199",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/redux-mock-store": "^1.0.6",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
@@ -51,6 +52,7 @@
     "jest-webextension-mock": "^3.8.9",
     "jsdom": "^22.1.0",
     "prettier": "3.0.3",
+    "redux-mock-store": "^1.5.4",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vitest": "^0.34.6"

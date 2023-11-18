@@ -52,9 +52,9 @@ export const Header = () => {
           ))}
         </ul>
         {width && width < 455 ? (
-          <MobileMenu user={user} />
+          <MobileMenu user={user} data-testid='mobile-menu' />
         ) : (
-          <div className='header-auth'>
+          <div className='header-auth' data-testid='normal-auth'>
             <HeaderAuth />
           </div>
         )}

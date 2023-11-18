@@ -92,7 +92,7 @@ export const MovieFilter = ({ onChange }: FilterProps) => {
   // Otherwise, return the desktop filter view
   return (
     <div className='filter-container'>
-      <div className='search-bar-container'>
+      <div className='search-bar-container' data-testid='search-bar'>
         <SearchBar onSearch={handleSearch} initialValue={filters.search} />
       </div>
       <div className='filters-container'>

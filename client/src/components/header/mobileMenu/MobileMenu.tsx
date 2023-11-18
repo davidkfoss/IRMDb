@@ -28,7 +28,7 @@ export const MobileMenu = ({ user }: MobileMenuProps) => {
   // This account menu is directly inspired by the one in the Material UI docs: https://mui.com/material-ui/react-menu/#account-menu
   return (
     <>
-      <Tooltip title='Account'>
+      <Tooltip title='Account' data-testid='mobile-auth'>
         <IconButton
           onClick={handleMenuClick}
           size='small'

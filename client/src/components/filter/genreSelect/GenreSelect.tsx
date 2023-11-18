@@ -40,6 +40,7 @@ export const GenreSelect = ({ value, onChange, name, width = 250 }: GenreSelectP
         labelId='genre-checkbox-label'
         id='genre-checkbox'
         name={name}
+        data-testid='genre-select'
         multiple
         value={value}
         onChange={onChange}

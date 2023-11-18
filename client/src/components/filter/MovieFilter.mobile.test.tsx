@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { MovieFilter } from './MovieFilter';
 
 describe('MovieFilter component', () => {
@@ -25,17 +25,21 @@ describe('MovieFilter component', () => {
     hasFiltersChanged: vi.fn(),
   }));
 
-  it('renders normal filter view when window size is more than or equal to 1065 pixels', () => {
+  it('renders mobile filter view when window size is less than 1065 pixels', () => {
     vi.mock('@uidotdev/usehooks', () => ({
-      useWindowSize: vi.fn(() => ({ width: 1100 })),
+      useWindowSize: vi.fn(() => ({ width: 1064 })),
     }));
 
     render(<MovieFilter onChange={() => {}} />);
 
-    const searchBar = screen.getByTestId('search-bar');
-    expect(searchBar).toBeVisible();
+    const showFiltersButton = screen.getByText(/Show filters/i);
+    expect(showFiltersButton).toBeVisible();
 
-    const showFiltersButton = screen.queryByText(/Show filters/i);
-    expect(showFiltersButton).toBeNull();
+    const filterOptionBefore = screen.queryByText(/Sort order/i);
+    expect(filterOptionBefore).not.toBeVisible();
+
+    fireEvent.click(showFiltersButton);
+    const filterOptionAfter = screen.queryByText(/Sort order/i);
+    expect(filterOptionAfter).toBeVisible();
   });
 });

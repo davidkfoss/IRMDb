@@ -38,6 +38,7 @@ export const ReviewInfo = ({ review, showTitle }: ReviewInfoProps) => {
           </div>
           <Rating
             name='read-only'
+            data-testid='review-rating'
             value={rating}
             readOnly
             style={{ color: blue[100] }}
