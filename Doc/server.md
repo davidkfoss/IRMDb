@@ -1,4 +1,4 @@
-[/nav](../navigation.md) /server
+[/nav](navigation.md) /server
 
 # Server documentation
 
@@ -7,6 +7,7 @@ Welcome to the IRMDb server-side documentation. This README provides an in-depth
 - [Folder structure](#folder-structure)
 - [Express](#express)
 - [MongoDB](#mongodb)
+- [Security](#security)
 - [Sustainability](#sustainability)
 - [Database seeding](#database-seeding)
 - [API documentation](#api-documentation)
@@ -45,6 +46,12 @@ The server uses MongoDB as the database to store movies, reviews, and user data.
 **Document-Oriented Storage**: MongoDB's document-oriented storage is well-suited for the data structure of movies, reviews, and user profiles. This NoSQL database allows us to store JSON-like data efficiently.
 
 **Querying Flexibility**: MongoDB provides flexibility in querying and filtering data, which is one of the main features of the app. Filtering of movies is primarily done within the GraphQL resolver, where filtering options are taken as arguments, allowing us to efficiently tailor the results to the client's needs.
+
+## Security
+
+**Authentication**: Users are authenticated using hashed passwords. And the database stores the hashed password, not the plaintext password. This ensures that the user's password is not compromised if the database is breached.
+
+**MongoDB Access**: The MongoDB link and profiles are not shared in a public repository. This ensures that the database is not compromised.
 
 ## Sustainability
 

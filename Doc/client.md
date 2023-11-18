@@ -1,4 +1,4 @@
-[/nav](../navigation.md) /client
+[/nav](navigation.md) /client
 
 # Client documentation
 

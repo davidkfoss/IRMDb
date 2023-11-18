@@ -2,10 +2,10 @@
 
 # Documentation navigation
 
-- [Root](README.md)
+- [Root](../README.md)
   - High level description of the project
   - Installation and usage instructions
-- [Client](client/README.md)
+- [Client](client.md)
   - In depth description of the client
   - Key choices made regarding:
     - [Folder structure](client/README.md#folder-structure)
@@ -14,7 +14,7 @@
     - [UI components and libraries](client/README.md#ui-components-and-libraries)
     - [Error handling with toast notifications](client/README.md#error-handling-with-toast-notifications)
     - [Accessibility (WCAG 2.2 compliance)](client/README.md#accessibility-wcag-22-compliance)
-- [Server](server/README.md)
+- [Server](server.md)
   - In depth description of the server
   - Key choices made regarding:
     - [Folder structure](server/README.md#folder-structure)
@@ -23,3 +23,8 @@
     - [Improving sustainability](server/README.md#improving-sustainability)
     - [Database seeding](server/README.md#database-seeding)
     - [API documentation](server/README.md#api-documentation)
+- [Project requirements](project_requirements.md)
+  - Project requirements and how they are met
+  - [Functional](project_requirements.md#functional)
+  - [Technology](project_requirements.md#technology)
+  - [Testing, development and quality assurance](project_requirements.md#testing-development-and-quality-assurance)
