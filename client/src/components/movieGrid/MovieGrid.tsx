@@ -16,7 +16,7 @@ export const MovieGrid = ({ movies, id, pending: loading, fetchMorePending, reje
   if (loading && !fetchMorePending) {
     return (
       <div role='alert' aria-busy='true' aria-live='polite'>
-        <ClipLoader size={128} color='#1be3e3' cssOverride={{ marginTop: '2rem' }} />
+        <ClipLoader size={128} color='#1be3e3' cssOverride={{ marginTop: '2rem' }} data-testid='loading-circle' />
       </div>
     );
   }
@@ -38,7 +38,7 @@ export const MovieGrid = ({ movies, id, pending: loading, fetchMorePending, reje
   }
 
   return (
-    <section className='movie-grid' id={id}>
+    <section className='movie-grid' id={id} data-testid='movie-grid'>
       {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} scale={1.15} />
       ))}

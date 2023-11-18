@@ -37,12 +37,13 @@ export const Register = () => {
 
   return (
     <section className='auth-page-container'>
-      <form id='auth-form' onSubmit={handleRegister}>
+      <form id='auth-form' onSubmit={handleRegister} data-testid='register-form'>
         <label>
           Email:
           <input
             type='email'
             name='email'
+            data-testid='email'
             value={registerState.email}
             onChange={handleInputChange}
             autoComplete='email'
@@ -57,6 +58,7 @@ export const Register = () => {
             autoComplete='new-password'
             minLength={6}
             value={registerState.password}
+            data-testid='password'
             onChange={handleInputChange}
             required
           />
@@ -66,6 +68,7 @@ export const Register = () => {
           <input
             type='text'
             name='name'
+            data-testid='name'
             value={registerState.name}
             onChange={handleInputChange}
             autoComplete='name'

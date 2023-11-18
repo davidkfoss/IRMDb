@@ -88,7 +88,7 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
   };
 
   return (
-    <section aria-label='Movie reviews' className='movie-info-reviews'>
+    <section aria-label='Movie reviews' className='movie-info-reviews' data-testid='movie-info-review-section'>
       <h2>Reviews</h2>
       <Reviews
         onReviewDelete={onReviewDelete}

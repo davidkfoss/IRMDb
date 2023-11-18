@@ -29,12 +29,12 @@ export const ReviewCard = ({
   const { comment } = review;
 
   return (
-    <article className='review-container'>
+    <article className='review-container' data-testid='review-card'>
       <header className='review-info'>
         <ReviewInfo review={review} showTitle={isFeed} />
         <div className='review-buttons-container'>
           {canDelete && (
-            <IconButton aria-label='Delete review' size='large' onClick={onDelete}>
+            <IconButton aria-label='Delete review' size='large' onClick={onDelete} data-testid='delete-button'>
               <DeleteIcon />
             </IconButton>
           )}
@@ -52,7 +52,7 @@ export const ReviewCard = ({
                 <ArrowCircleUpIcon style={{ color: 'rgb(172, 172, 172)' }} />
               </IconButton>
             )}
-            <p className='review-votes' aria-label={`${review.votes.length} upvotes`}>
+            <p className='review-votes' aria-label={`${review.votes.length} upvotes`} data-testid='upvotes'>
               {review.meta.votesLength}
             </p>
           </div>

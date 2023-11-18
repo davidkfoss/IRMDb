@@ -35,12 +35,13 @@ export const Login = () => {
 
   return (
     <section className='auth-page-container'>
-      <form onSubmit={handleLogin} id='auth-form'>
+      <form onSubmit={handleLogin} id='auth-form' data-testid='login-form'>
         <label>
           Email:
           <input
             type='email'
             name='email'
+            data-testid='email'
             value={loginState.email}
             onChange={handleInputChange}
             autoComplete='email'
@@ -54,6 +55,7 @@ export const Login = () => {
             name='password'
             minLength={6}
             value={loginState.password}
+            data-testid='password'
             onChange={handleInputChange}
             autoComplete='current-password'
             required

@@ -45,9 +45,16 @@ export const MoviePopup = ({ movie, onClose }: MoviePopupProps) => {
   });
 
   return (
-    <dialog className='movie-popup' onClick={onClose} role='dialog' aria-modal='true'>
+    <dialog className='movie-popup' onClick={onClose} role='dialog' aria-modal='true' data-testid='movie-popup'>
       <div className='movie-popup-image-container'>
-        <IconButton sx={{ position: 'absolute' }} size='large' color='warning' id='close' onClick={onClose}>
+        <IconButton
+          sx={{ position: 'absolute' }}
+          size='large'
+          color='warning'
+          id='close'
+          onClick={onClose}
+          data-testid='close-button'
+        >
           <CloseIcon fontSize='large' />
         </IconButton>
         <img

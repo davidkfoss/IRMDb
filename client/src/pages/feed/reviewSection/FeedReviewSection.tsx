@@ -70,9 +70,10 @@ export const FeedReviewSection = () => {
 
   return (
     <>
-      <section aria-label='Popular reviews' className='movie-info-reviews'>
+      <section aria-label='Popular reviews' className='movie-info-reviews' data-testid='popular-reviews-section'>
         <h2 className='reviews-title'>Popular reviews</h2>
         <Reviews
+          data-testid='popular-reviews'
           onReviewDelete={onReviewDelete}
           canDelete={canDelete}
           onVote={onVote}
@@ -84,9 +85,10 @@ export const FeedReviewSection = () => {
           isFeed
         />
       </section>
-      <section aria-label='Recent reviews' className='movie-info-reviews'>
+      <section aria-label='Recent reviews' className='movie-info-reviews' data-testid='recent-reviews-section'>
         <h2 className='reviews-title'>Recent reviews</h2>
         <Reviews
+          data-testitd='recent-reviews'
           onReviewDelete={onReviewDelete}
           canDelete={canDelete}
           onVote={onVote}
