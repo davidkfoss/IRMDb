@@ -19,7 +19,9 @@ import {
   Review,
 } from '../types/reviewType';
 
-//TypeDefs
+/**
+ * Represents the typeDefs for reviews.
+ */
 const Vote = new GraphQLObjectType({
   name: 'Vote',
   fields: () => ({
@@ -53,7 +55,9 @@ const ReviewType = new GraphQLObjectType({
   }),
 });
 
-//Queries
+/**
+ * Represents a collection of GraphQL queries for retrieving reviews.
+ */
 const ReviewQuery = {
   GetAllReviews: {
     type: new GraphQLList(ReviewType),
@@ -103,12 +107,17 @@ const ReviewQuery = {
   },
 };
 
+/**
+ * Update movierating upon new or deleted review on movie.
+ */
 const UpdateMovieRating = async (movieId: string) => {
   const reviews = (await reviewService.getReviewsByMovieId(movieId)).map((review) => review.toObject()) as Review[];
   await movieService.updateMovieRating(movieId, reviews);
 };
 
-//Mutations
+/**
+ * Represents the mutation operations for reviews.
+ */
 const ReviewMutation = {
   CreateReview: {
     type: ReviewType,

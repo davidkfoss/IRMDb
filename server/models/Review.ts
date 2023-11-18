@@ -5,6 +5,9 @@ const Vote = {
   user: { type: String, required: true },
 };
 
+/**
+ * Represents the metadata for a review.
+ */
 const ReviewMeta = {
   authorEmail: { type: String, required: true },
   authorName: { type: String, required: true },

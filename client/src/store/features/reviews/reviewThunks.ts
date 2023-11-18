@@ -27,7 +27,7 @@ export const getReviewsOnMovie = createAsyncThunk<Review[] | undefined, { id: st
         variables: { movieId: id },
       })
       .then((result) => {
-        return result.data.GetReviewsByMovieId;
+        return result.data.GetReviewsByMovieId ?? [];
       });
     return reviews;
   }
@@ -67,6 +67,9 @@ export const addReviewOnMovie = createAsyncThunk<Review | undefined, ReviewInput
       })
       .then((result) => {
         return result.data.CreateReview;
+      })
+      .catch((err) => {
+        console.log(err);
       });
 
     return addedReview;
@@ -96,6 +99,9 @@ export const addVoteOnReview = createAsyncThunk<
     })
     .then((result) => {
       return result.data.VoteReview;
+    })
+    .catch((err) => {
+      console.log(err);
     });
 
   return addedVote;
@@ -120,6 +126,9 @@ export const deleteVoteOnReview = createAsyncThunk<boolean, { reviewId: string; 
       })
       .then((result) => {
         return result.data.VoteReview;
+      })
+      .catch((err) => {
+        console.log(err);
       });
 
     return deletedVote;
@@ -173,7 +182,7 @@ export const getRecentReviews = createAsyncThunk<Review[] | undefined, { limit: 
         fetchPolicy: 'no-cache',
       })
       .then((result) => {
-        return result.data.GetRecentReviews;
+        return result.data.GetRecentReviews ?? [];
       });
     return reviews;
   }
@@ -194,7 +203,7 @@ export const getPopularReviews = createAsyncThunk<Review[] | undefined, { limit:
         fetchPolicy: 'no-cache',
       })
       .then((result) => {
-        return result.data.GetPopularReviews;
+        return result.data.GetPopularReviews ?? [];
       });
 
     return reviews;

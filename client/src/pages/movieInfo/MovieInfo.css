@@ -102,20 +102,16 @@
   .movie-info-container,
   .movie-info-reviews {
     flex-direction: column;
-    padding: 4rem 1rem 0 1rem;
+    padding: 1rem 1rem 0 1rem;
     margin: 0rem 5%;
   }
 
-  .movie-info-container {
-    margin-top: -2.5rem;
-  }
-
   .movie-info-reviews {
-    margin-top: -1.2rem;
     padding-bottom: 3rem;
   }
 
   .movie-info-info {
+    padding-top: 3rem;
     width: 90%;
   }
 

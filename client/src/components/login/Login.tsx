@@ -41,9 +41,10 @@ export const Login = () => {
           <input
             type='email'
             name='email'
-            value={loginState.email}
             data-testid='email'
+            value={loginState.email}
             onChange={handleInputChange}
+            autoComplete='email'
             required
           />
         </label>
@@ -56,6 +57,7 @@ export const Login = () => {
             value={loginState.password}
             data-testid='password'
             onChange={handleInputChange}
+            autoComplete='current-password'
             required
           />
         </label>

@@ -28,7 +28,7 @@ export const MovieCard = ({ movie, scale = 1 }: MovieCardProps) => {
         onClick={onMovieClick}
         onKeyDown={onMovieKeyDown}
         role='button'
-        aria-label={`View details for ${movie.title}`}
+        aria-label={`View details for ${movie.title} - ${getYear(movie.releaseDate)}`}
         tabIndex={0}
         className='movie-card'
         style={{
@@ -45,7 +45,7 @@ export const MovieCard = ({ movie, scale = 1 }: MovieCardProps) => {
           }}
         />
         <div className='movie-card-image-overlay' role='presentation'>
-          <div className='movie-info'>
+          <div className='movie-info' aria-label={movie.title}>
             <h3 id={`movie-title-${movie.id}`}>{movie.title}</h3>
             <span>{getYear(movie.releaseDate)}</span>
           </div>

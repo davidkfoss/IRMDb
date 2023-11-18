@@ -43,9 +43,10 @@ export const Register = () => {
           <input
             type='email'
             name='email'
-            value={registerState.email}
             data-testid='email'
+            value={registerState.email}
             onChange={handleInputChange}
+            autoComplete='email'
             required
           />
         </label>
@@ -54,6 +55,7 @@ export const Register = () => {
           <input
             type='password'
             name='password'
+            autoComplete='new-password'
             minLength={6}
             value={registerState.password}
             data-testid='password'
@@ -66,9 +68,10 @@ export const Register = () => {
           <input
             type='text'
             name='name'
-            value={registerState.name}
             data-testid='name'
+            value={registerState.name}
             onChange={handleInputChange}
+            autoComplete='name'
             required
           />
         </label>

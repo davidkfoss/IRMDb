@@ -9,7 +9,7 @@ describe('SortBy', () => {
   });
 
   it('renders the SortBy component', () => {
-    const sortByLabel = screen.getByLabelText('Sort by');
+    const sortByLabel = screen.getByText('Sort by');
     expect(sortByLabel).toBeVisible();
 
     const sortBySelect = screen.getByRole('combobox');

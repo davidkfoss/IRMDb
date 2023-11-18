@@ -23,9 +23,9 @@ export const ReviewInfo = ({ review, showTitle }: ReviewInfoProps) => {
   return (
     <article className='review-info-container'>
       {showTitle && (
-        <h3 className='review-movie-title' onClick={onTitleClick} role='link' tabIndex={0}>
+        <a className='review-movie-title' onClick={onTitleClick} role='link' tabIndex={0}>
           {meta.movieTitle}
-        </h3>
+        </a>
       )}
       <div className='review-author-info'>
         <Avatar sx={{ width: 45, height: 45 }}>{meta.authorName[0]}</Avatar>

@@ -32,7 +32,7 @@ export const GenreSelect = ({ value, onChange, name, width = 250 }: GenreSelectP
       }}
       variant='filled'
     >
-      <InputLabel component='legend' id='genre-checkbox-label' sx={{ color: '#aaaaaa' }}>
+      <InputLabel component='legend' id='genre-checkbox-label' sx={{ color: 'lightgrey' }}>
         Genres
       </InputLabel>
       <Select

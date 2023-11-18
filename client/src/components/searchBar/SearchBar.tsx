@@ -38,7 +38,7 @@ const SearchBar = ({ onSearch, initialValue, width = 350 }: SearchBarProps) => {
       }}
       data-testid='search-form'
     >
-      <InputLabel htmlFor='search-input' sx={{ color: 'grey' }}>
+      <InputLabel htmlFor='search-input' sx={{ color: 'lightgrey' }}>
         Search
       </InputLabel>
       <OutlinedInput

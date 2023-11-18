@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 
+/**
+ * Represents the schema for a user in the database.
+ */
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
