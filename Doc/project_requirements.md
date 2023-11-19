@@ -4,6 +4,12 @@
 
 The project requirements and how they were implemented are listed below:
 
+## Table of contents
+
+- [Functionality](#functionality)
+- [Technology](#technology)
+- [Testing, development and quality assurance](#testing-development-and-quality-assurance)
+
 ## Functionality
 
 ### Search
@@ -72,21 +78,13 @@ The projectet uses diverse libraries and components to implement the functionali
 
 ## Testing, development and quality assurance
 
-Linting og bruk av Prettier
-Gjennomført testing av komponenter (vi bruker Vitest)
-En form for automatisert end-2-end testing (i praksis teste en lengre sekvens av interaksjoner), testing av API'et.
-Prosjektet dokumenteres med en README.md i git repositoriet. Dokumentasjonen skal diskutere, forklare og vise til alle de viktigste valgene og løsningene som gruppa gjør (inklusive valg av komponenter og api).
-Koden skal være lettlest og godt strukturert og kommentert slik at den er lett å sette seg inn i. Bruk av kommentarer skal være tilpasset at eksterne skal inspisere koden.
-Gruppa skal oppsummere den enkeltes bidrag i prosjektet underveis i en egen fil som leveres i BB (dette er personopplysninger som ingen vil at skal ligge på git ;-)
-Reproduserbarhet: i praksis betyr det at prosjektet skal være dokumentert og enkelt å installere/kjøre for andre (eksempelvis faglærer).
-
 ### Linting and Prettier
 
 The project uses ESLint for linting and Prettier for code formatting. Both ESLint and Prettier have their repspective configuration files. A guide to lint checking can be found at the root [README](../README.md#linting-and-formatting).
 
 ### Testing - Components
 
-Components are tested using [Vite](https://vitejs.dev/). The tests are located in the same folder as the component they test, and have the same name as the component, but with the `.test.tsx` extension.
+Components are tested using [Vitest](https://vitest.dev/). The tests are located in the same folder as the component they test, and have the same name as the component, but with the `.test.tsx` extension.
 
 ### Testing - End-2-end
 

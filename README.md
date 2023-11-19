@@ -32,15 +32,15 @@ IRMDb is a user-friendly application that helps you discover, review, and rate y
 
 ## Visuals
 
-<img src="./Doc/assets/Screenshot1.png" width="800"/>
+<img src="./Doc/assets/Moviepage.png" width="800"/>
 
 The movies page shows results for the filters you have selected
 
-<img src="./Doc/assets/Screenshot2.png" width="800"/>
+<img src="./Doc/assets/Detailed-moviepage.png" width="800"/>
 
 When clicking on a movie, you can see more details about it and add a review
 
-<img src="./Doc/assets/Screenshot3.png" width="800"/>
+<img src="./Doc/assets/Feedpage.png" width="800"/>
 
 The landing page shows popular and recent reviews
 
@@ -52,11 +52,9 @@ Clone the repository with
 
 `git clone https://gitlab.stud.idi.ntnu.no/it2810-h23/Team-44/prosjekt-2.git`
 
-<br>
-
 Navigate to the [server](./server/) folder and create a .env.dev file containing the following:
 
-```
+```bash
   PORT=3001
   DB_PREFIX=mongodb+srv://
   DB_USERNAME=admin
@@ -76,8 +74,6 @@ and start the server by running
 
 `npm run start-dev`
 
-<br>
-
 Navigate to [client](./client/) folder and install dependencies by running
 
 `npm install`
@@ -85,8 +81,6 @@ Navigate to [client](./client/) folder and install dependencies by running
 and start the client by running
 
 `npm run dev`
-
-<br>
 
 Open your web browser and navigate to [localhost:5173](http://localhost:5173) to access the application
 
