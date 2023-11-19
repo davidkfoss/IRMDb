@@ -1,4 +1,5 @@
-[------------------------nav------------------------](navigation.md)
+[/nav](./Doc/navigation.md)
+/root
 
 # International Review Movie Database (IRMDb)
 
@@ -31,15 +32,15 @@ IRMDb is a user-friendly application that helps you discover, review, and rate y
 
 ## Visuals
 
-<img src="./client/public/screenshots/Screenshot1.png" width="800"/>
+<img src="./Doc/assets/Moviepage.png" width="800"/>
 
 The movies page shows results for the filters you have selected
 
-<img src="./client/public/screenshots/Screenshot2.png" width="800"/>
+<img src="./Doc/assets/Detailed-moviepage.png" width="800"/>
 
 When clicking on a movie, you can see more details about it and add a review
 
-<img src="./client/public/screenshots/Screenshot3.png" width="800"/>
+<img src="./Doc/assets/Feedpage.png" width="800"/>
 
 The landing page shows popular and recent reviews
 
@@ -51,37 +52,41 @@ Clone the repository with
 
 `git clone https://gitlab.stud.idi.ntnu.no/it2810-h23/Team-44/prosjekt-2.git`
 
-<br>
+Navigate to the [server](./server/) folder and create a .env.dev file containing the following:
 
-Navigate to [server](./server/) folder and run
+```bash
+  PORT=3001
+  DB_PREFIX=mongodb+srv://
+  DB_USERNAME=admin
+  DB_PASSWORD=admin
+  DB_CLUSTER=cluster0.mnvsrky.mongodb.net/?retryWrites=true&w=majority
+```
+
+The values here can be changed to your liking, but the .env file must be present for the server to run.
+
+The provided mongoDB cluster is a free tier cluster, and may be slow to respond at times. The application ran in production mode will use a seperate database, which is hosted on a virtual machine at NTNU. This database is faster, but may be unavailable at times.
+
+Then install all dependencies by running
 
 `npm install`
 
-to install dependencies, and
+and start the server by running
 
-`npm start`
+`npm run start-dev`
 
-to start the server
-
-<br>
-
-Navigate to [client](./client/) folder and run
+Navigate to [client](./client/) folder and install dependencies by running
 
 `npm install`
 
-to install dependencies, and
+and start the client by running
 
 `npm run dev`
-
-to start the client.
-
-<br>
 
 Open your web browser and navigate to [localhost:5173](http://localhost:5173) to access the application
 
 ## Roadmap
 
-- Version 2.2 (**current**)
+- Version 2.2
   - Backend (graphql, express, mongoDB)
   - New features
     - Add reviews to movies
@@ -91,8 +96,12 @@ Open your web browser and navigate to [localhost:5173](http://localhost:5173) to
   - User experience
     - Increased responsiveness for all devices
     - Web accessibility
-- Version 2.3 (Future Release)
+- Version 2.3 (**current**)
   - Testing
+  - Documentation
+  - Security improvements
+  - Code quality improvements
+  - Error handling improvements
 
 We welcome any suggestions or feature requests from the community.
 
@@ -133,10 +142,9 @@ To format the code with prettier, run the following command:
 Thor Sjursen
 
 Christian Veiby
+Christian Veiby
 
 David Foss
-
-#
 
 ## Project status
 

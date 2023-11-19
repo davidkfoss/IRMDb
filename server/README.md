@@ -1,4 +1,4 @@
-[------------------------nav------------------------](../navigation.md)
+[/nav](../Doc/navigation.md) /server
 
 # Server documentation
 
@@ -7,6 +7,7 @@ Welcome to the IRMDb server-side documentation. This README provides an in-depth
 - [Folder structure](#folder-structure)
 - [Express](#express)
 - [MongoDB](#mongodb)
+- [Security](#security)
 - [Sustainability](#sustainability)
 - [Database seeding](#database-seeding)
 - [API documentation](#api-documentation)
@@ -46,6 +47,12 @@ The server uses MongoDB as the database to store movies, reviews, and user data.
 
 **Querying Flexibility**: MongoDB provides flexibility in querying and filtering data, which is one of the main features of the app. Filtering of movies is primarily done within the GraphQL resolver, where filtering options are taken as arguments, allowing us to efficiently tailor the results to the client's needs.
 
+## Security
+
+**Authentication**: Users are authenticated using hashed passwords. And the database stores the hashed password, not the plaintext password. This ensures that the user's password is not compromised if the database is breached.
+
+**MongoDB Access**: The MongoDB link and profiles are not shared in a public repository. This ensures that the database is not compromised.
+
 ## Sustainability
 
 **Efficient Data Retrival**: Our GraphQL resolvers handle data filtering and querying, ensuring that the client receives only the data it needs. This reduces the amount of data transferred between the client and server, improving sustainability.
@@ -62,4 +69,14 @@ Wee downloaded [this](https://datasetsearch.research.google.com/search?src=3&que
 
 ## API Documentation
 
-To view documentation for the GraphQL API, start the server by running `npm start` from the _server_ folder. Then open [localhost:3001/graphql](http://localhost:3001/graphql) in your browser and go to the _docs_ section.
+To view documentation for the GraphQL API, start the server, navigate to the correct graphql playground and open the docs panel.
+
+```
+    :3001/graphql
+
+    In production mode:
+    http://it2810-44.idi.ntnu.no:3001/graphql
+
+    In development mode:
+    http://localhost:3001/graphql
+```
