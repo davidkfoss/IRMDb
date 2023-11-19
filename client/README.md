@@ -1,4 +1,4 @@
-[/nav](navigation.md) /client
+[/nav](../Doc/navigation.md) /client
 
 # Client documentation
 
@@ -93,6 +93,6 @@ To verify that the application is WCAG 2.2 compliant, we used [Lighthouse](https
 
 ## User authentication
 
-We currently don't have secure user authentication. We use a simple system which serves as a placeholder for a more secure system in the future.
+Our initial solution used Google OAuth, but since the server is hosted on http and not https, we are not able to use it anymore.
 
-Our initial solution used Google OAuth, but since the server is hosted on http and not https, we are not able to use it anymore. We are currently looking into other solutions and have therefore not implemented secure principles such as password hashing and salting yet.
+Our solution now uses a simple username, email and password authentication. The user can register a new account, and then log in with the email and password. The password is hashed and salted before being stored in the database.

@@ -1,4 +1,4 @@
-[/nav](navigation.md) /server
+[/nav](../Doc/navigation.md) /server
 
 # Server documentation
 
