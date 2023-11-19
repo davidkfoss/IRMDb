@@ -180,10 +180,14 @@ class ReviewService {
    * @returns The deleted review, or null if the review does not exist.
    */
   async deleteReview(id: string) {
-    const movieId = await ReviewModel.findById(id).select('meta.movieId');
-    if (!movieId) {
+    const review = await ReviewModel.findById(id);
+
+    const movieId = review?.meta?.movieId;
+
+    if (!review || !movieId) {
       return null;
     }
+
     await MovieModel.findByIdAndUpdate(movieId, { $pull: { reviewIds: id } });
     return await ReviewModel.findByIdAndDelete(id);
   }

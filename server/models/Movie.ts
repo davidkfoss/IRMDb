@@ -18,7 +18,7 @@ const MovieGenres = [
   'Thriller',
   'Mystery',
   'Crime',
-  'Tv Movie',
+  'TV Movie',
   'Western',
 ];
 
