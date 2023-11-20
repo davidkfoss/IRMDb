@@ -48,7 +48,7 @@
 }
 
 .auth-page-container > form {
-  width: clamp(500px, 50%, 800px);
+  width: clamp(280px, 50%, 800px);
 }
 
 .auth-page-container > form > button {
