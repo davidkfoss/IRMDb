@@ -35,7 +35,7 @@ export const MovieInfoDetailsSection = ({ movie }: { movie: Movie }) => {
         ))}
       </div>
       <p>{movie.overview}</p>
-      <h2>{getYear(movie.releaseDate)}</h2>
+      <h2 data-testid='release-year'>{getYear(movie.releaseDate)}</h2>
     </section>
   );
 };

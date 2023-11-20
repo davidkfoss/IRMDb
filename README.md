@@ -11,6 +11,7 @@
 - [Roadmap](#roadmap)
 - [Accessibility and Sustainability](#accessibility-and-sustainability)
 - [Linting and formatting](#linting-and-formatting)
+- [Testing](#testing)
 - [Authors and acknowledgment](#authors-and-acknowledgment)
 - [Project status](#project-status)
 
@@ -136,6 +137,45 @@ To check the formatting of the code, run the following command:
 To format the code with prettier, run the following command:
 
 `npm run format`
+
+## Testing
+
+To run the component tests, run the following command in the client folder:
+
+`npm run test`
+
+To run end-2-end tests with cypress, you must first start both the server and the client by following this [guide](#local-installation-and-usage). Then run the following command in the client folder:
+
+`npm run cypress` to open the cypress test runner
+
+or
+
+`npm run test:e2e` to run the tests headlessly
+
+### What are we testing, why and how?
+
+#### Component tests with Vitest
+
+We are testing each component and page in isolation, to make sure that all components are working as expected and easily find bugs. We are using [Vitest](https://vitest.dev) to test the components. For responsive components that depend on the viewport size, we are testing the components in different viewport sizes.
+
+We are mocking the applications state and props, to make sure that the tests are controlled and predictable. In addition, we are mocking all dispatches to the redux store, to make sure that we don't send any requests to the server.
+
+#### End-2-end tests with Cypress
+
+We are testing the application as a whole with [Cypress](https://www.cypress.io), to make sure that the application is working as expected. We are testing the application by running the most common user flows:
+
+##### User flows
+
+- [Authentication](./client/cypress/e2e/authentication.cy.ts)
+  - We are testing that the user can register, login, and logout.
+- [Exploring movies](./client/cypress/e2e/exploreMovies.cy.ts)
+  - We are testing that the user can search, filter, and sort movies and that the results are as expected.
+- [Reviewing movies](./client/cypress/e2e/reviewMovie.cy.ts)
+  - We are testing that the user can add reviews to movies, and delete the reviews they have added.
+- [Exploring reviews](./client/cypress/e2e/upvoteMovie.cy.ts)
+  - We are testing that the user can see reviews on the landing page, and that the user can upvote reviews.
+
+We are not testing the application in different viewport sizes, but testing with the default viewport size of 1000x660, as we emphasize the functionality of the application over the design in our end-2-end tests.
 
 ## Authors and acknowledgment
 
