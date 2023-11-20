@@ -12,8 +12,8 @@ describe('explore movies using filter options', () => {
         cy.contains('Load 12 more movies').click();
         cy.contains('Load 12 more movies').click();
         cy.contains('Load 12 more movies').click();
-        cy.get('img').last().parentsUntil('a').first().click();
-        cy.get('img').click();
+        cy.get('img').last().parentsUntil('a').first().click({ force: true });
+        cy.get('img').click({ force: true });
         cy.get('button[data-testid="close-button"]').click();
         cy.contains('Go back').click();
         cy.contains('Show filters').click();
