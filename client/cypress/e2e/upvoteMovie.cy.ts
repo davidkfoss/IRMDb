@@ -23,5 +23,8 @@ describe('upvote reviews', () => {
             cy.contains('FEED').click();
             cy.get('button[aria-label="Upvote review"]').click({ multiple: true});
             cy.contains('Vote added!');
+            cy.wait(1500);
+            cy.get('button[aria-label="Remove upvote from review"]').click({ multiple: true});
+            cy.contains('Vote removed!');
         });
     });

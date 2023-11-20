@@ -88,7 +88,7 @@ Components are tested using [Vitest](https://vitest.dev/). The tests are located
 
 ### Testing - End-2-end
 
-This has not yet been implemented.
+End-2-end testing is done using [Cypress](https://www.cypress.io/). The tests are located in the `/client/cypress/integration` folder. The tests are split into multiple files, each testing a specific core feature of the application.
 
 ### Documentation
 
