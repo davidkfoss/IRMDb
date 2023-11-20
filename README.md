@@ -152,7 +152,7 @@ or
 
 `npm run test:e2e` to run the tests headlessly
 
-### Whare are we testing, why and how?
+### What are we testing, why and how?
 
 #### Component tests with Vitest
 
