@@ -102,14 +102,17 @@ export const MovieInfoReviewSection = ({ movieId }: MovieInfoReviewSectionProps)
         isFeed={false}
       />
       <form aria-label='Add review form' className='movie-info-form' onSubmit={onSubmit}>
-        <Rating
-          name='rating'
-          value={rating}
-          onChange={(_, newValue) => {
-            setRating(newValue || 1);
-          }}
-          emptyIcon={<StarIcon color='info' style={{ opacity: 0.6 }} fontSize='inherit' />}
-        />
+        <span>
+          <Rating
+            name='rating'
+            value={rating}
+            onChange={(_, newValue) => {
+              setRating(newValue || 1);
+            }}
+            emptyIcon={<StarIcon color='info' style={{ opacity: 0.6 }} fontSize='inherit' />}
+          />
+        </span>
+
         <TextareaAutosize
           aria-label='Write your review'
           id='textarea-comment'

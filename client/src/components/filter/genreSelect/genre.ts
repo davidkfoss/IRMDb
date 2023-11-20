@@ -16,7 +16,7 @@ export const genres = [
   'Thriller',
   'Mystery',
   'Crime',
-  'Tv Movie',
+  'TV Movie',
   'Western',
 ] as const;
 
