@@ -90,6 +90,10 @@ Components are tested using [Vitest](https://vitest.dev/). The tests are located
 
 End-2-end testing is done using [Cypress](https://www.cypress.io/). The tests are located in the `/client/cypress/integration` folder. The tests are split into multiple files, each testing a specific core feature of the application.
 
+### Testing - API
+
+We employ [Vitest](https://vitest.dev/) to rigorously test our API. The test suite is housed in the `/client/src/queries` folder. Our focus is on thoroughly testing the queries and mutations integral to the application, prioritizing the critical aspects of the API functionality.
+
 ### Documentation
 
 The project is documented with a README.md in the root folder as well as in depth files in the Doc folder. The documentation discusses, explains and refers to all the most important choices and solutions the group makes (including the choice of components and api).
