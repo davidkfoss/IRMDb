@@ -24,22 +24,6 @@ const getMovieRatingByIdQuery = gql`
   }
 `;
 
-const getAllMoviesQuery = gql`
-  {
-    GetAllMovies {
-      id
-      title
-      genre
-      releaseDate
-      posterUrl
-      overview
-      popularity
-      rating
-      reviews
-    }
-  }
-`;
-
 const getMoviesByFilterQuery = gql`
   query ($genre: [String], $sortBy: String, $direction: String, $search: String, $offset: Int, $limit: Int) {
     GetMoviesByFilter(
@@ -63,4 +47,4 @@ const getMoviesByFilterQuery = gql`
   }
 `;
 
-export { getAllMoviesQuery, getMovieByIdQuery, getMovieRatingByIdQuery, getMoviesByFilterQuery };
+export { getMovieByIdQuery, getMovieRatingByIdQuery, getMoviesByFilterQuery };

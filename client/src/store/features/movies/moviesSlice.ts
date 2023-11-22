@@ -2,7 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { Filters } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
 import { RootState } from '../../store';
-import { getFilteredMovies, getMovieById, getMovieRatingById, getMovies } from './movieThunks';
+import { getFilteredMovies, getMovieById, getMovieRatingById } from './movieThunks';
 
 export interface LoadingState {
   pending: boolean;
@@ -60,23 +60,6 @@ export const moviesSlice = createSlice({
       })
       .addCase(getMovieById.rejected, (state) => {
         state.detailsLoadingState = { pending: false, rejected: true, resolved: false };
-      })
-      .addCase(getMovies.fulfilled, (state, action) => {
-        state.gridLoadingState = { pending: false, rejected: false, resolved: true };
-        if (action.payload) {
-          const fetchedMovies = action.payload;
-          state.allFetched = fetchedMovies.length < state.pageSize;
-
-          const movies = [...state.movies, ...fetchedMovies];
-          state.movies = movies;
-          state.moviesFetched += action.payload.length;
-        }
-      })
-      .addCase(getMovies.pending, (state) => {
-        state.gridLoadingState = { pending: true, rejected: false, resolved: false };
-      })
-      .addCase(getMovies.rejected, (state) => {
-        state.gridLoadingState = { pending: false, rejected: true, resolved: false };
       })
       .addCase(getFilteredMovies.fulfilled, (state, action) => {
         state.gridLoadingState = { pending: false, fetchMorePending: false, rejected: false, resolved: true };

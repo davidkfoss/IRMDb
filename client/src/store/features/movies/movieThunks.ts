@@ -3,7 +3,6 @@ import { client } from '../../../client';
 import { Filters } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
 import {
-  getAllMoviesQuery,
   getMovieByIdQuery,
   getMovieRatingByIdQuery,
   getMoviesByFilterQuery,
@@ -47,32 +46,6 @@ export const getMovieRatingById = createAsyncThunk<
     });
   return rating;
 });
-
-/**
- * A Redux Async Thunk that fetches movies from the server.
- * @returns A promise that resolves to an array of Movie objects, or undefined if the request fails.
- */
-export const getMovies = createAsyncThunk<Movie[] | undefined, void, { state: RootState }>(
-  'movies/getMovies',
-  async (_, { getState }) => {
-    const state = getState();
-    const moviesFetchCount = state.movies.moviesFetched;
-    const pageSize = state.movies.pageSize;
-
-    const movies = await client
-      .query({
-        query: getAllMoviesQuery,
-        variables: {
-          offset: moviesFetchCount,
-          limit: pageSize,
-        },
-      })
-      .then((result) => {
-        return result.data.GetAllMovies;
-      });
-    return movies;
-  }
-);
 
 /**
  * A Redux Async Thunk that fetches a list of movies based on the provided filters.

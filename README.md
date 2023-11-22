@@ -142,7 +142,7 @@ To format the code with prettier, run the following command:
 
 To run the component tests, run the following command in the client folder:
 
-`npm run test`
+`npm run test:component`
 
 To run end-2-end tests with cypress, you must first start both the server and the client by following this [guide](#local-installation-and-usage). Then run the following command in the client folder:
 
@@ -151,6 +151,10 @@ To run end-2-end tests with cypress, you must first start both the server and th
 or
 
 `npm run test:e2e` to run the tests headlessly
+
+To run the API tests, you must first start the `dev` server by following this [guide](#local-installation-and-usage). Then run the following command in the **client** folder:
+
+`npm run test:api`
 
 ### What are we testing, why and how?
 
@@ -177,11 +181,39 @@ We are testing the application as a whole with [Cypress](https://www.cypress.io)
 
 We are not testing the application in different viewport sizes, but testing with the default viewport size of 1000x660, as we emphasize the functionality of the application over the design in our end-2-end tests.
 
+#### API testing
+
+We are testing the API by testing the graphQL queries and mutations with Vitest and Apollo Client. We are running actual queries and mutations against the running server, to make sure that the API is working as expected.
+
+The tests have some prerequisites, and will fail if the database is not in a certain state.
+Prerequisites include:
+
+- `Dev` server running
+- At least 3 reviews in the database
+- Certain reviews that the queries use must exist in the database
+
+All of these prerequisites should be met by running the server in development mode since we have populated the database as needed.
+
+#### No dedicated test database
+
+We are not using a dedicated test database, but are instead using the development database. Here are some of the reasons why we chose to do this:
+
+##### Realistic Testing Environment
+
+Using the development database provides a more realistic testing environment. It mirrors the actual production setup more closely, including any potential issues that might arise in a live scenario. This ensures that the tests are more representative of how the application will behave in real-world conditions.
+
+##### Database schema evolution
+
+As the application evolves, so does the database schema. With a dedicated test database, keeping it in sync with the development and production databases can become challenging. Using the development database ensures that tests align with the latest schema changes automatically.
+
+##### Avoiding redundant configuration
+
+Maintaining a separate configuration for the test database introduces redundancy. By using the development database, developers can leverage the same database connection settings, reducing the chances of configuration mismatches between different environments.
+
 ## Authors and acknowledgment
 
 Thor Sjursen
 
-Christian Veiby
 Christian Veiby
 
 David Foss
