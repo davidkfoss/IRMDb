@@ -1,4 +1,4 @@
-[/nav](../Doc/navigation.md) /server
+[/nav](../doc/navigation.md) /server
 
 # Server documentation
 
@@ -18,22 +18,17 @@ Navigate to the [server](.) folder and run `npm install` to install dependencies
 
 ## Folder Structure
 
-A general overview of the folder structure is provided below:
+A general overview of the folder structure is provided below.
 
-[**models**](./models/)
-: Contains the MongoDB models for [movies](./models/Movie.ts), [reviews](./models/Review.ts), and [users](./models/User.ts).
+[**models**](./models/): Contains the MongoDB models for [movies](./models/Movie.ts), [reviews](./models/Review.ts), and [users](./models/User.ts).
 
-[**schema**](./schema/)
-: Contains the [GraphQL schema](./schema/schema.ts) which consists of the types, queries and mutations for [movies](./schema/movie.ts), [reviews](./schema/review.ts), and [users](./schema/user.ts).
+[**schema**](./schema/): Contains the [GraphQL schema](./schema/schema.ts) which consists of the types, queries and mutations for [movies](./schema/movie.ts), [reviews](./schema/review.ts), and [users](./schema/user.ts).
 
-[**services**](./services/)
-: Contains the services for [movies](./services/MovieService.ts), [reviews](./services/ReviewService.ts), and [users](./services/UserService.ts). These services handle the interaction with the MongoDB database and is used within the GraphQL resolvers.
+[**services**](./services/): Contains the services for [movies](./services/MovieService.ts), [reviews](./services/ReviewService.ts), and [users](./services/UserService.ts). These services handle the interaction with the MongoDB database and is used within the GraphQL resolvers.
 
-[**util**](./util/)
-: Contains utility functions for [validation](./util/validators.ts) of data upon mutation.
+[**util**](./util/): Contains utility functions for [validation](./util/validators.ts) of data upon mutation.
 
-[**config**](./config/)
-: Contains the configuration for the MongoDB database.
+[**config**](./config/): Contains the configuration for the MongoDB database.
 
 ## Express
 
