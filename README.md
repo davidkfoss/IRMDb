@@ -8,12 +8,9 @@
 - [Description](#description)
 - [Visuals](#visuals)
 - [Local installation and usage](#local-installation-and-usage)
-- [Roadmap](#roadmap)
 - [Accessibility and Sustainability](#accessibility-and-sustainability)
 - [Linting and formatting](#linting-and-formatting)
 - [Testing](#testing)
-- [Authors and acknowledgment](#authors-and-acknowledgment)
-- [Project status](#project-status)
 
 ## Description
 
