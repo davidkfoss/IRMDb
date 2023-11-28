@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "test:component": "vitest related src/**/**/*.test.tsx src/**/**/**/*.test.tsx src/*.test.tsx",
-    "test:api": "vitest related src/**/*.test.ts",
+    "test:component": "vitest test.tsx",
+    "test:api": "vitest Queries.test.ts",
     "test:e2e": "npx cypress run",
     "cypress": "cypress open",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

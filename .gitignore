@@ -25,3 +25,5 @@ dist-ssr
 *.env
 .env.dev
 .env.prod
+
+test/util/reviewId.txt
