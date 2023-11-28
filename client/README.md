@@ -1,4 +1,4 @@
-[/nav](../Doc/navigation.md) /client
+[/nav](../doc/navigation.md) /client
 
 # Client documentation
 
@@ -20,20 +20,15 @@ Navigate to the _client_ folder and run `npm install` to install dependencies. T
 
 A general overview of the folder structure is provided below:
 
-[**Components**](./src/components/)
-: Contains all the components used in the application. Each component is placed in its own folder, which contains the component's TypeScript file, CSS file, and any other files required by the component.
+[**components**](./src/components/): Contains all the components used in the application. Each component is placed in its own folder, which contains the component's TypeScript file, CSS file, and any other files required by the component.
 
-[**Pages**](./src/pages/)
-: Contains the pages used in the application. Each page is placed in its own folder, which contains the page's TypeScript file, CSS file, and any other files required by the page.
+[**pages**](./src/pages/): Contains the pages used in the application. Each page is placed in its own folder, which contains the page's TypeScript file, CSS file, and any other files required by the page.
 
-[**Store**](./src/store/)
-: Contains the Redux store, reducers, and thunks for [movies](./src/store/features/movies/) and [reviews](./src/store/features/reviews/).
+[**store**](./src/store/): Contains the Redux store, reducers, and thunks for [movies](./src/store/features/movies/) and [reviews](./src/store/features/reviews/).
 
-[**Queries**](./src/queries/)
-: Contains all the GraphQL queries used in the application.
+[**queries**](./src/queries/): Contains all the GraphQL queries used in the application.
 
-[**Models**](./src/models/)
-: Contains the TypeScript interfaces for the [Movie](./src/models/movie.ts), [Review](./src/models/review.ts) and [User](./src/models/user.ts) objects.
+[**models**](./src/models/): Contains the TypeScript interfaces for the [Movie](./src/models/movie.ts), [Review](./src/models/review.ts) and [User](./src/models/user.ts) objects.
 
 ## State Management with Redux
 

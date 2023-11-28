@@ -92,11 +92,11 @@ End-2-end testing is done using [Cypress](https://www.cypress.io/). The tests ar
 
 ### Testing - API
 
-We employ [Vitest](https://vitest.dev/) to rigorously test our API. The test suite is housed in the `/client/src/queries` folder. Our focus is on thoroughly testing the queries and mutations integral to the application, prioritizing the critical aspects of the API functionality.
+We employ [Vitest](https://vitest.dev/) to test our API. The test suite is housed in the `/client/src/queries` folder. Our focus is on thoroughly testing the queries and mutations integral to the application, prioritizing the critical aspects of the API functionality.
 
 ### Documentation
 
-The project is documented with a README.md in the root folder as well as in depth files in the Doc folder. The documentation discusses, explains and refers to all the most important choices and solutions the group makes (including the choice of components and api).
+The project is documented with a [README.md](../README.md) in the root folder as well as in depth files in the `doc` folder. The documentation discusses, explains and refers to all the most important choices and solutions the group makes (including the choice of components and api).
 
 ### Code readability and structure
 

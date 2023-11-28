@@ -1,4 +1,4 @@
-[/nav](./Doc/navigation.md)
+[/nav](./doc/navigation.md)
 /root
 
 # International Review Movie Database (IRMDb)
@@ -33,15 +33,15 @@ IRMDb is a user-friendly application that helps you discover, review, and rate y
 
 ## Visuals
 
-<img src="./Doc/assets/Moviepage.png" width="800"/>
+<img src="./doc/assets/Moviepage.png" width="800"/>
 
 The movies page shows results for the filters you have selected
 
-<img src="./Doc/assets/Detailed-moviepage.png" width="800"/>
+<img src="./doc/assets/Detailed-moviepage.png" width="800"/>
 
 When clicking on a movie, you can see more details about it and add a review
 
-<img src="./Doc/assets/Feedpage.png" width="800"/>
+<img src="./doc/assets/Feedpage.png" width="800"/>
 
 The landing page shows popular and recent reviews
 
@@ -85,27 +85,6 @@ and start the client by running
 `npm run dev`
 
 Open your web browser and navigate to [localhost:5173](http://localhost:5173) to access the application
-
-## Roadmap
-
-- Version 2.2
-  - Backend (graphql, express, mongoDB)
-  - New features
-    - Add reviews to movies
-    - See reviews from other users on movies
-    - Landing page with popular and recent reviews
-    - Upvote reviews
-  - User experience
-    - Increased responsiveness for all devices
-    - Web accessibility
-- Version 2.3 (**current**)
-  - Testing
-  - Documentation
-  - Security improvements
-  - Code quality improvements
-  - Error handling improvements
-
-We welcome any suggestions or feature requests from the community.
 
 ## Accessibility and Sustainability
 
@@ -210,15 +189,3 @@ As the application evolves, so does the database schema. With a dedicated test d
 ##### Avoiding redundant configuration
 
 Maintaining a separate configuration for the test database introduces redundancy. By using the development database, developers can leverage the same database connection settings, reducing the chances of configuration mismatches between different environments.
-
-## Authors and acknowledgment
-
-Thor Sjursen
-
-Christian Veiby
-
-David Foss
-
-## Project status
-
-Under development
