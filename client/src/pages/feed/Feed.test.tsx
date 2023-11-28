@@ -20,7 +20,7 @@ vi.mock('../../hooks/useUser.ts', () => ({
 }));
 
 vi.mock('../../store/store.ts', async () => {
-  const actual: any = await vi.importActual('../../store/store.ts');
+  const actual: object = await vi.importActual('../../store/store.ts');
   return {
     ...actual,
     useAppdispatch: vi.fn(),

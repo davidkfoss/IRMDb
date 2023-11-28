@@ -4,64 +4,51 @@ export const mockState = {
       {
         id: '653f802e2a68d09459a498ac',
         title: 'Interstellar',
-        genre: [
-          'Adventure',
-          'Drama',
-          'Science Fiction'
-        ],
+        genre: ['Adventure', 'Drama', 'Science Fiction'],
         releaseDate: '2014-11-05',
         posterUrl: 'https://image.tmdb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
-        overview: 'The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.',
+        overview:
+          'The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.',
         popularity: 110.531,
         rating: 5,
-        reviews: null
+        reviews: null,
       },
       {
         id: '653f80322a68d09459a4b16d',
         title: 'Interstella 5555: The 5tory of the 5ecret 5tar 5ystem',
-        genre: [
-          'Animation',
-          'Science Fiction',
-          'Music',
-          'Adventure'
-        ],
+        genre: ['Animation', 'Science Fiction', 'Music', 'Adventure'],
         releaseDate: '2003-05-28',
         posterUrl: 'https://image.tmdb.org/t/p/original/AsvPgdcSlHocAbMp3yGZXjPiKKF.jpg',
-        overview: 'Four talented alien musicians are kidnapped by a record producer who disguises them as humans. Shep, a space pilot in love with bass player Stella, follows them to Earth. Reprogrammed to forget their real identities and renamed The Crescendolls, the group quickly becomes a huge success playing soulless corporate pop. At a concert, Shep manages to free all the musicians except Stella, and the band sets out to rediscover who they really are -- and to rescue Stella.',
+        overview:
+          'Four talented alien musicians are kidnapped by a record producer who disguises them as humans. Shep, a space pilot in love with bass player Stella, follows them to Earth. Reprogrammed to forget their real identities and renamed The Crescendolls, the group quickly becomes a huge success playing soulless corporate pop. At a concert, Shep manages to free all the musicians except Stella, and the band sets out to rediscover who they really are -- and to rescue Stella.',
         popularity: 17.023,
         rating: null,
-        reviews: null
+        reviews: null,
       },
       {
         id: '653f80312a68d09459a4a788',
         title: 'Interstate 60',
-        genre: [
-          'Adventure',
-          'Comedy',
-          'Fantasy'
-        ],
+        genre: ['Adventure', 'Comedy', 'Fantasy'],
         releaseDate: '2002-04-13',
         posterUrl: 'https://image.tmdb.org/t/p/original/zZQt29qBWLoVVOo8HEFzFYRAgYQ.jpg',
-        overview: 'An aspiring painter meets various characters and learns valuable lessons while traveling across America.',
+        overview:
+          'An aspiring painter meets various characters and learns valuable lessons while traveling across America.',
         popularity: 23.403,
         rating: null,
-        reviews: null
+        reviews: null,
       },
       {
         id: '653f802f2a68d09459a49e03',
         title: 'Intersect',
-        genre: [
-          'Horror',
-          'Science Fiction',
-          'Thriller'
-        ],
+        genre: ['Horror', 'Science Fiction', 'Thriller'],
         releaseDate: '2020-02-12',
         posterUrl: 'https://image.tmdb.org/t/p/original/e6hgmD0P133bW5EH1kfhscwXN2a.jpg',
-        overview: 'A group of young Miskatonic University scientists invent a time machine, only to learn that they are being manipulated by mysterious, unseen forces from another dimension.',
+        overview:
+          'A group of young Miskatonic University scientists invent a time machine, only to learn that they are being manipulated by mysterious, unseen forces from another dimension.',
         popularity: 43.45,
         rating: null,
-        reviews: null
-      }
+        reviews: null,
+      },
     ],
     moviesFetched: 4,
     pageSize: 12,
@@ -70,35 +57,31 @@ export const mockState = {
       genres: [],
       sortBy: 'Name',
       direction: 'desc',
-      search: 'inters'
+      search: 'inters',
     },
     gridLoadingState: {
       pending: false,
       fetchMorePending: false,
       rejected: false,
-      resolved: true
+      resolved: true,
     },
     detailsLoadingState: {
       pending: false,
       rejected: false,
-      resolved: true
+      resolved: true,
     },
     currentMovie: {
       id: '653f80322a68d09459a4af86',
       title: '2-Headed Shark Attack',
-      genre: [
-        'Horror',
-        'Action',
-        'Thriller',
-        'Science Fiction'
-      ],
+      genre: ['Horror', 'Action', 'Thriller', 'Science Fiction'],
       releaseDate: '2012-06-26',
       posterUrl: 'https://image.tmdb.org/t/p/original/tyKDKlex5RqBjx3OatVpTAfeAkD.jpg',
-      overview: 'A Semester at Sea ship is attacked and sunk by a mutated two-headed shark, and the survivors seek refuge on a deserted atoll. The coeds, however, are no longer safe when the atoll starts flooding.',
+      overview:
+        'A Semester at Sea ship is attacked and sunk by a mutated two-headed shark, and the survivors seek refuge on a deserted atoll. The coeds, however, are no longer safe when the atoll starts flooding.',
       popularity: 17.907,
       rating: 1,
-      reviews: null
-    }
+      reviews: null,
+    },
   },
   reviews: {
     movieReviews: {
@@ -115,7 +98,7 @@ export const mockState = {
             movieId: '653f80332a68d09459a4b660',
             votesLength: 0,
           },
-        }
+        },
       ],
       '653f802e2a68d09459a498ac': [
         {
@@ -146,7 +129,7 @@ export const mockState = {
             {
               vote: true,
               user: 'test@test.test',
-            }
+            },
           ],
           date: '1698920672976',
           meta: {
@@ -155,8 +138,7 @@ export const mockState = {
             movieId: '653f802e2a68d09459a498ac',
             votesLength: 6,
           },
-          
-        }
+        },
       ],
       '653f802e2a68d09459a4987b': [
         {
@@ -171,7 +153,7 @@ export const mockState = {
             movieId: '653f802e2a68d09459a4987b',
             votesLength: 0,
           },
-        }
+        },
       ],
       '653f80322a68d09459a4b161': [
         {
@@ -182,7 +164,7 @@ export const mockState = {
             {
               vote: true,
               user: 'thorsj00@hotmail.com',
-            }
+            },
           ],
           date: '1699468275462',
           meta: {
@@ -191,7 +173,7 @@ export const mockState = {
             movieId: '653f80322a68d09459a4b161',
             votesLength: 1,
           },
-        }
+        },
       ],
       '653f80322a68d09459a4af86': [
         {
@@ -202,7 +184,7 @@ export const mockState = {
             {
               vote: true,
               user: 'sjursenthor@gmail.com',
-            }
+            },
           ],
           date: '1699019885891',
           meta: {
@@ -211,8 +193,8 @@ export const mockState = {
             movieId: '653f80322a68d09459a4af86',
             votesLength: 1,
           },
-        }
-      ]
+        },
+      ],
     },
     recentReviews: [
       {
@@ -251,7 +233,7 @@ export const mockState = {
           {
             vote: true,
             user: 'thorsj00@hotmail.com',
-          }
+          },
         ],
         date: '1699468275462',
         meta: {
@@ -261,7 +243,7 @@ export const mockState = {
           movieTitle: 'Crows Are White',
           votesLength: 1,
         },
-      }
+      },
     ],
     popularReviews: [
       {
@@ -292,7 +274,7 @@ export const mockState = {
           {
             vote: true,
             user: 'test@test.test',
-          }
+          },
         ],
         date: '1698920672976',
         meta: {
@@ -323,7 +305,7 @@ export const mockState = {
           {
             vote: true,
             user: 'test@test.test',
-          }
+          },
         ],
         date: '1698913055256',
         meta: {
@@ -342,7 +324,7 @@ export const mockState = {
           {
             vote: true,
             user: 'sjursenthor@gmail.com',
-          }
+          },
         ],
         date: '1699019885891',
         meta: {
@@ -352,25 +334,25 @@ export const mockState = {
           movieTitle: '2-Headed Shark Attack',
           votesLength: 1,
         },
-      }
+      },
     ],
     loadingStates: {
       reviews: {
         pending: false,
         rejected: false,
-        resolved: true
+        resolved: true,
       },
       recentReviews: {
         pending: false,
         rejected: false,
-        resolved: true
+        resolved: true,
       },
       popularReviews: {
         pending: false,
         rejected: false,
-        resolved: true
-      }
-    }
+        resolved: true,
+      },
+    },
   },
   user: {
     user: {
@@ -381,7 +363,7 @@ export const mockState = {
     loadingState: {
       pending: false,
       rejected: false,
-      resolved: true
-    }
-  }
+      resolved: true,
+    },
+  },
 };

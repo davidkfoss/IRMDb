@@ -8,7 +8,7 @@ import { MemoryRouter } from 'react-router-dom';
 const mockStore = configureStore([]);
 
 vi.mock('react', async () => {
-  const actual: any = await vi.importActual('react');
+  const actual: object = await vi.importActual('react');
   return {
     ...actual,
     useCallback: () => vi.fn(),
