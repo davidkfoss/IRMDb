@@ -41,7 +41,7 @@ describe('Movies', () => {
   });
 
   it('renders load more button when there are more movies to fetch', () => {
-    let modifiedMockstate = mockState;
+    const modifiedMockstate = mockState;
     modifiedMockstate.movies.pageSize = 2;
     modifiedMockstate.movies.allFetched = false;
     const store = mockStore(modifiedMockstate);
@@ -73,7 +73,7 @@ describe('Movies', () => {
   });
 
   it('does not show load more button when there are no more movies to fetch', () => {
-    let modifiedMockstate = mockState;
+    const modifiedMockstate = mockState;
     modifiedMockstate.movies.allFetched = true;
     const store = mockStore(modifiedMockstate);
 

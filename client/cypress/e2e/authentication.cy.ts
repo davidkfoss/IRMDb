@@ -15,7 +15,7 @@ describe('registering a new user', () => {
     cy.contains('Welcome ' + firstName + '!');
     cy.contains('Logout').click();
     cy.contains('Login');
-  })
+  });
 
   it('logs in', () => {
     cy.visit('http://localhost:5173/');

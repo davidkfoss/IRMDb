@@ -6,7 +6,7 @@ import configureStore from 'redux-mock-store';
 import { mockState } from '../../test/util/mockState';
 
 vi.mock('react-redux', async () => {
-  const actual: any = await vi.importActual('react-redux');
+  const actual: object = await vi.importActual('react-redux');
   return {
     ...actual,
     useDispatch: vi.fn(),
@@ -14,7 +14,7 @@ vi.mock('react-redux', async () => {
 });
 
 vi.mock('react', async () => {
-  const actual: any = await vi.importActual('react');
+  const actual: object = await vi.importActual('react');
   return {
     ...actual,
     useEffect: vi.fn(),
@@ -23,7 +23,7 @@ vi.mock('react', async () => {
 
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
-  const actual: any = await vi.importActual('react-router-dom');
+  const actual: object = await vi.importActual('react-router-dom');
   return {
     ...actual,
     useNavigate: () => mockNavigate,

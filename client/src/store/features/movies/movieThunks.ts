@@ -2,11 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../../../client';
 import { Filters } from '../../../components/filter/filterUtil';
 import { Movie } from '../../../models/movie';
-import {
-  getMovieByIdQuery,
-  getMovieRatingByIdQuery,
-  getMoviesByFilterQuery,
-} from '../../../queries/movieQueries';
+import { getMovieByIdQuery, getMovieRatingByIdQuery, getMoviesByFilterQuery } from '../../../queries/movieQueries';
 import { RootState } from '../../store';
 
 /**

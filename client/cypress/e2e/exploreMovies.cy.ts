@@ -1,8 +1,5 @@
 /// <reference types="cypress" />
 
-import Chance from 'chance';
-const chance = new Chance();
-
 describe('explore movies using filter options', () => {
 
     it('explores movies by searching and applying filters', () => {
