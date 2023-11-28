@@ -1,14 +1,5 @@
 import dotenv from 'dotenv';
-
-const nodeEnv = process.env.NODE_ENV;
-
-if (nodeEnv === 'dev') {
-  dotenv.config({ path: '.env.dev' });
-} else if (nodeEnv === 'prod') {
-  dotenv.config({ path: '.env.prod' });
-} else {
-  dotenv.config();
-}
+dotenv.config();
 
 /**
  * Configuration object for the server.
