@@ -53,9 +53,10 @@ Clone the repository with
 
 `git clone https://gitlab.stud.idi.ntnu.no/it2810-h23/Team-44/prosjekt-2.git`
 
-Navigate to the [server](./server/) folder and create a .env.dev file containing the following:
+Navigate to the [server](./server/) folder and create a .env file containing the following:
 
 ```bash
+  NODE_ENV=development
   PORT=3001
   DB_PREFIX=mongodb+srv://
   DB_USERNAME=admin
@@ -73,7 +74,7 @@ Then install all dependencies by running
 
 and start the server by running
 
-`npm run start-dev`
+`npm start`
 
 Navigate to [client](./client/) folder and install dependencies by running
 
